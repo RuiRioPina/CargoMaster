@@ -1,0 +1,169 @@
+@startuml
+autonumber
+actor "Traffic Manager" as REC
+
+participant  ":importShipsTest" as LabCoo
+participant ":importShips" as UI
+participant ":shipController" as CTRL
+participant ":Company" as CMP
+
+participant ":Identification" as identification
+participant ":ShipEnergy" as shipEnergy
+participant ":ShipCharacteristics" as shipCharacteristics
+participant ":Location" as location
+participant ":MovementData" as movementData
+participant ":ShipDynamic" as shipDynamic
+participant ":ShipStore" as shipStore
+participant ":Route" as route
+
+
+
+activate REC
+REC -> LabCoo : chooses to import ships' informations from a CSV File
+activate LabCoo
+LabCoo --> REC : asks the name of the file it wants to import
+deactivate LabCoo
+REC -> LabCoo : writes the name of the CSV file
+activate LabCoo
+
+LabCoo -> UI : new importShips (filePath)
+activate UI
+
+
+
+UI -> UI : File archive = new File (filePath)
+UI -> UI : reader = new Scanner(archive)
+UI -> UI : String line = reader.nextLine();
+UI -> UI : String[] header = line.split(";");
+
+
+
+activate CTRL
+deactivate CTRL
+UI -> CTRL : ship = null
+
+loop for every line of the file (except the first line)
+
+UI -> UI: String[] text = line.split(";")
+alt if(previous.getMMSI != text[0])
+UI -> CTRL : mmsi = text[0]
+activate CTRL
+deactivate CTRL
+UI -> CTRL : vesselName = text[7]
+activate CTRL
+deactivate CTRL
+UI -> CTRL : imoIdentificationNumber = text[8]
+activate CTRL
+deactivate CTRL
+UI -> CTRL : numberOfEnergyGenerators = text[naotem]
+activate CTRL
+deactivate CTRL
+UI -> CTRL : generatorPowerOutput = text[naotem]
+activate CTRL
+deactivate CTRL
+UI -> CTRL : callSign = text[9]
+activate CTRL
+deactivate CTRL
+UI -> CTRL : vesselType = text[10]
+activate CTRL
+deactivate CTRL
+UI -> CTRL : length = text[11]
+activate CTRL
+deactivate CTRL
+UI -> CTRL : width = text[12]
+activate CTRL
+deactivate CTRL
+UI -> CTRL : draft = text[13]
+activate CTRL
+deactivate CTRL
+UI -> CTRL : capacity = text[14]
+
+UI -> identification**: idShip = Identification(mmsi, vesselName, imoIdentificationNumber ,callSign)
+
+UI -> shipEnergy**: energy = ShipEnergy(text[4],text[5])
+
+
+UI -> shipCharacteristics** : characteristics = ShipCharacteristics(vesselType,length,width,draft,capacity)
+
+UI -> CTRL : previous = ship
+activate CTRL
+end
+activate CTRL
+deactivate CTRL
+UI -> CTRL : baseDateTime = text[1]
+activate CTRL
+deactivate CTRL
+UI -> CTRL : latitude = text[2]
+activate CTRL
+deactivate CTRL
+UI -> CTRL : longitude = text[3]
+
+activate CTRL
+deactivate CTRL
+UI -> CTRL : sog = text[4]
+
+activate CTRL
+deactivate CTRL
+UI -> CTRL : cog = text[5]
+
+activate CTRL
+deactivate CTRL
+UI -> CTRL : heading = text[6]
+
+activate CTRL
+deactivate CTRL
+UI -> CTRL : cargo = text[15]
+
+activate CTRL
+deactivate CTRL
+UI -> CTRL : transceiverClass = text[16]
+
+activate CTRL
+deactivate CTRL
+UI -> location**: locat = Location[longitude, latitude]
+
+
+UI -> movementData**: movement = MovementData[sog, cog, heading]
+
+UI -> shipDynamic**: dynamicData = ShipDynamic[baseDateTime , location, movementData, transceiverClass]
+
+UI -> CTRL : ship = createShip(idShip, energy, characteristics, movement, dynamic)
+
+activate CTRL
+
+CTRL-> route: shipRoute = getRoute(ship)
+
+activate route
+
+
+route-> route: route.add(dynamicData)
+
+deactivate route
+
+
+deactivate CTRL
+
+
+
+
+
+
+
+
+UI -> CTRL : saveShip(ship)
+
+activate CTRL
+
+CTRL -> shipStore: saveShip(ship)
+deactivate CTRL
+activate shipStore
+shipStore-> shipStore: validateShip (ship)
+shipStore-> shipStore: addShip (ship)
+end
+deactivate shipStore
+UI --> LabCoo : informs operation success
+LabCoo -> REC : informs operation success
+
+deactivate CTRL
+deactivate UI
+@enduml
