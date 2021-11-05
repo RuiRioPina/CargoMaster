@@ -30,6 +30,13 @@ public class IdentificationTest {
     }
 
     @Test
+    public void validateMessage() {
+        Identification identification = new Identification("210950000","VARAMO","IMO9395044","C4SQ2");
+        identification.setMmsi("218593");
+    }
+
+
+    @Test
     public void setShipName() {
         //Arrange
         //Act
@@ -117,5 +124,4 @@ public class IdentificationTest {
         //Assert
         assertEquals(expected, actual);
     }
-
 }

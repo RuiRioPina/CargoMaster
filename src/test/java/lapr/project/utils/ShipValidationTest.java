@@ -26,7 +26,7 @@ public class ShipValidationTest {
         location = new Location();
         movement = new Movement();
         characteristics = new ShipCharacteristics();
-        ship = new Ship(shipID,characteristics,route);
+        ship = new Ship(shipID, characteristics, route);
     }
 
     @Test
@@ -36,12 +36,14 @@ public class ShipValidationTest {
         ship.setShipId(shipID);
         ShipValidation.validateMMSI(ship.getShipId().getMmsi());
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void validateMMSINotCompliant() {
         shipID.setMmsi("-210950000");
         ship.setShipId(shipID);
         ShipValidation.validateMMSI(ship.getShipId().getMmsi());
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void validateMMSINotCompliantMinus() {
         shipID.setMmsi("-99999999");
@@ -62,24 +64,28 @@ public class ShipValidationTest {
         ship.setShipId(shipID);
         ShipValidation.validateShipName(ship.getShipId().getImoID());
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void validateIMONotCompliant() {
         shipID.setImoID("IMB9395044");
         ship.setShipId(shipID);
         ShipValidation.validateIMO(ship.getShipId().getImoID());
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void validateIMONotCompliant1() {
         shipID.setImoID("IMB939504");
         ship.setShipId(shipID);
         ShipValidation.validateIMO(ship.getShipId().getImoID());
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void validateIMONotCompliant2() {
         shipID.setImoID("IMO9395S44");
         ship.setShipId(shipID);
         ShipValidation.validateIMO(ship.getShipId().getImoID());
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void validateIMONotCompliant3() {
         shipID.setImoID("IMO3");
@@ -113,25 +119,71 @@ public class ShipValidationTest {
         ShipValidation.validateBaseDateTime(dynamic.getBaseDateTime());
     }
 
-    public static void validateVesselType(int vesselType){
-        if (vesselType<0){
-            throw new IllegalArgumentException();
-        }
+    @Test
+    public void testValidateVesselTypes() {
+        characteristics.setVesselType(0);
+        ShipValidation.validateVesselType(characteristics.getVesselType());
+        characteristics.setVesselType(10);
+        ShipValidation.validateVesselType(characteristics.getVesselType());
     }
-    public static void validateShipSizes(int measure){
-        if (measure<0){
-            throw new IllegalArgumentException();
-        }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testValidateVesselTypesNotCorrect() {
+        characteristics.setVesselType(0);
+        ShipValidation.validateVesselType(characteristics.getVesselType());
+        characteristics.setVesselType(-30);
+        ShipValidation.validateVesselType(characteristics.getVesselType());
     }
-    public static void validateTransceiverClass(String transceiverClass){
-        if (!(transceiverClass.equals("A")||transceiverClass.equals("B"))){
-            throw new IllegalArgumentException();
-        }
+
+    @Test
+    public void testValidateVesselTypes1() {
+        characteristics.setVesselType(30);
+        ShipValidation.validateVesselType(characteristics.getVesselType());
+
+    }
+
+    @Test
+    public void testValidateShipSizes2() {
+        characteristics.setVesselType(0);
+
+
+        ShipValidation.validateVesselType(characteristics.getVesselType());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testValidateShipSizesNotCompliant2() {
+        characteristics.setVesselType(-30);
+
+        ShipValidation.validateVesselType(characteristics.getVesselType());
     }
 
     @Test
     public void validateLatitude() {
         location.setLatitude(-70);
+        ShipValidation.validateLatitude(location.getLatitude());
+    }
+
+    @Test
+    public void validateLatitude1() {
+        location.setLatitude(-90);
+        ShipValidation.validateLatitude(location.getLatitude());
+        location.setLatitude(90);
+        ShipValidation.validateLatitude(location.getLatitude());
+    }
+
+    @Test
+    public void validateLatitude2() {
+        location.setLatitude(-30);
+        ShipValidation.validateLatitude(location.getLatitude());
+        location.setLatitude(20);
+        ShipValidation.validateLatitude(location.getLatitude());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void validateLatitude3() {
+        location.setLatitude(-190);
+        ShipValidation.validateLatitude(location.getLatitude());
+        location.setLatitude(200);
         ShipValidation.validateLatitude(location.getLatitude());
     }
 
@@ -148,6 +200,15 @@ public class ShipValidationTest {
         ShipValidation.validateLongitude(location.getLongitude());
     }
 
+    @Test
+    public void validateLongitude1() {
+
+        location.setLongitude(180);
+        ShipValidation.validateLongitude(location.getLongitude());
+        location.setLongitude(-180);
+        ShipValidation.validateLongitude(location.getLongitude());
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void validateLongitudeNotCompliant() {
         location.setLongitude(190);
@@ -157,6 +218,12 @@ public class ShipValidationTest {
     @Test
     public void validateSog() {
         movement.setSog(10);
+        ShipValidation.validateSog(movement.getSog());
+    }
+
+    @Test
+    public void validateSog1() {
+        movement.setSog(0);
         ShipValidation.validateSog(movement.getSog());
     }
 
@@ -172,15 +239,33 @@ public class ShipValidationTest {
         ShipValidation.validateCog(movement.getCog());
     }
 
+    @Test
+    public void validateCog1() {
+        movement.setCog(0);
+        ShipValidation.validateCog(movement.getCog());
+        movement.setCog(359);
+        ShipValidation.validateCog(movement.getCog());
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void validateCogNotCompliant() {
         movement.setCog(-30);
         ShipValidation.validateCog(movement.getCog());
     }
+
     @Test
     public void validateHeading() {
 
         movement.setHeading(320);
+        ShipValidation.validateHeading(movement.getHeading());
+    }
+
+    @Test
+    public void validateHeading1() {
+
+        movement.setHeading(359);
+        ShipValidation.validateHeading(movement.getHeading());
+        movement.setHeading(0);
         ShipValidation.validateHeading(movement.getHeading());
     }
 
@@ -207,6 +292,16 @@ public class ShipValidationTest {
         characteristics.setDraft(30);
         characteristics.setLength(30);
         characteristics.setWidth(30);
+        ShipValidation.validateShipSizes(characteristics.getDraft());
+        ShipValidation.validateShipSizes(characteristics.getLength());
+        ShipValidation.validateShipSizes(characteristics.getWidth());
+    }
+
+    @Test
+    public void testValidateShipSizes1() {
+        characteristics.setDraft(0);
+        characteristics.setLength(0);
+        characteristics.setWidth(0);
         ShipValidation.validateShipSizes(characteristics.getDraft());
         ShipValidation.validateShipSizes(characteristics.getLength());
         ShipValidation.validateShipSizes(characteristics.getWidth());

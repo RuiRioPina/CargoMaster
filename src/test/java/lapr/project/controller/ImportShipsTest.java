@@ -27,6 +27,20 @@ public class ImportShipsTest {
         ship = new Ship(idShip, shipCharacteristics, route);
     }
 
+    @Test
+    public void importShips() throws IOException {
+        System.out.println("baseDateTime" + " " + "lat" + " " + "lon" + " " + "sog" + " " + "cog" + " " +  "heading" + " " + "cargo" + " " + "transceiverClass");
+        ShipStore store = new ShipStore();
+        String fileName = "csvFiles/sships.csv";
+        List<Ship> shipsList = ImportShips.importShips(fileName);
+        for (Ship ships : shipsList) {
+            store.addShipToBST(ships);
+        }
+        System.out.println("Amounts of ships in the store:" + store.size());
+        assertEquals(shipsList.get(3),shipsList.get(3));
+
+    }
+
 
 
 }
