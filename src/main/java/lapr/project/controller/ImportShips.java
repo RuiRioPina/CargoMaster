@@ -71,6 +71,7 @@ public class ImportShips {
                         shipDynamic = new ShipDynamic(baseDateTime, new Location(lat, lon), new Movement(sog, cog, heading), cargo, transceiverClass);
                         route.add(shipDynamic);
                         ship.setRoute(route);
+
                     } catch (Exception e) {
 
                         System.out.println(baseDateTime + " " + lat + " " + lon + " " + sog + " " + cog + " " + heading + " " + cargo + " " + transceiverClass);
@@ -79,10 +80,13 @@ public class ImportShips {
                 }
 
             }
-        } catch (IOException e) {
+        } catch (NullPointerException | IOException | IndexOutOfBoundsException e) {
             e.printStackTrace();
-        }finally {
-            br.close();
+        } finally {
+            if (br != null) {
+                br.close();
+            }
+
         }
         return ships;
     }
