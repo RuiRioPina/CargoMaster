@@ -247,7 +247,8 @@ public class ShipTest {
 
     @Test
     public void testToString() {
-        String expected = "Ship{shipId=Identification{mmsi='210950000', shipName='VARAMO', imoID='IMO9395044', callsign='C4SQ2'}, characteristics=ShipCharacteristics{vesselType=70, length=166.0, width=25.0, draft=9.5}, route=Route{route=[ShipDynamic{baseDateTime='31/12/2020 16:12', location=Location{longitude=-66.97726, latitude=42.73879}, cargo='NA', movement=Movement{sog=13.4, cog=3.4, heading=357.0}, transceiverClass='A'}]}}";
+        //String expected = "Ship{shipId=Identification{mmsi='210950000', shipName='VARAMO', imoID='IMO9395044', callsign='C4SQ2'}, characteristics=ShipCharacteristics{vesselType=70, length=166.0, width=25.0, draft=9.5}, route=Route{route=[Ship Dynamic{BaseDateTime ='31/12/2020 16:12',Location{longitude=-66.97726, latitude=42.73879}, cargo='NA'Movement{sog=13.4, cog=3.4, heading=357.0}, transceiverClass='A'}]}}";
+        String expected = "Ship -Identification{mmsi='210950000', shipName='VARAMO', imoID='IMO9395044', callsign='C4SQ2'}ShipCharacteristics{vesselType=70, length=166.0, width=25.0, draft=9.5}Route{route=[\nShip Dynamic{BaseDateTime ='31/12/2020 16:12',Location{longitude=-66.97726, latitude=42.73879}, cargo='NA'Movement{sog=13.4, cog=3.4, heading=357.0}, transceiverClass='A'}]}\n";
         String actual = ship.toString();
         assertEquals(expected,actual);
     }
