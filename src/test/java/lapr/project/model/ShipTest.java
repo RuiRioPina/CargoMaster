@@ -208,6 +208,58 @@ public class ShipTest {
     }
 
     @Test
+    public void compareToGreaterThanCallsign() {
+        Identification identificationShip = new Identification("210000000", "VARAMO", "IMO9395044", "C4SQ2");
+        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+
+        Route route = new Route();
+        Ship ship = new Ship(identificationShip, shipCharacteristics, route);
+        ship.getShipId().setSearchCode("VJC32");
+        boolean expected = true;
+        boolean actual = this.ship.compareTo(ship) > 0;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void compareToLesserThanCallsign() {
+        Identification identificationShip = new Identification("510000000", "VARAMO", "IMO9395044", "C4SQ2");
+        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+
+        Route route = new Route();
+        Ship ship = new Ship(identificationShip, shipCharacteristics, route);
+        ship.getShipId().setSearchCode("VJC32");
+        boolean expected = true;
+        boolean actual = this.ship.compareTo(ship) < 0;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void compareToGreaterThanIMO() {
+        Identification identificationShip = new Identification("210000000", "VARAMO", "IMO9395044", "C4SQ2");
+        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+
+        Route route = new Route();
+        Ship ship = new Ship(identificationShip, shipCharacteristics, route);
+        ship.getShipId().setSearchCode("IMO9488645");
+        boolean expected = true;
+        boolean actual = this.ship.compareTo(ship) > 0;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void compareToLesserThanIMO() {
+        Identification identificationShip = new Identification("510000000", "VARAMO", "IMO9395044", "C4SQ2");
+        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+
+        Route route = new Route();
+        Ship ship = new Ship(identificationShip, shipCharacteristics, route);
+
+        boolean expected = true;
+        boolean actual = this.ship.compareTo(ship) < 0;
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void testEquals() {
         Identification identificationShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
         ShipCharacteristics shipsCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
@@ -233,6 +285,7 @@ public class ShipTest {
         assertEquals(expected, actual);
     }
 
+
     @Test
     public void testHashCode() {
         Identification identificationShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
@@ -248,8 +301,8 @@ public class ShipTest {
     @Test
     public void testToString() {
         //String expected = "Ship{shipId=Identification{mmsi='210950000', shipName='VARAMO', imoID='IMO9395044', callsign='C4SQ2'}, characteristics=ShipCharacteristics{vesselType=70, length=166.0, width=25.0, draft=9.5}, route=Route{route=[Ship Dynamic{BaseDateTime ='31/12/2020 16:12',Location{longitude=-66.97726, latitude=42.73879}, cargo='NA'Movement{sog=13.4, cog=3.4, heading=357.0}, transceiverClass='A'}]}}";
-        String expected = "Ship -Identification{mmsi='210950000', shipName='VARAMO', imoID='IMO9395044', callsign='C4SQ2'}ShipCharacteristics{vesselType=70, length=166.0, width=25.0, draft=9.5}Route{route=[\nShip Dynamic{BaseDateTime ='31/12/2020 16:12',Location{longitude=-66.97726, latitude=42.73879}, cargo='NA'Movement{sog=13.4, cog=3.4, heading=357.0}, transceiverClass='A'}]}\n";
-        String actual = ship.toString();
-        assertEquals(expected,actual);
+       String expected = "Ship -Identification{mmsi='210950000', shipName='VARAMO', imoID='IMO9395044', callsign='C4SQ2'}ShipCharacteristics{vesselType=70, length=166.0, width=25.0, draft=9.5}Route{route=[\nShip Dynamic{BaseDateTime ='31/12/2020 16:12',Location{longitude=-66.97726, latitude=42.73879}, cargo='NA'Movement{sog=13.4, cog=3.4, heading=357.0}, transceiverClass='A'}]}\n";
+     String actual = ship.toString();
+       assertEquals(expected,actual);
     }
 }
