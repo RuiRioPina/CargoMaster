@@ -65,11 +65,11 @@ public class ShipDynamic {
 
     @Override
     public String toString() {
-        return "ShipDynamic{" +
-                "baseDateTime='" + baseDateTime + '\'' +
-                ", location=" + location +
+        return '\n' + "Ship Dynamic{" +
+                "BaseDateTime ='" + baseDateTime + '\'' + ',' +
+                  location +
                 ", cargo='" + cargo + '\'' +
-                ", movement=" + movement +
+                  movement +
                 ", transceiverClass='" + transceiverClass + '\'' +
                 '}';
     }

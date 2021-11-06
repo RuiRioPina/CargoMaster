@@ -1,11 +1,10 @@
 package lapr.project.controller;
 
-import lapr.project.data.ShipStore;
+import lapr.project.model.ShipStore;
 import lapr.project.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 

@@ -62,11 +62,10 @@ public class Ship implements Comparable<Ship> {
 
     @Override
     public String toString() {
-        return "Ship{" +
-                "shipId=" + shipId +
-                ", characteristics=" + characteristics +
-                ", route=" + route +
-                '}';
+        return "Ship -" +
+                 shipId +
+                 characteristics +
+                 route + '\n';
     }
 
 }
