@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-public class ShipStore {
+public class ShipStore{
     private AVL<Ship> store = new AVL<>();
 
     public void addShipToBST(Ship ship) {
@@ -25,54 +25,44 @@ public class ShipStore {
     }
 
     public void organizeShipMessage() {
-        for (int i = 0; i < store.height() + 1; i++) {
-            Ship temp = store.nodesByLevel().get(i).get(0);
-            if (temp.getRoute() != null) {
-                int size = temp.getRoute().getRoute().size();
-                for (int j = 0; j < size; j++) {
-                    store.nodesByLevel().get(i).get(0).getRoute().getRoute().sort(
-                            Comparator.comparing(ShipDynamic::getBaseDateTime));
-                }
+        Map<Integer, List<Ship>> shipsByLevel = store.nodesByLevel();
+        for (Map.Entry<Integer, List<Ship>> entry : shipsByLevel.entrySet()) {
+            for (Ship ship : entry.getValue()) {
+                ship.getRoute().getRoute().sort(Comparator.comparing(ShipDynamic::getBaseDateTime));
             }
-        }
+       }
     }
 
     public Location getPositionOfShipData(String mMSI, String baseDateTime) {
-        ShipDynamic shipDynamics = null;
-        for (int i = 0; i < store.height() + 1; i++) {
-            Ship temp = store.nodesByLevel().get(i).get(0);
-            if (temp.getShipId().getMmsi().equals(mMSI)) {
-                for (int j = 0; j < temp.getRoute().getRoute().size(); j++)
-                    if (temp.getRoute().getRoute().get(j).getBaseDateTime().equals(baseDateTime)) {
-                        shipDynamics = temp.getRoute().getRoute().get(j);
+        Location location = null;
+
+            for (Ship ship : store.inOrder()) {
+                for (int i = 0; i < ship.getRoute().getRoute().size(); i++)
+                    if (ship.getRoute().getRoute().get(i).getBaseDateTime().equals(baseDateTime) && ship.getShipId().getMmsi().equals(mMSI)) {
+                        location = ship.getRoute().getRoute().get(i).getLocation();
                     }
             }
-        }
-        assert shipDynamics != null;
-        return shipDynamics.getLocation();
+
+        assert location != null;
+        return location;
     }
 
     public List<Location> getPositionOfShipPeriod(String mMSI, String baseDateTime1, String baseDateTime2) throws ParseException {
-        organizeShipMessage();
+       organizeShipMessage();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         Date d1 = sdf.parse(baseDateTime1);
         Date d2 = sdf.parse(baseDateTime2);
 
-        List<ShipDynamic> shipDynamics = new ArrayList<>();
-        for (int i = 0; i < store.height() + 1; i++) {
-            Ship temp = store.nodesByLevel().get(i).get(0);
-            if (temp.getShipId().getMmsi().equals(mMSI)) {
-                for (int j = 0; j < temp.getRoute().getRoute().size(); j++)
-                    if (sdf.parse(temp.getRoute().getRoute().get(j).getBaseDateTime()).after(d1) &&
-                            sdf.parse(temp.getRoute().getRoute().get(j).getBaseDateTime()).before(d2)) {
-                        shipDynamics.add(temp.getRoute().getRoute().get(j));
+        List<Location> position = new ArrayList<>();
+
+        for (Ship ship : store.inOrder()) {
+                for (int j = 0; j < ship.getRoute().getRoute().size(); j++)
+                    if (sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).after(d1) &&
+                            sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).before(d2) &&ship.getShipId().getMmsi().equals(mMSI)) {
+                        position.add(ship.getRoute().getRoute().get(j).getLocation());
                     }
             }
-        }
-        List<Location> position = new ArrayList<>();
-        for (ShipDynamic shipDynamic : shipDynamics) {
-            position.add(shipDynamic.getLocation());
-        }
+
         return position;
     }
 
