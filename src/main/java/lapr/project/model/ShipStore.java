@@ -1,58 +1,49 @@
 package lapr.project.model;
 
-import lapr.project.model.Location;
-import lapr.project.model.Ship;
-import lapr.project.model.ShipDynamic;
+
+import lapr.project.utils.AVL;
 import lapr.project.utils.BST;
 
-import javax.swing.text.Position;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 public class ShipStore {
-    private BST<Ship> shipStore = new BST<>();
+    private AVL<Ship> store = new AVL<>();
 
     public void addShipToBST(Ship ship) {
-        shipStore.insert(ship);
-    }
-
-    public void printShips() {
-        System.out.println(shipStore.toString());
+        store.insert(ship);
     }
 
     public int size() {
-       return shipStore.size();
+        return store.size();
     }
 
-    public BST<Ship> getShipStore() {
-        return shipStore;
+    public AVL<Ship> getStore() {
+        return store;
     }
 
     public void organizeShipMessage() {
-        for (int i = 0; i < shipStore.height() + 1; i++) {
-            Ship temp = shipStore.nodesByLevel().get(i).get(0);
+        for (int i = 0; i < store.height() + 1; i++) {
+            Ship temp = store.nodesByLevel().get(i).get(0);
             if (temp.getRoute() != null) {
-            int size = temp.getRoute().getRoute().size();
+                int size = temp.getRoute().getRoute().size();
                 for (int j = 0; j < size; j++) {
-                    shipStore.nodesByLevel().get(i).get(0).getRoute().getRoute().sort(
+                    store.nodesByLevel().get(i).get(0).getRoute().getRoute().sort(
                             Comparator.comparing(ShipDynamic::getBaseDateTime));
                 }
             }
         }
     }
 
-    public Location getPositionOfShipData(String MMSI, String BaseDateTime){
+    public Location getPositionOfShipData(String mMSI, String baseDateTime) {
         ShipDynamic shipDynamics = null;
-        for (int i = 0; i < shipStore.height() + 1; i++) {
-            Ship temp = shipStore.nodesByLevel().get(i).get(0);
-            if (temp.getShipId().getMmsi().equals(MMSI)) {
+        for (int i = 0; i < store.height() + 1; i++) {
+            Ship temp = store.nodesByLevel().get(i).get(0);
+            if (temp.getShipId().getMmsi().equals(mMSI)) {
                 for (int j = 0; j < temp.getRoute().getRoute().size(); j++)
-                    if (temp.getRoute().getRoute().get(j).getBaseDateTime().equals(BaseDateTime)){
+                    if (temp.getRoute().getRoute().get(j).getBaseDateTime().equals(baseDateTime)) {
                         shipDynamics = temp.getRoute().getRoute().get(j);
                     }
             }
@@ -61,28 +52,54 @@ public class ShipStore {
         return shipDynamics.getLocation();
     }
 
-    public List<Location> getPositionOfShipPeriod(String MMSI, String BaseDateTime1,String BaseDateTime2) throws ParseException {
+    public List<Location> getPositionOfShipPeriod(String mMSI, String baseDateTime1, String baseDateTime2) throws ParseException {
         organizeShipMessage();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        Date d1 = sdf.parse(BaseDateTime1);
-        Date d2 = sdf.parse(BaseDateTime2);
+        Date d1 = sdf.parse(baseDateTime1);
+        Date d2 = sdf.parse(baseDateTime2);
 
-        List <ShipDynamic> shipDynamics= new ArrayList<>();
-        for (int i = 0; i < shipStore.height() + 1; i++) {
-            Ship temp = shipStore.nodesByLevel().get(i).get(0);
-            if (temp.getShipId().getMmsi().equals(MMSI)) {
+        List<ShipDynamic> shipDynamics = new ArrayList<>();
+        for (int i = 0; i < store.height() + 1; i++) {
+            Ship temp = store.nodesByLevel().get(i).get(0);
+            if (temp.getShipId().getMmsi().equals(mMSI)) {
                 for (int j = 0; j < temp.getRoute().getRoute().size(); j++)
                     if (sdf.parse(temp.getRoute().getRoute().get(j).getBaseDateTime()).after(d1) &&
-                            sdf.parse(temp.getRoute().getRoute().get(j).getBaseDateTime()).before(d2)){
+                            sdf.parse(temp.getRoute().getRoute().get(j).getBaseDateTime()).before(d2)) {
                         shipDynamics.add(temp.getRoute().getRoute().get(j));
                     }
             }
         }
-        List <Location> position = new ArrayList<>();
+        List<Location> position = new ArrayList<>();
         for (ShipDynamic shipDynamic : shipDynamics) {
             position.add(shipDynamic.getLocation());
         }
         return position;
+    }
+
+    public AVL<Ship> convertSortingMethod(String sortingMethod) {
+        AVL<Ship> shipAVL = new AVL<>();
+        Map<Integer, List<Ship>> shipsByLevel = store.nodesByLevel();
+        for (Map.Entry<Integer, List<Ship>> entry : shipsByLevel.entrySet()) {
+            for (Ship ship : entry.getValue()) {
+                ship.getShipId().setSearchCode(sortingMethod);
+                shipAVL.insert(ship);
+            }
+
+        }
+        return shipAVL;
+    }
+
+    public Ship findShipDetails(String code) {
+        BST.Node<Ship> s;
+        Ship ship = null;
+        for (Ship value : store.posOrder()) {
+            s = store.find(value);
+            if (s.getElement().getShipId().getImoID().equals(code) || s.getElement().getShipId().getCallsign().equals(code) || s.getElement().getShipId().getMmsi().equals(code)) {
+                ship = s.getElement();
+            }
+        }
+
+        return ship;
     }
 
 }

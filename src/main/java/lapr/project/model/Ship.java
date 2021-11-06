@@ -44,7 +44,17 @@ public class Ship implements Comparable<Ship> {
 
     @Override
     public int compareTo(Ship ship) {
-        return this.shipId.getMmsi().compareTo(ship.getShipId().getMmsi());
+        String typeCode = null;
+        String searchCode = ship.getShipId().getSearchCode();
+        if (searchCode != null) {
+            typeCode = shipId.returnCodeAccordingToTheFormat(searchCode);
+        }
+        if (typeCode != null && typeCode.equals("imo")) {
+            return this.getShipId().getImoID().compareTo(ship.shipId.getImoID());
+        } else if (typeCode != null && typeCode.equals("callsign")) {
+            return this.getShipId().getCallsign().compareTo(ship.shipId.getCallsign());
+        }
+        return this.getShipId().getMmsi().compareTo(ship.shipId.getMmsi());
     }
 
     @Override
@@ -63,9 +73,10 @@ public class Ship implements Comparable<Ship> {
     @Override
     public String toString() {
         return "Ship -" +
-                 shipId +
-                 characteristics +
-                 route + '\n';
+                shipId +
+                characteristics +
+                route + '\n';
     }
+
 
 }

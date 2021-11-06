@@ -13,7 +13,7 @@ public class BST<E extends Comparable<E>> implements BSTInterface<E> {
 
     /** Nested static class for a binary search tree node. */
 
-    protected static class Node<E> {
+    public static class Node<E> {
         private E element;          // an element stored at this node
         private Node<E> left;       // a reference to the left child (if any)
         private Node<E> right;      // a reference to the right child (if any)
@@ -203,7 +203,9 @@ public class BST<E extends Comparable<E>> implements BSTInterface<E> {
         }
         return node.getElement();
     }
-
+    public Node<E> find(E element) {
+        return find(root, element);
+    }
     /**
      * Returns the Node containing a specific Element, or null otherwise.
      *

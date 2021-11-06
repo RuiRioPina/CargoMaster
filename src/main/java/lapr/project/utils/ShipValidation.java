@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ShipValidation {
-    final static String DATE_FORMAT = "dd/MM/yyyy";
+    static final  String DATE_FORMAT = "dd/MM/yyyy";
 
     private ShipValidation() {
 
@@ -81,7 +81,7 @@ public class ShipValidation {
     }
 
     public static void validateCog(double cog) {
-        if ((cog < 0 || cog > 359)) {
+        if (cog > 359) {
             throw new IllegalArgumentException();
         }
 

@@ -16,6 +16,7 @@ public class Movement {
         ShipValidation.validateCog(cog);
         ShipValidation.validateHeading(heading);
         this.sog = sog;
+        if(cog<0) cog = 180-cog;
         this.cog = cog;
         this.heading = heading;
 

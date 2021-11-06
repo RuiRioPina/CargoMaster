@@ -249,7 +249,7 @@ public class ShipValidationTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void validateCogNotCompliant() {
-        movement.setCog(-30);
+        movement.setCog(380);
         ShipValidation.validateCog(movement.getCog());
     }
 

@@ -30,7 +30,7 @@ public class ImportShipsTest {
     public void importShips() throws IOException {
         System.out.println("baseDateTime" + " " + "lat" + " " + "lon" + " " + "sog" + " " + "cog" + " " +  "heading" + " " + "cargo" + " " + "transceiverClass");
         ShipStore store = new ShipStore();
-        String fileName = "csvFiles/sships.csv";
+        String fileName = "csvFiles/bships.csv";
         List<Ship> shipsList = ImportShips.importShips(fileName);
         for (Ship ships : shipsList) {
             store.addShipToBST(ships);

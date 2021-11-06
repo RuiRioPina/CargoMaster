@@ -1,11 +1,10 @@
 package lapr.project.utils;
 
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import lapr.project.utils.BST;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -21,7 +20,7 @@ public class BSTTest {
     Integer[] preorderT= {20, 15, 10, 8, 7, 13, 17, 40, 30, 50};
     Integer[] posorderT = {7, 8, 13, 10, 17, 15, 30, 50, 40, 20};
     
-    BST<Integer> instance;
+    BST<Integer> instance;    
     
     public BSTTest() {
     }
