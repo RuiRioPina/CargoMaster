@@ -10,6 +10,8 @@ public class Identification {
     private String imoID;
     private String callsign;
 
+    private String searchCode;
+
     public Identification() {
     }
 
@@ -76,5 +78,29 @@ public class Identification {
     @Override
     public int hashCode() {
         return Objects.hash(mmsi, shipName, imoID, callsign);
+    }
+
+    public String getSearchCode() {
+        return searchCode;
+    }
+
+    public void setSearchCode(String searchCode) {
+        this.searchCode = searchCode;
+    }
+
+    public String returnCodeAccordingToTheFormat(String searchCode) {
+        try {
+            ShipValidation.validateIMO(searchCode);
+            return imoID;
+        } catch (IllegalArgumentException e) {
+            //do Nothing
+        }
+        try {
+            ShipValidation.validateMMSI(searchCode);
+            return mmsi;
+        } catch (IllegalArgumentException e) {
+            //do Nothing
+        }
+        return callsign;
     }
 }

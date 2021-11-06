@@ -124,4 +124,39 @@ public class IdentificationTest {
         //Assert
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void setSearchCode() {
+        ship.getShipId().setSearchCode("IMO9395044");
+        String actual = ship.getShipId().getSearchCode();
+        String expected = "IMO9395044";
+        //Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void returnCodeAccordingToTheFormat() {
+        ship.getShipId().setSearchCode("IMO9395044");
+        String actual = ship.getShipId().returnCodeAccordingToTheFormat(ship.getShipId().getSearchCode());
+        String expected = ship.getShipId().getImoID();
+        //Assert
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void returnCodeAccordingToTheFormat1() {
+        ship.getShipId().setSearchCode("V2EB3");
+        String actual = ship.getShipId().returnCodeAccordingToTheFormat(ship.getShipId().getSearchCode());
+        String expected = ship.getShipId().getCallsign();
+        //Assert
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void returnCodeAccordingToTheFormat2() {
+        ship.getShipId().setSearchCode("305373000");
+        String actual = ship.getShipId().returnCodeAccordingToTheFormat(ship.getShipId().getSearchCode());
+        String expected = ship.getShipId().getMmsi();
+        //Assert
+        assertEquals(expected, actual);
+    }
+
 }
