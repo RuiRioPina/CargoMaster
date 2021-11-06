@@ -20,7 +20,7 @@ public class ShipStoreTest {
 
     @Before
     public void Setup () throws IOException {
-        String fileName = "csvFiles/sships.csv";
+        String fileName = "csvFiles/bships.csv";
         List<Ship> ship = ImportShips.importShips(fileName);
         for (Ship ships:ship) {
             store.addShipToBST(ships);
