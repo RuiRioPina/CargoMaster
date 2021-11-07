@@ -88,7 +88,9 @@ public class ShipStore{
                 ship = s.getElement();
             }
         }
-
+        if(ship == null) {
+            throw new IllegalArgumentException();
+        }
         return ship;
     }
 

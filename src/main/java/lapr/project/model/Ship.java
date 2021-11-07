@@ -47,14 +47,9 @@ public class Ship implements Comparable<Ship> {
         String typeCode = null;
         String searchCode = ship.getShipId().getSearchCode();
         if (searchCode != null) {
-            typeCode = shipId.returnCodeAccordingToTheFormat(searchCode);
+            return this.getShipId().returnCodeAccordingToTheFormat(searchCode).compareTo(ship.shipId.returnCodeAccordingToTheFormat(searchCode));
         }
-        if (typeCode != null && typeCode.equals("imo")) {
-            return this.getShipId().getImoID().compareTo(ship.shipId.getImoID());
-        } else if (typeCode != null && typeCode.equals("callsign")) {
-            return this.getShipId().getCallsign().compareTo(ship.shipId.getCallsign());
-        }
-        return this.getShipId().getMmsi().compareTo(ship.shipId.getMmsi());
+        return this.getShipId().getMmsi().compareTo(ship.getShipId().getMmsi());
     }
 
     @Override

@@ -9,12 +9,8 @@ import java.util.List;
 
 public class SearchShipUsingCodes {
 
-    AVL<Ship> shipMmsiAVL = new AVL<>();
-    AVL<Ship> shipIMOAVL = new AVL<>();
-    AVL<Ship> shipCallsignAVL = new AVL<>();
-
     public static void main(String[] args) throws IOException {
-        searchShipDetails("IMO9222285");
+        searchShipDetails("IMO1139288");
     }
 
     public static void searchShipDetails(String code) throws IOException {
@@ -26,9 +22,12 @@ public class SearchShipUsingCodes {
             store.addShipToBST(ships);
         }
 
-
-        store.findShipDetails(code);
-
+        try {
+            Ship ship = store.findShipDetails(code);
+            System.out.println(ship);
+        } catch (IllegalArgumentException e) {
+            System.out.println("The vessel to be searched does not exist. Please introduce a valid code!");
+        }
     }
 
 }
