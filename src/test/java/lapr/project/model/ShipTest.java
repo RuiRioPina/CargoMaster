@@ -209,7 +209,7 @@ public class ShipTest {
 
     @Test
     public void compareToGreaterThanCallsign() {
-        Identification identificationShip = new Identification("210000000", "VARAMO", "IMO9395044", "C4SQ2");
+        Identification identificationShip = new Identification("210000000", "VARAMO", "IMO9395044", "A4SQ2");
         ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
 
         Route route = new Route();
@@ -222,7 +222,7 @@ public class ShipTest {
 
     @Test
     public void compareToLesserThanCallsign() {
-        Identification identificationShip = new Identification("510000000", "VARAMO", "IMO9395044", "C4SQ2");
+        Identification identificationShip = new Identification("510000000", "VARAMO", "IMO9395044", "VJC32");
         ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
 
         Route route = new Route();
@@ -235,14 +235,14 @@ public class ShipTest {
 
     @Test
     public void compareToGreaterThanIMO() {
-        Identification identificationShip = new Identification("210000000", "VARAMO", "IMO9395044", "C4SQ2");
+        Identification identificationShip = new Identification("210000000", "VARAMO", "IMO3295044", "C4SQ2");
         ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
 
         Route route = new Route();
-        Ship ship = new Ship(identificationShip, shipCharacteristics, route);
+        Ship ship3123124 = new Ship(identificationShip, shipCharacteristics, route);
         ship.getShipId().setSearchCode("IMO9488645");
         boolean expected = true;
-        boolean actual = this.ship.compareTo(ship) > 0;
+        boolean actual = this.ship.compareTo(ship3123124) > 0;
         assertEquals(expected, actual);
     }
 
