@@ -5,6 +5,7 @@ import lapr.project.utils.AVL;
 import lapr.project.utils.BST;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -89,29 +90,6 @@ public class ShipStoreTest {
         }
     }
 
-    @Test
-    public void convertSortingMethod() {
-        AVL<Ship> actual = store.convertSortingMethod("IMO9488645");
-
-        assertEquals(actual,expected1);
-
-    }
-
-    @Test
-    public void convertSortingMethod1() {
-        AVL<Ship> actual = store.convertSortingMethod("VJC33");
-
-        assertEquals(actual,expected1);
-
-    }
-
-    @Test
-    public void convertSortingMethod2() {
-        AVL<Ship> actual = store.convertSortingMethod("636019825");
-
-        assertEquals(actual,expected1);
-
-    }
 
     @Test
     public void findShipDetails() {
@@ -136,7 +114,7 @@ public class ShipStoreTest {
         assertEquals(expected,actual);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void findShipDetailsNotCompliant() {
         Ship actual = store.findShipDetails("CS73642");
         assertNull(actual);
