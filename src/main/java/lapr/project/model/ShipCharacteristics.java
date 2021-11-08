@@ -20,12 +20,8 @@ public class ShipCharacteristics {
     }
     @Override
     public String toString() {
-        return "ShipCharacteristics{" +
-                "vesselType=" + vesselType +
-                ", length=" + length +
-                ", width=" + width +
-                ", draft=" + draft +
-                '}';
+        return String.format("%nVesselType: %s,Length: %s,Width: %s,Draft: %s",vesselType,length,width,draft);
+
     }
 
     public int getVesselType() {

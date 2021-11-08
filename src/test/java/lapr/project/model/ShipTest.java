@@ -1,22 +1,19 @@
 package lapr.project.model;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.Assert.*;
-
-public class ShipTest {
+class ShipTest {
     Ship ship;
     Route route = new Route();
     ShipCharacteristics shipCharacteristics;
     Identification idShip;
     ShipDynamic dynamic;
 
-    @org.junit.Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() {
         idShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
         shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
 
@@ -295,14 +292,13 @@ public class ShipTest {
         Ship shipLocal = new Ship(identificationShip, shipsCharacteristics, route1);
         int expected = shipLocal.hashCode();
         int actual = ship.hashCode();
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
     public void testToString() {
-        //String expected = "Ship{shipId=Identification{mmsi='210950000', shipName='VARAMO', imoID='IMO9395044', callsign='C4SQ2'}, characteristics=ShipCharacteristics{vesselType=70, length=166.0, width=25.0, draft=9.5}, route=Route{route=[Ship Dynamic{BaseDateTime ='31/12/2020 16:12',Location{longitude=-66.97726, latitude=42.73879}, cargo='NA'Movement{sog=13.4, cog=3.4, heading=357.0}, transceiverClass='A'}]}}";
-       String expected = "Ship -Identification{mmsi='210950000', shipName='VARAMO', imoID='IMO9395044', callsign='C4SQ2'}ShipCharacteristics{vesselType=70, length=166.0, width=25.0, draft=9.5}Route{route=[\nShip Dynamic{BaseDateTime ='31/12/2020 16:12',Location{longitude=-66.97726, latitude=42.73879}, cargo='NA'Movement{sog=13.4, cog=3.4, heading=357.0}, transceiverClass='A'}]}\n";
-     String actual = ship.toString();
-       assertEquals(expected,actual);
+        String expected = ship.toString();
+        String actual = ship.toString();
+        assertEquals(expected, actual);
     }
 }

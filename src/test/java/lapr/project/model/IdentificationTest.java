@@ -1,23 +1,23 @@
 package lapr.project.model;
 
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class IdentificationTest {
+class IdentificationTest {
     Ship ship;
     Route route;
     ShipCharacteristics shipCharacteristics;
     Identification idShip;
-    @org.junit.Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() {
         idShip = new Identification("210950000", "VARAMO", "IMO9395044","C4SQ2");
         shipCharacteristics = new ShipCharacteristics(70,166,25,9.5);
 
         route = new Route();
         ship = new Ship(idShip,shipCharacteristics,route);
     }
-
     @Test
     public void setMmsi() {
         //Arrange
@@ -158,5 +158,4 @@ public class IdentificationTest {
         //Assert
         assertEquals(expected, actual);
     }
-
 }

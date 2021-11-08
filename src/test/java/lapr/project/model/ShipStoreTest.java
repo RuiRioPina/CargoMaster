@@ -1,34 +1,24 @@
 package lapr.project.model;
 
-import lapr.project.controller.ImportShips;
+import lapr.project.controller.App;
 import lapr.project.utils.AVL;
 import lapr.project.utils.BST;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class ShipStoreTest {
-    ShipStore store = new ShipStore();
+class ShipStoreTest {
+    ShipStore store = App.getInstance().getCompany().getShipStore();
     AVL<Ship> expected1 = new AVL<>();
+    @BeforeEach
+    void setUp() {
 
-    @Before
-    public void Setup() throws IOException {
-        String fileName = "csvFiles/bships.csv";
-        List<Ship> ship = ImportShips.importShips(fileName);
-        for (Ship ships : ship) {
-            store.addShipToBST(ships);
-            expected1.insert(ships);
-        }
     }
-
     @Test
     public void organizeMessagesShips() {
         //Example shown with one BST ship, but this method works for all BST ships
@@ -114,9 +104,11 @@ public class ShipStoreTest {
         assertEquals(expected,actual);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void findShipDetailsNotCompliant() {
-        Ship actual = store.findShipDetails("CS73642");
-        assertNull(actual);
+
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                ()->{store.findShipDetails("CS73642");} );
     }
+
 }

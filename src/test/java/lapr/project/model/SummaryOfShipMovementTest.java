@@ -1,10 +1,10 @@
 package lapr.project.model;
 
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
-
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SummaryOfShipMovementTest {
     ShipStore store = new ShipStore();
@@ -14,7 +14,7 @@ public class SummaryOfShipMovementTest {
     Identification idShip;
     ShipDynamic dynamic;
     SummaryOfShipMovement summaryOfShipMovement;
-    @org.junit.Before
+    @BeforeEach
     public void setUp()  {
         idShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
         shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);

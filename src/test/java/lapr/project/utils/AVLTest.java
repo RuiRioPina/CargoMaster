@@ -7,10 +7,10 @@
 package lapr.project.utils;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
@@ -35,8 +35,8 @@ public class AVLTest {
         for (int i=0; i<arr.length; i++)            //new elements
             instance.insert(arr[i]);
         
-        List<Integer> lExpected = Arrays.asList(inorder1);           
-        assertEquals("inOrder should be "+lExpected.toString(), lExpected, instance.inOrder());
+        List<Integer> lExpected = Arrays.asList(inorder1);
+        assertEquals(lExpected, instance.inOrder());
         System.out.println("<instance 1>");
         System.out.println(instance);
         System.out.println("height1="+instance.height());
@@ -52,8 +52,8 @@ public class AVLTest {
         System.out.println(instance2);
         System.out.println("height2="+instance2.height());
         lExpected = Arrays.asList(inorder2);
-        assertEquals("inOrder should be "+lExpected.toString(), lExpected, instance2.inOrder());
-        assertEquals("height should be 2 ",instance2.height(), 2);
+        assertEquals(lExpected, instance2.inOrder());
+        assertEquals(instance2.height(), 2);
         System.out.println("------------------------------------");
         
         //test double rotation 
@@ -66,8 +66,8 @@ public class AVLTest {
         System.out.println(instance3);
         System.out.println("height3="+instance3.height());
         lExpected = Arrays.asList(inorder3);
-        assertEquals("inOrder should be "+lExpected.toString(), lExpected, instance3.inOrder());
-        assertEquals("height should be 2 ",instance3.height(), 2);       
+        assertEquals(lExpected, instance3.inOrder());
+        assertEquals(instance3.height(), 2);
         System.out.println("------------------------------------");
     }
       /**
@@ -88,34 +88,34 @@ public class AVLTest {
         //no rotations needed
         instance.remove(3);
         lExpected = Arrays.asList(2,4,6,8,10);           
-        assertEquals("inOrder should be "+lExpected.toString(), lExpected, instance.inOrder());
-        assertEquals("height should be 2 ",instance.height(), 2);       
+        assertEquals(lExpected, instance.inOrder());
+        assertEquals(instance.height(), 2);
 
         //test Simple left rotation 
         instance.remove(2);
         lExpected = Arrays.asList(4,6,8,10);           
-        assertEquals("inOrder should be "+lExpected.toString(), lExpected, instance.inOrder());
-        assertEquals("height should be 2 ",instance.height(), 2);       
+        assertEquals(lExpected, instance.inOrder());
+        assertEquals(instance.height(), 2);
 
         instance.remove(10);
         lExpected = Arrays.asList(4,6,8);
-        assertEquals("inOrder should be "+lExpected.toString(), lExpected, instance.inOrder());
-        assertEquals("height should be 1 ",instance.height(), 1);
+        assertEquals(lExpected, instance.inOrder());
+        assertEquals(instance.height(), 1);
 
         instance.remove(6);
         lExpected = Arrays.asList(4,8);           
-        assertEquals("inOrder should be "+lExpected.toString(), lExpected, instance.inOrder());
-        assertEquals("height should be 1 ", 1, instance.height());       
+        assertEquals(lExpected, instance.inOrder());
+        assertEquals(1, instance.height());
 
         instance.remove(4);
         lExpected = Arrays.asList(8);           
-        assertEquals("inOrder should be "+lExpected.toString(), lExpected, instance.inOrder());
-        assertEquals("height should be 1 ", 0, instance.height());       
+        assertEquals(lExpected, instance.inOrder());
+        assertEquals(0, instance.height());
 
         instance.remove(8);
         lExpected = Arrays.asList();           
-        assertEquals("inOrder should be "+lExpected.toString(), lExpected, instance.inOrder());
-        assertEquals("height should be 1 ", -1, instance.height());       
+        assertEquals(lExpected, instance.inOrder());
+        assertEquals(-1, instance.height());
 
         System.out.println("------------------------------------");
     }
@@ -135,8 +135,8 @@ public class AVLTest {
         {
             instance2.insert(arr2[i]);
         }
-        assertTrue("equals! ", instance.equals(instance2));
+        assertTrue(instance.equals(instance2));
         instance2.remove(8);
-        assertFalse("equals! ", instance.equals(instance2));
+        assertFalse(instance.equals(instance2));
     }
 }

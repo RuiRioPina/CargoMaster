@@ -59,12 +59,11 @@ public class Identification {
 
     @Override
     public String toString() {
-        return "Identification{" +
+        return
                 "mmsi='" + mmsi + '\'' +
                 ", shipName='" + shipName + '\'' +
                 ", imoID='" + imoID + '\'' +
-                ", callsign='" + callsign + '\'' +
-                '}';
+                ", callsign='" + callsign;
     }
 
     @Override

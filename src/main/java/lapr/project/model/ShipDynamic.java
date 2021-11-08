@@ -84,12 +84,6 @@ public class ShipDynamic {
     }
     @Override
     public String toString() {
-        return '\n' + "Ship Dynamic{" +
-                "BaseDateTime ='" + baseDateTime + '\'' + ',' +
-                  location +
-                ", cargo='" + cargo + '\'' +
-                  movement +
-                ", transceiverClass='" + transceiverClass + '\'' +
-                '}';
+        return String.format("%nDate Time: %s, %s, Cargo: %s, %s, Transceiver class: %s",baseDateTime,location,cargo,movement,transceiverClass);
     }
 }

@@ -14,22 +14,23 @@ public class ImportShips {
         //This class is not expected to be instantiated
     }
 
-    public static List<Ship> importShips(String fileName) throws IOException {
+    public static List<Ship> importShips(String fileName) {
         List<Ship> ships = new ArrayList<>();
         Identification idShip;
         ShipCharacteristics characteristics;
         ShipDynamic shipDynamic;
-        String line = "";
+        String line;
         String splitBy = ",";
         BufferedReader br = null;
         String file = fileName;
         Ship ship = null;
         Route route = null;
+        int size = 0;
         try {
             br = new BufferedReader(new FileReader(file));
             br.readLine();
             while ((line = br.readLine()) != null) {
-
+                size++;
                 String[] elements = line.split(splitBy);
                 if (ship == null || !ship.getShipId().getMmsi().equals(elements[0])) {
                     route = new Route();
@@ -50,8 +51,8 @@ public class ImportShips {
                         ship = new Ship(idShip, characteristics, null);
                     } catch (Exception e) {
                         ship = null;
-                        System.out.println(mmsi + " " + vesselName + " " + imo + " " + callsign);
-                        System.out.println(vesselType + " " + length + " " + width + " " + draft);
+                        System.out.println("Failed to import line " + size);
+
 
                     }
                 }
@@ -74,7 +75,7 @@ public class ImportShips {
 
                     } catch (Exception e) {
 
-                        System.out.println(baseDateTime + " " + lat + " " + lon + " " + sog + " " + cog + " " + heading + " " + cargo + " " + transceiverClass);
+                        System.out.println("Failed to import line " + size);
 
                     }
                 }
@@ -83,8 +84,12 @@ public class ImportShips {
         } catch (NullPointerException | IOException | IndexOutOfBoundsException e) {
             e.printStackTrace();
         } finally {
-            if (br != null) {
-                br.close();
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
         }

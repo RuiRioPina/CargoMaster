@@ -1,21 +1,20 @@
 package lapr.project.model;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class ShipDynamicTest {
+class ShipDynamicTest {
     Ship ship;
     Route route = new Route();
     ShipCharacteristics shipCharacteristics;
     Identification idShip;
     ShipDynamic dynamic;
-
-    @org.junit.Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() {
         idShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
         shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
 
@@ -23,7 +22,6 @@ public class ShipDynamicTest {
         route.add(dynamic);
         ship = new Ship(idShip, shipCharacteristics, route);
     }
-
     @Test
     public void getLocation() {
         List<ShipDynamic> ships = ship.getRoute().getRoute();
