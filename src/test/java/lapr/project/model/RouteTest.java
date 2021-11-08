@@ -1,10 +1,15 @@
 package lapr.project.model;
 
-import org.junit.Test;
+
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 
 public class RouteTest {
     ShipStore store = new ShipStore();
@@ -14,7 +19,7 @@ public class RouteTest {
     ShipCharacteristics shipCharacteristics;
     Identification idShip;
     ShipDynamic dynamic;
-    @org.junit.Before
+    @BeforeEach
     public void setUp() throws Exception {
         idShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
         shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
