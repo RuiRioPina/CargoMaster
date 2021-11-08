@@ -76,7 +76,7 @@ public class App  {
         Properties props = new Properties();
 
         // Add default properties and values
-        props.setProperty(Constants.PARAMS_COMPANY_DESIGNATION, "Many Labs");
+        props.setProperty(Constants.PARAMS_COMPANY_DESIGNATION, "Ship Company");
 
 
         // Read configured values

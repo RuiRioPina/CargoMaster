@@ -18,6 +18,27 @@ class IdentificationTest {
         route = new Route();
         ship = new Ship(idShip,shipCharacteristics,route);
     }
+
+    @Test
+    public void killRemoveCallTo1() {
+
+        Throwable exception = assertThrows(NullPointerException.class,
+                ()->{new Identification(null, "VARAMO", "IMO9395044","C4SQ2");} );
+    }
+
+    @Test
+    public void killRemoveCallTo2() {
+
+        Throwable exception = assertThrows(NullPointerException.class,
+                ()->{new Identification("210950000", null, "IMO9395044","C4SQ2");} );
+    }
+    @Test
+    public void killRemoveCallTo3() {
+
+        Throwable exception = assertThrows(NullPointerException.class,
+                ()->{new Identification("210950000", "VARAMO", null,"C4SQ2");} );
+    }
+
     @Test
     public void setMmsi() {
         //Arrange
