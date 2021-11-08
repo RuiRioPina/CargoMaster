@@ -1,5 +1,6 @@
 package lapr.project.model;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Ship implements Comparable<Ship> {
@@ -41,7 +42,18 @@ public class Ship implements Comparable<Ship> {
     public void setRoute(Route route) {
         this.route = route;
     }
-
+    public String getStartBaseDateTime(){
+        return this.route.getStartDateTime();
+    }
+    public String getEndBaseDateTime(){
+        return this.route.getEndDateTime();
+    }
+    public LocalDateTime getStartBaseDateTimeLDT(){
+        return this.route.getStartDateTimeLDT();
+    }
+    public LocalDateTime getEndBaseDateTimeLDT(){
+        return this.route.getEndDateTimeLDT();
+    }
     @Override
     public int compareTo(Ship ship) {
         String typeCode = null;

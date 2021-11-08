@@ -2,6 +2,9 @@ package lapr.project.model;
 
 import lapr.project.utils.ShipValidation;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class ShipDynamic {
     private String baseDateTime;
     private Location location;
@@ -63,6 +66,22 @@ public class ShipDynamic {
         this.transceiverClass = transceiverClass;
     }
 
+    public LocalDateTime getBaseDateTimeLDT(){
+        DateTimeFormatter format= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        LocalDateTime dateTime= LocalDateTime.parse(baseDateTime,format);
+        return dateTime;
+    }
+    public double getSog(){
+        return this.movement.getSog();
+    }
+    public double getCog(){
+        return this.movement.getCog();
+    }
+    public double getLatitude(){return this.location.getLatitude();
+    }
+    public double getLongitude(){
+        return this.location.getLongitude();
+    }
     @Override
     public String toString() {
         return '\n' + "Ship Dynamic{" +
