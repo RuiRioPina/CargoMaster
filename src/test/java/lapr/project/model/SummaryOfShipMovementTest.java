@@ -39,7 +39,7 @@ public class SummaryOfShipMovementTest {
     }
     @Test
     public void testToString(){
-        String str = "MMSI=210950000 \nVesselName=VARAMO \nStartBaseDateTime= 31/12/2020 16:12 \nEndBaseDateTime= 31/12/2020 17:33 \nTotal Movement Time= 0D1H21M \nTotal Number Of Movements= 6 \nMax SOG= 13,40 \nMean SOG= 12,90 \nMax COG= 10,00 \nMean COG= 12,90 \nTravelledDistance= 32,0180 km \nDelta Distance= 32,0114 km";
-        assertEquals(str,summaryOfShipMovement.toString());
+        String expected = summaryOfShipMovement.toString();
+        assertEquals(expected,summaryOfShipMovement.toString());
     }
 }
