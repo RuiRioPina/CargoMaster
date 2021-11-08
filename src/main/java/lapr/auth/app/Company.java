@@ -1,4 +1,4 @@
-package lapr.project.controller;
+package lapr.auth.app;
 
 import lapr.auth.AuthFacade;
 import lapr.project.model.ShipStore;

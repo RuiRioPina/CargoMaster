@@ -1,6 +1,6 @@
 package lapr.project.model;
 
-import lapr.project.controller.App;
+import lapr.auth.app.App;
 import lapr.project.utils.AVL;
 import lapr.project.utils.BST;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,5 +1,6 @@
 package lapr.project.controller;
 
+import lapr.auth.app.App;
 import lapr.project.model.ShipStore;
 import org.junit.jupiter.api.Test;
 
