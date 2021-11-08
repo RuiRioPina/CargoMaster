@@ -3,14 +3,14 @@ package lapr.project.model;
 import lapr.project.utils.ShipValidation;
 
 public class Location {
-    public Location(double latitude, double longitude) {
+    public Location(Double latitude, Double longitude) {
         ShipValidation.validateLongitude(longitude);
         ShipValidation.validateLatitude(latitude);
         this.longitude = longitude;
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
@@ -18,7 +18,7 @@ public class Location {
         this.longitude = longitude;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
@@ -29,7 +29,7 @@ public class Location {
     public Location() {
     }
 
-    private double longitude;
+    private Double longitude;
 
     @Override
     public String toString() {
@@ -39,5 +39,5 @@ public class Location {
                 '}';
     }
 
-    private double latitude;
+    private Double latitude;
 }

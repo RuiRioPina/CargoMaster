@@ -13,7 +13,7 @@ class IdentificationTest {
     @BeforeEach
     void setUp() {
         idShip = new Identification("210950000", "VARAMO", "IMO9395044","C4SQ2");
-        shipCharacteristics = new ShipCharacteristics(70,166,25,9.5);
+        shipCharacteristics = new ShipCharacteristics(70, 166.0,25.0,9.5);
 
         route = new Route();
         ship = new Ship(idShip,shipCharacteristics,route);

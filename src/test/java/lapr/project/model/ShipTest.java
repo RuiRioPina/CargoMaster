@@ -15,9 +15,9 @@ class ShipTest {
     @BeforeEach
     void setUp() {
         idShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
-        shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+        shipCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
 
-        dynamic = (new ShipDynamic("31/12/2020 16:12", new Location(42.73879, -66.97726), new Movement(13.4, 3.4, 357), "NA", "A"));
+        dynamic = (new ShipDynamic("31/12/2020 16:12", new Location(42.73879, -66.97726), new Movement(13.4, 3.4, 357.0), "NA", "A"));
         route.add(dynamic);
         ship = new Ship(idShip, shipCharacteristics, route);
     }
@@ -143,7 +143,7 @@ class ShipTest {
 
     @Test
     public void setCharacteristics() {
-        ShipCharacteristics characteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+        ShipCharacteristics characteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
         ship.setCharacteristics(characteristics);
         ShipCharacteristics expected = characteristics;
 
@@ -154,7 +154,7 @@ class ShipTest {
 
     @Test
     public void setRoute() {
-        ShipDynamic dynamic = (new ShipDynamic("31/12/2020 16:12", new Location(42.73879, -66.97726), new Movement(13.4, 3.4, 357), "NA", "A"));
+        ShipDynamic dynamic = (new ShipDynamic("31/12/2020 16:12", new Location(42.73879, -66.97726), new Movement(13.4, 3.4, 357.0), "NA", "A"));
         Route expected = new Route();
         expected.add(dynamic);
         ship.setRoute(expected);
@@ -168,7 +168,7 @@ class ShipTest {
     @Test
     public void compareTo() {
         Identification identificationShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
-        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
 
         Route route = new Route();
         Ship ship = new Ship(identificationShip, shipCharacteristics, route);
@@ -181,7 +181,7 @@ class ShipTest {
     @Test
     public void compareToGreaterThan() {
         Identification identificationShip = new Identification("210000000", "VARAMO", "IMO9395044", "C4SQ2");
-        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
 
         Route route = new Route();
         Ship ship = new Ship(identificationShip, shipCharacteristics, route);
@@ -194,7 +194,7 @@ class ShipTest {
     @Test
     public void compareToLesserThan() {
         Identification identificationShip = new Identification("510000000", "VARAMO", "IMO9395044", "C4SQ2");
-        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
 
         Route route = new Route();
         Ship ship = new Ship(identificationShip, shipCharacteristics, route);
@@ -207,7 +207,7 @@ class ShipTest {
     @Test
     public void compareToGreaterThanCallsign() {
         Identification identificationShip = new Identification("210000000", "VARAMO", "IMO9395044", "A4SQ2");
-        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
 
         Route route = new Route();
         Ship ship = new Ship(identificationShip, shipCharacteristics, route);
@@ -220,7 +220,7 @@ class ShipTest {
     @Test
     public void compareToLesserThanCallsign() {
         Identification identificationShip = new Identification("510000000", "VARAMO", "IMO9395044", "VJC32");
-        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
 
         Route route = new Route();
         Ship ship = new Ship(identificationShip, shipCharacteristics, route);
@@ -233,7 +233,7 @@ class ShipTest {
     @Test
     public void compareToGreaterThanIMO() {
         Identification identificationShip = new Identification("210000000", "VARAMO", "IMO3295044", "C4SQ2");
-        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
 
         Route route = new Route();
         Ship ship3123124 = new Ship(identificationShip, shipCharacteristics, route);
@@ -246,7 +246,7 @@ class ShipTest {
     @Test
     public void compareToLesserThanIMO() {
         Identification identificationShip = new Identification("510000000", "VARAMO", "IMO9395044", "C4SQ2");
-        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
 
         Route route = new Route();
         Ship ship = new Ship(identificationShip, shipCharacteristics, route);
@@ -259,7 +259,7 @@ class ShipTest {
     @Test
     public void testEquals() {
         Identification identificationShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
-        ShipCharacteristics shipsCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+        ShipCharacteristics shipsCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
         Route route1 = new Route();
         route1.add(dynamic);
         Ship ship = new Ship(identificationShip, shipsCharacteristics, route1);
@@ -272,7 +272,7 @@ class ShipTest {
     @Test
     public void testEqualsNotCompliant() {
         Identification identificationShip = new Identification("510000000", "VARAMO", "IMO9395044", "C4SQ2");
-        ShipCharacteristics shipsCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+        ShipCharacteristics shipsCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
         Route route1 = new Route();
         route1.add(dynamic);
         Ship ship = new Ship(identificationShip, shipsCharacteristics, route1);
@@ -286,7 +286,7 @@ class ShipTest {
     @Test
     public void testHashCode() {
         Identification identificationShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
-        ShipCharacteristics shipsCharacteristics = new ShipCharacteristics(70, 166, 25, 9.5);
+        ShipCharacteristics shipsCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
         Route route1 = new Route();
         route1.add(dynamic);
         Ship shipLocal = new Ship(identificationShip, shipsCharacteristics, route1);

@@ -5,14 +5,14 @@ import java.util.Objects;
 
 public class ShipCharacteristics {
     private int vesselType;
-    private double length;
-    private double width;
-    private double draft;
+    private Double length;
+    private Double width;
+    private Double draft;
 
     public ShipCharacteristics() {
     }
 
-    public ShipCharacteristics(int vesselType, double length, double width, double draft) {
+    public ShipCharacteristics(int vesselType, Double length, Double width, Double draft) {
         this.vesselType = vesselType;
         this.length = length;
         this.width = width;
@@ -32,7 +32,7 @@ public class ShipCharacteristics {
         this.vesselType = vesselType;
     }
 
-    public double getLength() {
+    public Double getLength() {
         return length;
     }
 
@@ -40,7 +40,7 @@ public class ShipCharacteristics {
         this.length = length;
     }
 
-    public double getWidth() {
+    public Double getWidth() {
         return width;
     }
 
@@ -48,7 +48,7 @@ public class ShipCharacteristics {
         this.width = width;
     }
 
-    public double getDraft() {
+    public Double getDraft() {
         return draft;
     }
 

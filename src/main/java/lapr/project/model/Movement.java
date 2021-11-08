@@ -10,7 +10,7 @@ public class Movement {
     public Movement() {
     }
 
-    public Movement(double sog, double cog, double heading) {
+    public Movement(Double sog, Double cog, Double heading) {
 
         ShipValidation.validateSog(sog);
         ShipValidation.validateCog(cog);
@@ -22,7 +22,7 @@ public class Movement {
 
     }
 
-    public double getSog() {
+    public Double getSog() {
         return sog;
     }
 
@@ -30,7 +30,7 @@ public class Movement {
         this.sog = sog;
     }
 
-    public double getCog() {
+    public Double getCog() {
         return cog;
     }
 
@@ -38,7 +38,7 @@ public class Movement {
         this.cog = cog;
     }
 
-    public double getHeading() {
+    public Double getHeading() {
         return heading;
     }
 
