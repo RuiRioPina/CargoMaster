@@ -1,4 +1,4 @@
-package lapr.auth.domain.model;
+package lapr.project.data.utils.auth.domain.model;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import org.apache.commons.lang3.StringUtils;

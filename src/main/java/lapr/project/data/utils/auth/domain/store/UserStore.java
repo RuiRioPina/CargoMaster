@@ -1,10 +1,10 @@
-package lapr.auth.domain.store;
+package lapr.project.data.utils.auth.domain.store;
 
 
 
-import lapr.auth.domain.model.Email;
-import lapr.auth.domain.model.Password;
-import lapr.auth.domain.model.User;
+import lapr.project.data.utils.auth.domain.model.Email;
+import lapr.project.data.utils.auth.domain.model.Password;
+import lapr.project.data.utils.auth.domain.model.User;
 
 import java.io.Serializable;
 import java.util.HashSet;

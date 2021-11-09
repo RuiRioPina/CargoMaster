@@ -1,8 +1,8 @@
-package lapr.auth.app;
+package lapr.project.data.utils.auth.app;
 
 
-import lapr.auth.AuthFacade;
-import lapr.auth.UserSession;
+import lapr.project.data.utils.auth.AuthFacade;
+import lapr.project.data.utils.auth.UserSession;
 import lapr.project.controller.ImportShips;
 import lapr.project.model.Ship;
 import lapr.project.model.ShipStore;

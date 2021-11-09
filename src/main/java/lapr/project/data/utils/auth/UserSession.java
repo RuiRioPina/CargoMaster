@@ -1,14 +1,14 @@
-package lapr.auth;
+package lapr.project.data.utils.auth;
 
 
 
 
 
 
-import lapr.auth.domain.model.Email;
-import lapr.auth.domain.model.User;
-import lapr.auth.mappers.UserRoleMapper;
-import lapr.auth.mappers.dto.UserRoleDTO;
+import lapr.project.data.utils.auth.domain.model.Email;
+import lapr.project.data.utils.auth.domain.model.User;
+import lapr.project.data.utils.auth.mappers.UserRoleMapper;
+import lapr.project.data.utils.auth.mappers.dto.UserRoleDTO;
 
 import java.io.Serializable;
 import java.util.Collections;

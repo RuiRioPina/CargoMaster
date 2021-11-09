@@ -56,18 +56,18 @@ public class ShipValidation {
 
     }
 
-    public static void validateLatitude(double latitude) {
-        if (latitude != 91) {
+    public static void validateLatitude(String latitude) {
+        if (!latitude.equals("91")) {
 
-            if ((latitude < -90 || latitude > 90)) {
+            if ((Double.parseDouble(latitude) < -90 || Double.parseDouble(latitude) > 90)) {
                 throw new IllegalArgumentException();
             }
         }
     }
 
-    public static void validateLongitude(double longitude) {
-        if (longitude != 181) {
-            if ((longitude < -180 || longitude > 180)) {
+    public static void validateLongitude(String longitude) {
+        if (!longitude.equals("181")) {
+            if ((Double.parseDouble(longitude) < -180  || Double.parseDouble(longitude) > 180 )) {
                 throw new IllegalArgumentException();
             }
         }

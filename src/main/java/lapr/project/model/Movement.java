@@ -16,10 +16,15 @@ public class Movement {
         ShipValidation.validateCog(cog);
         ShipValidation.validateHeading(heading);
         this.sog = sog;
-        if(cog<0) cog = 180-cog;
+        cog = convertCog(cog);
         this.cog = cog;
         this.heading = heading;
 
+    }
+
+    public Double convertCog(Double cog) {
+        if (cog < 0.0) return 180.0 - cog;
+        return cog;
     }
 
     public Double getSog() {

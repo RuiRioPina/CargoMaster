@@ -66,19 +66,6 @@ public class ShipStore{
         return position;
     }
 
-    public AVL<Ship> convertSortingMethod(String sortingMethod) {
-        AVL<Ship> shipAVL = new AVL<>();
-        Map<Integer, List<Ship>> shipsByLevel = store.nodesByLevel();
-        for (Map.Entry<Integer, List<Ship>> entry : shipsByLevel.entrySet()) {
-            for (Ship ship : entry.getValue()) {
-                ship.getShipId().setSearchCode(sortingMethod);
-                shipAVL.insert(ship);
-            }
-
-        }
-        return shipAVL;
-    }
-
     public Ship findShipDetails(String code) {
         BST.Node<Ship> s;
         Ship ship = null;

@@ -100,16 +100,16 @@ public class Route {
     public double getTravelledDistance(){
         double distanceSum=0;
         for (int i=0;i<route.size()-1;i++){
-            double lat1=route.get(i).getLatitude();
-            double long1=route.get(i).getLongitude();
-            double lat2=route.get(i+1).getLatitude();
-            double long2=route.get(i+1).getLongitude();
-            distanceSum+=distance(lat1,long1,lat2,long2);
+            String lat1=route.get(i).getLatitude();
+            String long1=route.get(i).getLongitude();
+            String lat2=route.get(i+1).getLatitude();
+            String long2=route.get(i+1).getLongitude();
+            distanceSum+=distance(Double.parseDouble(lat1),Double.parseDouble(long1),Double.parseDouble(lat2),Double.parseDouble(long2));
         }
         return distanceSum;
     }
     public double getDeltaDistance(){
-        return distance(route.get(0).getLatitude(),route.get(0).getLongitude(),route.get(route.size()-1).getLatitude(),route.get(route.size()-1).getLongitude());
+        return distance(Double.parseDouble(route.get(0).getLatitude()),Double.parseDouble(route.get(0).getLongitude()),Double.parseDouble(route.get(route.size()-1).getLatitude()),Double.parseDouble(route.get(route.size()-1).getLongitude()));
     }
 
 }

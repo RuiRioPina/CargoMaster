@@ -1,17 +1,74 @@
 package lapr.project.controller;
 
-import lapr.auth.app.App;
+import lapr.project.model.Ship;
 import lapr.project.model.ShipStore;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ImportShipsTest {
+    ShipStore shipStore;
+
+    @BeforeEach
+    void setUp() {
+        shipStore = new ShipStore();
+    }
 
     @Test
     void importShips() {
-        ShipStore store = App.getInstance().getCompany().getShipStore();
-        System.out.println("Amounts of ships in the store:" + store.size());
-        assertEquals(store.getStore().smallestElement(),store.getStore().smallestElement());
+        String fileName = "csvFiles/bships.csv";
+        List<Ship> shipsList = ImportShips.importShips(fileName);
+        for (Ship ships : shipsList) {
+            shipStore.addShipToBST(ships);
+        }
+        assertEquals(shipStore.getStore().smallestElement(), shipStore.getStore().smallestElement());
+    }
+
+    @Test
+    void importShips1() {
+        String fileName = "csvFiles/bships.csv";
+        List<Ship> shipsList = ImportShips.importShips(fileName);
+        String code = "339911000";
+        for (Ship ships : shipsList) {
+            ships.getShipId().setSearchCode(code);
+            shipStore.addShipToBST(ships);
+        }
+        Ship ship = shipStore.findShipDetails(code);
+        Ship actual = shipStore.getStore().find(ship).getElement();
+        Ship expected = shipStore.getStore().find(ship).getElement();
+        assertEquals(actual, expected);
+    }
+    @Test
+    void importShips2() {
+        String fileName = "csvFiles/noElements.csv";
+        List<Ship> shipsList = ImportShips.importShips(fileName);
+        String code = "339911000";
+        for (Ship ships : shipsList) {
+            ships.getShipId().setSearchCode(code);
+            shipStore.addShipToBST(ships);
+        }
+
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                ()->{ Ship ship = shipStore.findShipDetails(code);;} );
+
+
+    }
+    @Test
+    void importShips3() {
+        String fileName = "csvFiles/shipID.csv";
+        List<Ship> shipsList = ImportShips.importShips(fileName);
+        String code = "IMO9395044";
+        for (Ship ships : shipsList) {
+            ships.getShipId().setSearchCode(code);
+            shipStore.addShipToBST(ships);
+        }
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                ()->{ Ship ship = shipStore.findShipDetails(code);;} );
+
+
+
     }
 }

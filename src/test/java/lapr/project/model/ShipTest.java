@@ -17,7 +17,7 @@ class ShipTest {
         idShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
         shipCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
 
-        dynamic = (new ShipDynamic("31/12/2020 16:12", new Location(42.73879, -66.97726), new Movement(13.4, 3.4, 357.0), "NA", "A"));
+        dynamic = (new ShipDynamic("31/12/2020 16:12", new Location("42.73879", "-66.97726"), new Movement(13.4, 3.4, 357.0), "NA", "A"));
         route.add(dynamic);
         ship = new Ship(idShip, shipCharacteristics, route);
     }
@@ -154,7 +154,7 @@ class ShipTest {
 
     @Test
     public void setRoute() {
-        ShipDynamic dynamic = (new ShipDynamic("31/12/2020 16:12", new Location(42.73879, -66.97726), new Movement(13.4, 3.4, 357.0), "NA", "A"));
+        ShipDynamic dynamic = (new ShipDynamic("31/12/2020 16:12", new Location("42.73879", "-66.97726"), new Movement(13.4, 3.4, 357.0), "NA", "A"));
         Route expected = new Route();
         expected.add(dynamic);
         ship.setRoute(expected);

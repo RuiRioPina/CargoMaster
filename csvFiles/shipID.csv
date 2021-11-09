@@ -1,0 +1,2 @@
+MMSI,BaseDateTime,LAT,LON,SOG,COG,Heading,VesselName,IMO,CallSign,VesselType,Length,Width,Draft,Cargo,TranscieverClass
+210000,31/12/2020 16:12,42.73879,-66.97726,13.4,3.4,357,VARAMO,IMO9395044,C4SQ2,70,166,25,9.5,NA,B

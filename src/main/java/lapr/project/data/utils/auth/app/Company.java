@@ -1,6 +1,6 @@
-package lapr.auth.app;
+package lapr.project.data.utils.auth.app;
 
-import lapr.auth.AuthFacade;
+import lapr.project.data.utils.auth.AuthFacade;
 import lapr.project.model.ShipStore;
 import org.apache.commons.lang3.StringUtils;
 

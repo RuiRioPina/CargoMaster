@@ -1,7 +1,7 @@
-package lapr.auth.app;
+package lapr.project.data.utils.auth.app;
 
 
-import lapr.auth.mappers.dto.UserRoleDTO;
+import lapr.project.data.utils.auth.mappers.dto.UserRoleDTO;
 
 import java.io.IOException;
 import java.util.List;

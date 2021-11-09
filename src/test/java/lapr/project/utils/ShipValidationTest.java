@@ -176,33 +176,33 @@ class ShipValidationTest {
 
     @Test
     public void validateLatitude() {
-        location.setLatitude(-70);
+        location.setLatitude("-70");
         ShipValidation.validateLatitude(location.getLatitude());
     }
 
     @Test
     public void validateLatitude1() {
-        location.setLatitude(-90);
+        location.setLatitude("-90");
         ShipValidation.validateLatitude(location.getLatitude());
-        location.setLatitude(90);
+        location.setLatitude("90");
         ShipValidation.validateLatitude(location.getLatitude());
     }
 
     @Test
     public void validateLatitude2() {
-        location.setLatitude(-30);
+        location.setLatitude("-30");
         ShipValidation.validateLatitude(location.getLatitude());
-        location.setLatitude(20);
+        location.setLatitude("20");
         ShipValidation.validateLatitude(location.getLatitude());
     }
 
     @Test
     public void validateLatitude3() {
-        location.setLatitude(-190);
+        location.setLatitude("-190");
 
         Throwable exception = assertThrows(IllegalArgumentException.class,
                 ()->{ShipValidation.validateLatitude(location.getLatitude());} );
-        location.setLatitude(200);
+        location.setLatitude("200");
         Throwable exception1 = assertThrows(IllegalArgumentException.class,
                 ()->{ShipValidation.validateLatitude(location.getLatitude());} );
 
@@ -210,7 +210,7 @@ class ShipValidationTest {
 
     @Test
     public void validateLatitudeNotCompliant() {
-        location.setLatitude(-100);
+        location.setLatitude("-100");
         Throwable exception = assertThrows(IllegalArgumentException.class,
                 ()->{ShipValidation.validateLatitude(location.getLatitude());} );
     }
@@ -218,22 +218,22 @@ class ShipValidationTest {
     @Test
     public void validateLongitude() {
 
-        location.setLongitude(170);
+        location.setLongitude("170");
         ShipValidation.validateLongitude(location.getLongitude());
     }
 
     @Test
     public void validateLongitude1() {
 
-        location.setLongitude(180);
+        location.setLongitude("180");
         ShipValidation.validateLongitude(location.getLongitude());
-        location.setLongitude(-180);
+        location.setLongitude("-180");
         ShipValidation.validateLongitude(location.getLongitude());
     }
 
     @Test
     public void validateLongitudeNotCompliant() {
-        location.setLongitude(190);
+        location.setLongitude("190");
 
         Throwable exception = assertThrows(IllegalArgumentException.class,
                 ()->{ShipValidation.validateLongitude(location.getLongitude());} );

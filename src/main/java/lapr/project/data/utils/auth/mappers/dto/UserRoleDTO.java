@@ -1,6 +1,4 @@
-package lapr.auth.mappers.dto;
-
-import org.apache.commons.lang3.StringUtils;
+package lapr.project.data.utils.auth.mappers.dto;
 
 public class UserRoleDTO {
 

@@ -1,6 +1,6 @@
 package lapr.project.model;
 
-import lapr.auth.app.App;
+import lapr.project.data.utils.auth.app.App;
 import lapr.project.utils.AVL;
 import lapr.project.utils.BST;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,10 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class ShipStoreTest {
     ShipStore store = App.getInstance().getCompany().getShipStore();
     AVL<Ship> expected1 = new AVL<>();
+
     @BeforeEach
     void setUp() {
 
     }
+
     @Test
     public void organizeMessagesShips() {
         //Example shown with one BST ship, but this method works for all BST ships
@@ -37,7 +39,7 @@ class ShipStoreTest {
 
     @Test
     public void getPositionOfShipData() {
-        Location expected = new Location(54.27307,-164.07348);
+        Location expected = new Location("54.27307", "-164.07348");
         String expected1 = expected.toString();
         System.out.println(expected1);
 
@@ -54,12 +56,12 @@ class ShipStoreTest {
 
     @Test
     public void getPositionOfShipPeriod() throws ParseException {
-        Location l1 = new Location(42.7698, -66.9759);
-        Location l2 = new Location(42.77682, -66.9756);
-        Location l3 = new Location(42.7969, -66.97547);
-        Location l4 = new Location(42.81133, -66.97587);
-        Location l5 = new Location(42.82021, -66.9758);
-        Location l6 = new Location(42.82527, -66.97577);
+        Location l1 = new Location("42.7698", "-66.9759");
+        Location l2 = new Location("42.77682", "-66.9756");
+        Location l3 = new Location("42.7969", "-66.97547");
+        Location l4 = new Location("42.81133", "-66.97587");
+        Location l5 = new Location("42.82021", "-66.9758");
+        Location l6 = new Location("42.82527", "-66.97577");
         List<Location> locations = new ArrayList<>();
         locations.add(l1);
         locations.add(l2);
@@ -83,32 +85,33 @@ class ShipStoreTest {
 
     @Test
     public void findShipDetails() {
-        Ship expected=store.getStore().nodesByLevel().get(1).get(0);
+        Ship expected = store.getStore().nodesByLevel().get(1).get(0);
         Ship actual = store.findShipDetails("366062000");
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
-
 
 
     @Test
     public void findShipDetails1() {
-        Ship expected=store.getStore().nodesByLevel().get(1).get(0);
+        Ship expected = store.getStore().nodesByLevel().get(1).get(0);
         Ship actual = store.findShipDetails("IMO8030489");
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
     public void findShipDetails2() {
-        Ship expected=store.getStore().nodesByLevel().get(1).get(0);
+        Ship expected = store.getStore().nodesByLevel().get(1).get(0);
         Ship actual = store.findShipDetails("KUCE");
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
     public void findShipDetailsNotCompliant() {
 
         Throwable exception = assertThrows(IllegalArgumentException.class,
-                ()->{store.findShipDetails("CS73642");} );
+                () -> {
+                    store.findShipDetails("CS73642");
+                });
     }
 
 }

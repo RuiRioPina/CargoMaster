@@ -1,7 +1,7 @@
-package lapr.auth.domain.store;
+package lapr.project.data.utils.auth.domain.store;
 
 
-import lapr.auth.domain.model.UserRole;
+import lapr.project.data.utils.auth.domain.model.UserRole;
 
 import java.io.Serializable;
 import java.util.HashSet;

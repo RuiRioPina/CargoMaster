@@ -58,8 +58,8 @@ public class ImportShips {
                 }
 
                 String baseDateTime = elements[1];
-                double lat = Double.parseDouble(elements[2]);
-                double lon = Double.parseDouble(elements[3]);
+                String lat = elements[2];
+                String lon = elements[3];
                 double sog = Double.parseDouble(elements[4]);
                 double cog = Double.parseDouble(elements[5]);
                 double heading = Double.parseDouble(elements[6]);

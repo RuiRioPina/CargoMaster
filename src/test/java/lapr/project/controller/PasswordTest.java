@@ -1,7 +1,7 @@
 package lapr.project.controller;
 
 
-import lapr.auth.domain.model.Password;
+import lapr.project.data.utils.auth.domain.model.Password;
 
 import org.junit.jupiter.api.Test;
 

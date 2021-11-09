@@ -77,9 +77,9 @@ public class ShipDynamic {
     public double getCog(){
         return this.movement.getCog();
     }
-    public double getLatitude(){return this.location.getLatitude();
+    public String getLatitude(){return this.location.getLatitude();
     }
-    public double getLongitude(){
+    public String getLongitude(){
         return this.location.getLongitude();
     }
     @Override

@@ -1,11 +1,11 @@
-package lapr.auth;
+package lapr.project.data.utils.auth;
 
 
 
-import lapr.auth.domain.model.User;
-import lapr.auth.domain.model.UserRole;
-import lapr.auth.domain.store.UserRoleStore;
-import lapr.auth.domain.store.UserStore;
+import lapr.project.data.utils.auth.domain.model.User;
+import lapr.project.data.utils.auth.domain.model.UserRole;
+import lapr.project.data.utils.auth.domain.store.UserRoleStore;
+import lapr.project.data.utils.auth.domain.store.UserStore;
 
 import java.io.Serializable;
 import java.util.Optional;
