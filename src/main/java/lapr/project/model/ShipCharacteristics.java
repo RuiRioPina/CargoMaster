@@ -1,6 +1,8 @@
 package lapr.project.model;
 
 
+import lapr.project.utils.ShipValidation;
+
 import java.util.Objects;
 
 public class ShipCharacteristics {
@@ -13,6 +15,10 @@ public class ShipCharacteristics {
     }
 
     public ShipCharacteristics(int vesselType, Double length, Double width, Double draft) {
+        ShipValidation.validateVesselType(vesselType);
+        ShipValidation.validateShipSizes(length);
+        ShipValidation.validateShipSizes(width);
+        ShipValidation.validateShipSizes(draft);
         this.vesselType = vesselType;
         this.length = length;
         this.width = width;

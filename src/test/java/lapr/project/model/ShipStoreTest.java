@@ -111,7 +111,7 @@ class ShipStoreTest {
     @Test
     public void findShipDetails() {
         Ship expected = store.getStore().nodesByLevel().get(1).get(0);
-        Ship actual = store.findShipDetails("366062000");
+        Ship actual = store.findShipDetails("366709770");
         assertEquals(expected, actual);
     }
 
@@ -119,14 +119,14 @@ class ShipStoreTest {
     @Test
     public void findShipDetails1() {
         Ship expected = store.getStore().nodesByLevel().get(1).get(0);
-        Ship actual = store.findShipDetails("IMO8030489");
+        Ship actual = store.findShipDetails("IMO7808140");
         assertEquals(expected, actual);
     }
 
     @Test
     public void findShipDetails2() {
         Ship expected = store.getStore().nodesByLevel().get(1).get(0);
-        Ship actual = store.findShipDetails("KUCE");
+        Ship actual = store.findShipDetails("WCX7878");
         assertEquals(expected, actual);
     }
 

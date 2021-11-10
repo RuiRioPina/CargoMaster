@@ -33,7 +33,7 @@ public class SummaryOfShipMovementTest {
         route.add(dynamic4);
         route.add(dynamic5);
         ship = new Ship(idShip, shipCharacteristics, route);
-        store.addShipToBST(ship);
+        store.addShipToAVL(ship);
         store.organizeShipMessage();
        summaryOfShipMovement= new SummaryOfShipMovement(ship);
     }

@@ -40,6 +40,10 @@ public class Ship implements Comparable<Ship> {
     public Double getMeanSOG () {
         return route.getMeanSog();
     }
+    public double getRouteTravelledDistance() {
+        return route.getTravelledDistance();
+    }
+
 
     public void setShipId(Identification shipId) {
         this.shipId = shipId;

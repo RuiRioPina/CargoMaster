@@ -22,19 +22,19 @@ class ImportShipsTest {
         String fileName = "csvFiles/bships.csv";
         List<Ship> shipsList = ImportShips.importShips(fileName);
         for (Ship ships : shipsList) {
-            shipStore.addShipToBST(ships);
+            shipStore.addShipToAVL(ships);
         }
         assertEquals(shipStore.getStore().smallestElement(), shipStore.getStore().smallestElement());
     }
 
     @Test
     void importShips1() {
-        String fileName = "csvFiles/bships.csv";
+        String fileName = "csvFiles/shipID.csv";
         List<Ship> shipsList = ImportShips.importShips(fileName);
-        String code = "339911000";
+        String code = "338888000";
         for (Ship ships : shipsList) {
             ships.getShipId().setSearchCode(code);
-            shipStore.addShipToBST(ships);
+            shipStore.addShipToAVL(ships);
         }
         Ship ship = shipStore.findShipDetails(code);
         Ship actual = shipStore.getStore().find(ship).getElement();
@@ -48,7 +48,7 @@ class ImportShipsTest {
         String code = "339911000";
         for (Ship ships : shipsList) {
             ships.getShipId().setSearchCode(code);
-            shipStore.addShipToBST(ships);
+            shipStore.addShipToAVL(ships);
         }
 
         Throwable exception = assertThrows(IllegalArgumentException.class,
@@ -63,7 +63,7 @@ class ImportShipsTest {
         String code = "IMO9395044";
         for (Ship ships : shipsList) {
             ships.getShipId().setSearchCode(code);
-            shipStore.addShipToBST(ships);
+            shipStore.addShipToAVL(ships);
         }
         Throwable exception = assertThrows(IllegalArgumentException.class,
                 ()->{ Ship ship = shipStore.findShipDetails(code);;} );

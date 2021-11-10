@@ -17,7 +17,6 @@ public class ShipDynamic {
 
     public ShipDynamic(String baseDateTime, Location location, Movement movement, String cargo, String transceiverClass) {
         ShipValidation.validateBaseDateTime(baseDateTime);
-        //ShipValidation.validateCargo(baseDateTime);
         ShipValidation.validateTransceiverClass(transceiverClass);
         this.baseDateTime = baseDateTime;
         this.location = location;
@@ -66,24 +65,30 @@ public class ShipDynamic {
         this.transceiverClass = transceiverClass;
     }
 
-    public LocalDateTime getBaseDateTimeLDT(){
-        DateTimeFormatter format= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        LocalDateTime dateTime= LocalDateTime.parse(baseDateTime,format);
+    public LocalDateTime getBaseDateTimeLDT() {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(baseDateTime, format);
         return dateTime;
     }
-    public double getSog(){
+
+    public double getSog() {
         return this.movement.getSog();
     }
-    public double getCog(){
+
+    public double getCog() {
         return this.movement.getCog();
     }
-    public String getLatitude(){return this.location.getLatitude();
+
+    public String getLatitude() {
+        return this.location.getLatitude();
     }
-    public String getLongitude(){
+
+    public String getLongitude() {
         return this.location.getLongitude();
     }
+
     @Override
     public String toString() {
-        return String.format("%nDate Time: %s, %s, Cargo: %s, %s, Transceiver class: %s",baseDateTime,location,cargo,movement,transceiverClass);
+        return String.format("%nDate Time: %s, %s, Cargo: %s, %s, Transceiver class: %s", baseDateTime, location, cargo, movement, transceiverClass);
     }
 }

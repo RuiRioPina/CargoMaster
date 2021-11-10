@@ -328,9 +328,9 @@ class ShipValidationTest {
 
     @Test
     public void testValidateShipSizes1() {
-        characteristics.setDraft(0);
-        characteristics.setLength(0);
-        characteristics.setWidth(0);
+        characteristics.setDraft(0.1);
+        characteristics.setLength(0.1);
+        characteristics.setWidth(0.1);
         ShipValidation.validateShipSizes(characteristics.getDraft());
         ShipValidation.validateShipSizes(characteristics.getLength());
         ShipValidation.validateShipSizes(characteristics.getWidth());
