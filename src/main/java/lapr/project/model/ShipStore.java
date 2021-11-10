@@ -1,6 +1,7 @@
 package lapr.project.model;
 
 
+import lapr.project.data.utils.auth.app.App;
 import lapr.project.utils.AVL;
 import lapr.project.utils.BST;
 import lapr.project.utils.PrintToFile;
@@ -14,8 +15,17 @@ import java.util.*;
 public class ShipStore {
     private AVL<Ship> store = new AVL<>();
 
-    public void addShipToBST(Ship ship) {
+
+    public void addShipToAVL(Ship ship) {
         store.insert(ship);
+    }
+
+    public AVL<Ship> reorganizeShipAVLAccordingToTheCode(List<Ship> ship) {
+        AVL<Ship> ship32 = new AVL<>();
+        for (Ship ship3 : ship) {
+            ship32.insert(ship3);
+        }
+        return ship32;
     }
 
     public int size() {
@@ -41,25 +51,25 @@ public class ShipStore {
                 System.out.println("Error");
             }
 
-       }
+        }
     }
 
     public Location getPositionOfShipData(String mMSI, String baseDateTime) {
         Location location = null;
 
-            for (Ship ship : store.inOrder()) {
-                for (int i = 0; i < ship.getRoute().getRoute().size(); i++)
-                    if (ship.getRoute().getRoute().get(i).getBaseDateTime().equals(baseDateTime) && ship.getShipId().getMmsi().equals(mMSI)) {
-                        location = ship.getRoute().getRoute().get(i).getLocation();
-                    }
-            }
+        for (Ship ship : store.inOrder()) {
+            for (int i = 0; i < ship.getRoute().getRoute().size(); i++)
+                if (ship.getRoute().getRoute().get(i).getBaseDateTime().equals(baseDateTime) && ship.getShipId().getMmsi().equals(mMSI)) {
+                    location = ship.getRoute().getRoute().get(i).getLocation();
+                }
+        }
 
         assert location != null;
         return location;
     }
 
     public List<Location> getPositionOfShipPeriod(String mMSI, String baseDateTime1, String baseDateTime2) throws ParseException {
-       organizeShipMessage();
+        organizeShipMessage();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         Date d1 = sdf.parse(baseDateTime1);
         Date d2 = sdf.parse(baseDateTime2);
@@ -67,21 +77,29 @@ public class ShipStore {
         List<Location> position = new ArrayList<>();
 
         for (Ship ship : store.inOrder()) {
-                for (int j = 0; j < ship.getRoute().getRoute().size(); j++)
-                    if (sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).after(d1) &&
-                            sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).before(d2) &&ship.getShipId().getMmsi().equals(mMSI)) {
-                        position.add(ship.getRoute().getRoute().get(j).getLocation());
-                    }
-            }
+            for (int j = 0; j < ship.getRoute().getRoute().size(); j++)
+                if (sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).after(d1) &&
+                        sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).before(d2) && ship.getShipId().getMmsi().equals(mMSI)) {
+                    position.add(ship.getRoute().getRoute().get(j).getLocation());
+                }
+        }
 
         return position;
     }
 
     public Ship findShipDetails(String code) {
         BST.Node<Ship> s;
+        AVL<Ship> shipAVL;
         Ship ship = null;
-        for (Ship value : store.posOrder()) {
-            s = store.find(value);
+        ArrayList<Ship> ship2 = new ArrayList<>();
+        for (Ship ships : store.posOrder()) {
+            ships.getShipId().setSearchCode(code);
+            ship2.add(ships);
+        }
+        shipAVL = reorganizeShipAVLAccordingToTheCode(ship2);
+        for (Ship value : shipAVL.posOrder()) {
+
+            s = shipAVL.find(value);
             if (s.getElement().getShipId().getImoID().equals(code) || s.getElement().getShipId().getCallsign().equals(code) || s.getElement().getShipId().getMmsi().equals(code)) {
                 ship = s.getElement();
             }
@@ -157,14 +175,13 @@ public class ShipStore {
             sout.append("Vessel Type - ").append(sh.get(i).getVesselType()).append(" MMSI - ").append(sh.get(i).getShipId().getMmsi()).append(" Travelled Distance = ").append(sh.get(i).getTravelledDistance()).append(" Mean SOG = ").append(sh.get(i).getMeanSOG());
             sout.append('\n');
         }
-            try {
-                PrintToFile.printB(sout, fileToBeWrittenTo);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error");
-            }
+        try {
+            PrintToFile.printB(sout, fileToBeWrittenTo);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error");
+        }
 
         return map2;
     }
-
 }
 

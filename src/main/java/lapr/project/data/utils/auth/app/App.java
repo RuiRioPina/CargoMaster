@@ -106,7 +106,7 @@ public class App  {
         String fileName = "csvFiles/bships.csv";
         List<Ship> shipsList = ImportShips.importShips(fileName);
         for (Ship ships : shipsList) {
-            store.addShipToBST(ships);
+            store.addShipToAVL(ships);
         }
     }
 

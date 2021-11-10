@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ShipValidation {
-    static final  String DATE_FORMAT = "dd/MM/yyyy";
+    private static final String DATE_FORMAT = "dd/MM/yyyy";
 
     private ShipValidation() {
 
@@ -45,11 +45,11 @@ public class ShipValidation {
         if (!baseDateTime.matches("[0-9]+[0-9]+[/]+[0-9]+[0-9]+[/]+[0-9]+[0-9]+[0-9]+[0-9]+[ ]+[0-9]+[0-9]+[:]+[0-9]+[0-9]")) {
             throw new IllegalArgumentException();
         }
-        if(!isDateValid(baseDateTime)) {
+        if (!isDateValid(baseDateTime)) {
             throw new IllegalArgumentException();
         }
 
-        if(!isValidTime(baseDateTime)) {
+        if (!isValidTime(baseDateTime)) {
             throw new IllegalArgumentException();
         }
 
@@ -67,14 +67,14 @@ public class ShipValidation {
 
     public static void validateLongitude(String longitude) {
         if (!longitude.equals("181")) {
-            if ((Double.parseDouble(longitude) < -180  || Double.parseDouble(longitude) > 180 )) {
+            if ((Double.parseDouble(longitude) < -180 || Double.parseDouble(longitude) > 180)) {
                 throw new IllegalArgumentException();
             }
         }
     }
 
     public static void validateSog(double sog) {
-        if (sog < 0) {
+        if (sog < 0.0) {
             throw new IllegalArgumentException();
         }
 
@@ -102,7 +102,7 @@ public class ShipValidation {
     }
 
     public static void validateShipSizes(double measure) {
-        if (measure < 0) {
+        if (measure <= 0.0) {
             throw new IllegalArgumentException();
         }
     }
@@ -115,15 +115,14 @@ public class ShipValidation {
 
     /**
      * Adapted from https://stackoverflow.com/questions/226910/how-to-sanity-check-a-date-in-java
+     *
      * @param date
      * @return
      */
-    private static boolean isDateValid(String date)
-    {
+    private static boolean isDateValid(String date) {
         try {
-            String[]dateformat = date.split(" ");
+            String[] dateformat = date.split(" ");
             String day = dateformat[0];
-
 
 
             DateFormat df = new SimpleDateFormat(DATE_FORMAT);
@@ -137,12 +136,12 @@ public class ShipValidation {
 
     /**
      * Adapted from https://www.geeksforgeeks.org/how-to-validate-time-in-24-hour-format-using-regular-expression/
+     *
      * @param time
      * @return
      */
-    private static boolean isValidTime(String time)
-    {
-        String[]dateformat = time.split(" ");
+    private static boolean isValidTime(String time) {
+        String[] dateformat = time.split(" ");
         String hours = dateformat[1];
 
         String regex = "([01]?[0-9]|2[0-3]):[0-5][0-9]";

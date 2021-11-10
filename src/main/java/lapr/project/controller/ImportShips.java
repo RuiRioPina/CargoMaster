@@ -1,5 +1,6 @@
 package lapr.project.controller;
 
+import lapr.project.data.utils.auth.app.App;
 import lapr.project.model.*;
 
 import java.io.BufferedReader;
@@ -22,12 +23,11 @@ public class ImportShips {
         String line;
         String splitBy = ",";
         BufferedReader br = null;
-        String file = fileName;
         Ship ship = null;
         Route route = null;
         int size = 0;
         try {
-            br = new BufferedReader(new FileReader(file));
+            br = new BufferedReader(new FileReader(fileName));
             br.readLine();
             while ((line = br.readLine()) != null) {
                 size++;
@@ -45,10 +45,8 @@ public class ImportShips {
                     try {
                         idShip = new Identification(mmsi, vesselName, imo, callsign);
                         characteristics = new ShipCharacteristics(vesselType, length, width, draft);
-                        if (ship != null) {
-                            ships.add(ship);
-                        }
                         ship = new Ship(idShip, characteristics, null);
+                        ships.add(ship);
                     } catch (Exception e) {
                         ship = null;
                         System.out.println("Failed to import line " + size);
@@ -95,4 +93,7 @@ public class ImportShips {
         }
         return ships;
     }
+
+
+
 }  

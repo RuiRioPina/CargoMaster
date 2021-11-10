@@ -5,12 +5,17 @@ import lapr.project.utils.ShipValidation;
 public class Location {
     private String latitude;
     private String longitude;
+
     public Location(String latitude, String longitude) {
         ShipValidation.validateLongitude(longitude);
         ShipValidation.validateLatitude(latitude);
         this.longitude = longitude;
         this.latitude = latitude;
     }
+
+    public Location() {
+    }
+
 
     public String getLongitude() {
         return longitude;
@@ -27,10 +32,6 @@ public class Location {
     public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
-
-    public Location() {
-    }
-
 
 
     @Override
