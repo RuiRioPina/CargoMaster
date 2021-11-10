@@ -332,15 +332,29 @@ class ShipTest {
         ShipDynamic dynamic3 = (new ShipDynamic("31/12/2020 17:03", new Location("42.70879", "-66.97726"), new Movement(12.5, 2.4, 358.0), "NA", "A"));
         ShipDynamic dynamic4 = (new ShipDynamic("31/12/2020 17:03", new Location("42.93879", "-66.97243"), new Movement(12.5, 2.4, 358.0), "NA", "A"));
         ShipDynamic dynamic5 = (new ShipDynamic("31/12/2020 17:03", new Location("42.93879", "-66.97243"), new Movement(12.5, 2.4, 358.0), "NA", "A"));
+        ShipDynamic dynamic6 = (new ShipDynamic("31/12/2020 17:03", new Location("41.93879", "-66.97243"), new Movement(12.5, 2.4, 358.0), "NA", "A"));
+        ShipDynamic dynamic7 = (new ShipDynamic("31/12/2020 17:03", new Location("42.93879", "-66.97243"), new Movement(12.5, 2.4, 358.0), "NA", "A"));
        route.add(dynamic1);
        route.add(dynamic2);
        route2.add(dynamic3);
        route2.add(dynamic4);
         route2.add(dynamic5);
+        Route route3 = new Route();
+        Route route4 = new Route();
+        route3.add(dynamic);
+        route3.add(dynamic1);
+        route3.add(dynamic6);
+        route4.add(dynamic7);
+        route4.add(dynamic1);
+        route4.add(dynamic2);
         ship = new Ship(idShip, shipCharacteristics, route);
         Ship ship1 = new Ship(idShip,shipCharacteristics,route);
         Ship ship2 = new Ship(idShip2,shipCharacteristics2,route2);
+        Ship ship3 = new Ship(idShip2,shipCharacteristics2,route3);
+        Ship ship4 = new Ship(idShip2,shipCharacteristics2,route4);
         assertFalse(ship.isClose(ship1));
         assertTrue(ship.isClose(ship2));
+        assertFalse(ship.isClose(ship3));
+        assertFalse(ship.isClose(ship4));
     }
 }
