@@ -43,17 +43,15 @@ public class ShipStore {
             for (Ship ship : entry.getValue()) {
                 ship.getRoute().getRoute().sort(Comparator.comparing(ShipDynamic::getBaseDateTime));
             }
-
+        }
             final String fileToBeWrittenTo = "shipsOrganized.txt";
-
             try {
                 PrintToFile.print(store.inOrder().toString(), fileToBeWrittenTo);
             } catch (IllegalArgumentException | IOException e) {
                 System.out.println("Error");
             }
-
         }
-    }
+
 
     public Location getPositionOfShipData(String mMSI, String baseDateTime) {
         Location location = null;
