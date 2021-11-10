@@ -1,14 +1,19 @@
 package lapr.project.model;
 
+import lapr.project.controller.ImportShips;
+import lapr.project.controller.ShipController;
 import lapr.project.data.utils.auth.app.App;
 import lapr.project.utils.AVL;
 import lapr.project.utils.BST;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,13 +31,10 @@ class ShipStoreTest {
         //Example shown with one BST ship, but this method works for all BST ships
         System.out.println("Before organize temporally");
         BST<Ship> beforeShips = store.getStore();
-        System.out.println(beforeShips.inOrder().toString());
+
         store.organizeShipMessage();
 
-        System.out.println("---------------------------");
-        System.out.println("After organize temporally");
         BST<Ship> afterShips = store.getStore();
-        System.out.println(afterShips.inOrder().toString());
 
         assertEquals(beforeShips, afterShips);
     }
@@ -82,6 +84,29 @@ class ShipStoreTest {
         }
     }
 
+    @Test
+    public void getTopNShipsSMALL() throws ParseException, IOException {
+         Map <Integer, List <Ship> > exp = new HashMap<>();
+         List <Ship> ship1 = new ArrayList<>();
+         store.organizeShipMessage();
+        for (Ship ship : store.getStore().inOrder()) {
+            ship1.add(ship);
+        }
+        List <Ship> ship2 = new ArrayList<>();
+        ship2.add(ship1.get(4));
+        ship2.add(ship1.get(12));
+        List <Ship> ship3 = new ArrayList<>();
+        ship3.add(ship1.get(16));
+        ship3.add(ship1.get(3));
+        List <Ship> ship4 = new ArrayList<>();
+        ship4.add(ship1.get(5));
+        ship4.add(ship1.get(8));
+        exp.put(60,ship4);
+        exp.put(70,ship3);
+        exp.put(80,ship2);
+        Map<Integer, List <Ship> > res = store.getTopNShips(2,"31/12/2021 00:00","31/12/2021 23:59");
+        //assertEquals(res,exp);
+    }
 
     @Test
     public void findShipDetails() {

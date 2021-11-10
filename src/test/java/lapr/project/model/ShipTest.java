@@ -120,7 +120,28 @@ class ShipTest {
 
         assertEquals(expected, actual);
     }
+@Test
+    public void getTravelledDistance() {
+       double expected = route.getTravelledDistance();
+       double actual = ship.getTravelledDistance();
+       assertEquals(expected,actual);
+    }
 
+    @Test
+    public void getVesselType2() {
+        int expected = shipCharacteristics.getVesselType();
+        int actual = ship.getVesselType();
+        assertEquals(expected,actual);
+    }
+
+ @Test
+    public void getMeanSOG () {
+        double expected = route.getMeanSog();
+
+        double actual = ship.getMeanSOG();
+
+        assertEquals(expected,actual);
+    }
     @Test
     public void getCharacteristics() {
         ShipCharacteristics expected = shipCharacteristics;

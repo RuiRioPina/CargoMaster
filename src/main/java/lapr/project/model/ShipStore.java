@@ -3,13 +3,15 @@ package lapr.project.model;
 
 import lapr.project.utils.AVL;
 import lapr.project.utils.BST;
+import lapr.project.utils.PrintToFile;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-public class ShipStore{
+public class ShipStore {
     private AVL<Ship> store = new AVL<>();
 
     public void addShipToBST(Ship ship) {
@@ -30,6 +32,15 @@ public class ShipStore{
             for (Ship ship : entry.getValue()) {
                 ship.getRoute().getRoute().sort(Comparator.comparing(ShipDynamic::getBaseDateTime));
             }
+
+            final String fileToBeWrittenTo = "shipsOrganized.txt";
+
+            try {
+                PrintToFile.print(store.inOrder().toString(), fileToBeWrittenTo);
+            } catch (IllegalArgumentException | IOException e) {
+                System.out.println("Error");
+            }
+
        }
     }
 
@@ -75,10 +86,85 @@ public class ShipStore{
                 ship = s.getElement();
             }
         }
-        if(ship == null) {
+        if (ship == null) {
             throw new IllegalArgumentException();
         }
         return ship;
     }
 
+    public Map<Integer, List<Ship>> getTopNShips(int n, String start, String end) throws ParseException, IOException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        Date d1 = sdf.parse(start);
+        Date d2 = sdf.parse(end);
+
+        AVL<Ship> avl = store;
+        organizeShipMessage();
+
+        for (Ship ship : avl.inOrder()) {
+            for (int j = 0; j < ship.getRoute().getRoute().size(); j++) {
+                if (!(sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).after(d1) &&
+                        sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).before(d2))) {
+                    ship.getRoute().getRoute()//remove()
+                    ;
+                }
+            }
+        }
+        //bst -> list
+        List<Ship> ships = new ArrayList<>();
+        for (Ship ship : avl.inOrder()) {
+            ships.add(ship);
+        }
+
+        //ships ordenados por maior distancia percorrida
+        ships.sort(Comparator.comparing(Ship::getTravelledDistance));
+        Collections.reverse(ships);
+
+        //ships ordenados por vessel type
+        ships.sort(Comparator.comparing(Ship::getVesselType));
+
+        //colocar os vessel types e respetivos navios num map
+        Map<Integer, List<Ship>> map = new HashMap<>();
+        Integer temp = 0;
+        ArrayList<Ship> topNShips = new ArrayList<>();
+        for (Ship ship : ships) {
+            if (temp != ship.getVesselType()) {
+                topNShips = new ArrayList<>();
+            }
+            topNShips.add(ship);
+            map.put(ship.getVesselType(), topNShips);
+            temp = ship.getVesselType();
+        }
+
+        //get os top n navios
+        Map<Integer, List<Ship>> map2 = new HashMap<>();
+        topNShips = new ArrayList<>();
+        List<Ship> sh = new ArrayList<>();
+        for (Integer vesselType : map.keySet()) {
+            for (int i = 0; i < n && n <= map.get(vesselType).size(); i++) {
+                topNShips.add(map.get(vesselType).get(i));
+                sh.add(map.get(vesselType).get(i));
+                map2.put(vesselType, topNShips);
+
+            }
+            topNShips = new ArrayList<>();
+        }
+
+        //escrever a informação necessária para um txt
+        final String fileToBeWrittenTo = "getTopNShips.txt";
+
+        StringBuilder sout = new StringBuilder("");
+        for (int i = 0; i < sh.size(); i++) {
+            sout.append("Vessel Type - ").append(sh.get(i).getVesselType()).append(" MMSI - ").append(sh.get(i).getShipId().getMmsi()).append(" Travelled Distance = ").append(sh.get(i).getTravelledDistance()).append(" Mean SOG = ").append(sh.get(i).getMeanSOG());
+            sout.append('\n');
+        }
+            try {
+                PrintToFile.printB(sout, fileToBeWrittenTo);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error");
+            }
+
+        return map2;
+    }
+
 }
+

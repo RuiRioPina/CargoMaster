@@ -16,4 +16,13 @@ public class PrintToFile {
 
         writer.close();
     }
+
+    public static void printB(StringBuilder message, String file)
+            throws IOException {
+        StringBuilder str = message;
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        writer.write(String.valueOf(str));
+
+        writer.close();
+    }
 }

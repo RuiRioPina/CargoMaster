@@ -16,6 +16,10 @@ public class PrintToFileTest {
     public void print() throws IOException {
         PrintToFile.print("test","test.txt");
     }
+    @Test
+    public void printB() throws IOException {
+        PrintToFile.printB(new StringBuilder("aa"),"test2.txt");
+    }
 
 
 }

@@ -29,6 +29,17 @@ public class Ship implements Comparable<Ship> {
     public Route getRoute() {
         return route;
     }
+    public Double getTravelledDistance() {
+        return route.getTravelledDistance();
+    }
+
+    public int getVesselType() {
+        return characteristics.getVesselType();
+    }
+
+    public Double getMeanSOG () {
+        return route.getMeanSog();
+    }
 
     public void setShipId(Identification shipId) {
         this.shipId = shipId;
@@ -84,6 +95,5 @@ public class Ship implements Comparable<Ship> {
                 characteristics +
                 route + '\n';
     }
-
 
 }
