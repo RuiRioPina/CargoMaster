@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.HashMap;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SummaryOfShipMovementTest {
@@ -41,5 +43,27 @@ public class SummaryOfShipMovementTest {
     public void testToString(){
         String expected = summaryOfShipMovement.toString();
         assertEquals(expected,summaryOfShipMovement.toString());
+    }
+    @Test
+    public void getSummaryMap(){
+        HashMap<String,String> expectedMap= new HashMap<>();
+        expectedMap.put("MMSI","210950000");
+        expectedMap.put("Vessel Name","VARAMO");
+        expectedMap.put("Start Base Date Time","31/12/2020 16:12");
+        expectedMap.put("End Base Date Time","31/12/2020 17:33");
+        expectedMap.put("Total Movement Time","0D1H21M");
+        expectedMap.put("Total Number Of Movements","6");
+        expectedMap.put("Max SOG","13,40");
+        expectedMap.put("Mean SOG","12,90");
+        expectedMap.put("Max COG","10,00");
+        expectedMap.put("Mean COG","5,00");
+        expectedMap.put("Travelled Distance","32,0180 km");
+        expectedMap.put("Delta Distance","32,0114 km");
+        assertEquals(expectedMap,summaryOfShipMovement.getSummaryMap());
+    }
+    @Test
+    public void getMapValue(){
+        String expected="210950000";
+        assertEquals(summaryOfShipMovement.getMapValue("MMSI"),expected);
     }
 }
