@@ -99,5 +99,17 @@ public class Ship implements Comparable<Ship> {
                 characteristics +
                 route + '\n';
     }
+    public boolean isClose(Ship ship){
+        if (Route.distance(this.route.getDepartureLat(),this.route.getDepartureLong(),ship.getRoute().getDepartureLat(),ship.getRoute().getDepartureLong())>5){
+            return false;
+        }
+        if (Route.distance(this.route.getArrivalLat(),this.route.getArrivalLong(),ship.getRoute().getArrivalLat(),ship.getRoute().getArrivalLong())>5){
+            return false;
+        }
+        if (Route.distance(this.route.getArrivalLat(),this.route.getArrivalLong(),ship.getRoute().getArrivalLat(),ship.getRoute().getArrivalLong())==0){
+            return false;
+        }
+        return true;
+    }
 
 }

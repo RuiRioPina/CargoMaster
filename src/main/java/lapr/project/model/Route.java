@@ -83,7 +83,7 @@ public class Route {
         }
         return sum/route.size();
     }
-    private static double distance(double lat1, double lon1, double lat2, double lon2) {
+    public static double distance(double lat1, double lon1, double lat2, double lon2) {
         if ((lat1 == lat2) && (lon1 == lon2)) {
             return 0;
         }
@@ -110,6 +110,18 @@ public class Route {
     }
     public double getDeltaDistance(){
         return distance(Double.parseDouble(route.get(0).getLatitude()),Double.parseDouble(route.get(0).getLongitude()),Double.parseDouble(route.get(route.size()-1).getLatitude()),Double.parseDouble(route.get(route.size()-1).getLongitude()));
+    }
+    public double getDepartureLat(){
+        return Double.parseDouble(route.get(0).getLatitude());
+    }
+    public double getDepartureLong(){
+        return Double.parseDouble(route.get(0).getLongitude());
+    }
+    public double getArrivalLat(){
+        return Double.parseDouble(route.get(route.size()-1).getLatitude());
+    }
+    public double getArrivalLong(){
+        return Double.parseDouble(route.get(route.size()-1).getLongitude());
     }
 
 }

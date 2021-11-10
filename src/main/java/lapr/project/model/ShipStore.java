@@ -5,6 +5,7 @@ import lapr.project.data.utils.auth.app.App;
 import lapr.project.utils.AVL;
 import lapr.project.utils.BST;
 import lapr.project.utils.PrintToFile;
+import lapr.project.utils.Pair;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -183,5 +184,26 @@ public class ShipStore {
 
         return map2;
     }
-}
 
+
+
+
+    public List<Pair<Ship, Ship>> getCloseShips() {
+        List<Pair<Ship, Ship>> pairList = new ArrayList<>();
+        for (Ship ship : store.inOrder()) {
+            if (ship.getRoute().getTravelledDistance() > 10) {
+                for (Ship ship2 : store.inOrder()) {
+                    if (ship.isClose(ship2)) {
+                        Pair<Ship,Ship> pair1 = new Pair<>(ship, ship2);
+                        Pair<Ship,Ship> pair2 = new Pair<>(ship2, ship);
+                        if (!(pairList.contains(pair1)) || !(pairList.contains(pair2))) {
+                            pairList.add(pair1);
+                        }
+                    }
+                }
+            }
+        }
+        return pairList;
+    }
+
+}

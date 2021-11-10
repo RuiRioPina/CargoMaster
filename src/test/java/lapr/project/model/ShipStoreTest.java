@@ -5,6 +5,7 @@ import lapr.project.controller.ShipController;
 import lapr.project.data.utils.auth.app.App;
 import lapr.project.utils.AVL;
 import lapr.project.utils.BST;
+import lapr.project.utils.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ShipStoreTest {
     ShipStore store = App.getInstance().getCompany().getShipStore();
-    AVL<Ship> expected1 = new AVL<>();
+
 
     @BeforeEach
     void setUp() {
@@ -137,6 +138,11 @@ class ShipStoreTest {
                 () -> {
                     store.findShipDetails("CS73642");
                 });
+    }
+    @Test
+    public void getCloseShips(){
+    List<Pair<Ship,Ship>> actualList=store.getCloseShips();
+    assertEquals(actualList,store.getCloseShips());
     }
 
 }
