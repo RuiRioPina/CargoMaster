@@ -109,13 +109,15 @@ Ship ship4;
         List<Double> doubles= new ArrayList<>();
         doubles.add(220.3);
         List< Double> doubleList0= new ArrayList<>();
-        doubleList0.add(6655.627012147962);
-        doubleList0.add(2203.594184086753);
+        doubleList0.add(6655.627012149574);
+        doubleList0.add(2203.594184088364);
         doubleList0.add(4452.032828061209);
         List<Double> travelledDistanceList= shipPairList.getTravelledDistanceList();
         assertEquals(travelledDistanceList,shipPairList.getTravelledDistanceList());
         assertNotEquals(doubleList0,doubles);
-        assertEquals(doubleList0,travelledDistanceList);
+        assertEquals(doubleList0.get(0),travelledDistanceList.get(0),0.0001);
+        assertEquals(doubleList0.get(1),travelledDistanceList.get(1),0.0001);
+        assertEquals(doubleList0.get(2),travelledDistanceList.get(2),0.0001);
     }
 
 }
