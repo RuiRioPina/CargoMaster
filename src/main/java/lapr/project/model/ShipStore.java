@@ -1,7 +1,7 @@
 package lapr.project.model;
 
 
-import lapr.project.data.utils.auth.app.App;
+import lapr.project.controller.App;
 import lapr.project.utils.AVL;
 import lapr.project.utils.BST;
 import lapr.project.utils.PrintToFile;
@@ -22,11 +22,11 @@ public class ShipStore {
     }
 
     public AVL<Ship> reorganizeShipAVLAccordingToTheCode(List<Ship> ship) {
-        AVL<Ship> ship32 = new AVL<>();
+        AVL<Ship> newShipAVL = new AVL<>();
         for (Ship ship3 : ship) {
-            ship32.insert(ship3);
+            newShipAVL.insert(ship3);
         }
-        return ship32;
+        return newShipAVL;
     }
 
     public int size() {

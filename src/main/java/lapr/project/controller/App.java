@@ -1,9 +1,7 @@
-package lapr.project.data.utils.auth.app;
+package lapr.project.controller;
 
-
-import lapr.project.data.utils.auth.AuthFacade;
-import lapr.project.data.utils.auth.UserSession;
 import lapr.project.controller.ImportShips;
+import lapr.project.model.Company;
 import lapr.project.model.Ship;
 import lapr.project.model.ShipStore;
 import lapr.project.model.shared.Constants;
@@ -21,7 +19,6 @@ import java.util.*;
 public class App  {
 
     private Company company;
-    private AuthFacade authFacade;
     private boolean doBootStrap;
 
     private App() {
@@ -53,25 +50,12 @@ public class App  {
         }
         
         this.company = cmp;
-        this.authFacade = this.company.getAuthFacade();
     }
 
     public Company getCompany() {
         return this.company;
     }
 
-
-    public UserSession getCurrentUserSession() {
-        return this.authFacade.getCurrentUserSession();
-    }
-
-    public boolean doLogin(String email, String pwd) {
-        return this.authFacade.doLogin(email, pwd).isLoggedIn();
-    }
-
-    public void doLogout() {
-        this.authFacade.doLogout();
-    }
 
     private Properties getProperties() {
         Properties props = new Properties();
@@ -94,11 +78,6 @@ public class App  {
 
     private void bootstrap() {
 
-
-        this.authFacade.addUserRole(Constants.ROLE_ADMIN, Constants.ROLE_ADMIN);
-
-
-        this.authFacade.addUserWithRole("Main Administrator", "admin@lei.sem3.pt", "123456", Constants.ROLE_ADMIN);
 
         this.company.setNumberOfEmployees(0);
 

@@ -27,6 +27,10 @@ public class ShipController {
         sp.organizeShipMessage();
     }
 
+    public void addShip (Ship ship) {
+        sp.addShipToAVL(ship);
+    }
+
     public Location getPositionOfShipData(String MMSI, String BaseDateTime){
         return sp.getPositionOfShipData(MMSI,BaseDateTime);
     }
