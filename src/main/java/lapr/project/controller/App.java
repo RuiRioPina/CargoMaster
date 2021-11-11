@@ -83,10 +83,8 @@ public class App  {
 
         ShipStore store = this.company.getShipStore();
         String fileName = "csvFiles/bships.csv";
-        List<Ship> shipsList = ImportShips.importShips(fileName);
-        for (Ship ships : shipsList) {
-            store.addShipToAVL(ships);
-        }
+        ImportShips.importShips(fileName);
+
     }
 
 

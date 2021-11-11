@@ -13,7 +13,7 @@ public class SearchShipsTest {
     public void searchShipDetails() throws IOException {
         final String fileToBeWrittenTo = "resultSearchDetails.txt";
         try {
-            Ship ship = store.findShipDetails("WZH4694");
+            Ship ship = store.findShipDetails("DHBN");
             System.out.println(ship);
             PrintToFile.print(ship.toString(), fileToBeWrittenTo);
         } catch (IllegalArgumentException e) {

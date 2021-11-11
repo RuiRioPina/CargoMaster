@@ -44,13 +44,13 @@ public class ShipStore {
                 ship.getRoute().getRoute().sort(Comparator.comparing(ShipDynamic::getBaseDateTime));
             }
         }
-            final String fileToBeWrittenTo = "shipsOrganized.txt";
-            try {
-                PrintToFile.print(store.inOrder().toString(), fileToBeWrittenTo);
-            } catch (IllegalArgumentException | IOException e) {
-                System.out.println("Error");
-            }
+        final String fileToBeWrittenTo = "shipsOrganized.txt";
+        try {
+            PrintToFile.print(store.inOrder().toString(), fileToBeWrittenTo);
+        } catch (IllegalArgumentException | IOException e) {
+            System.out.println("Error");
         }
+    }
 
 
     public Location getPositionOfShipData(String mMSI, String baseDateTime) {
@@ -97,9 +97,9 @@ public class ShipStore {
         }
         shipAVL = reorganizeShipAVLAccordingToTheCode(ship2);
         for (Ship value : shipAVL.posOrder()) {
-
             s = shipAVL.find(value);
-            if (s.getElement().getShipId().getImoID().equals(code) || s.getElement().getShipId().getCallsign().equals(code) || s.getElement().getShipId().getMmsi().equals(code)) {
+            if (s.getElement().getShipId().getImoID().equals(code) || s.getElement().getShipId().getCallsign().equals(code)
+                    || s.getElement().getShipId().getMmsi().equals(code)) {
                 ship = s.getElement();
             }
         }
@@ -184,16 +184,14 @@ public class ShipStore {
     }
 
 
-
-
     public List<Pair<Ship, Ship>> getCloseShips() {
         List<Pair<Ship, Ship>> pairList = new ArrayList<>();
         for (Ship ship : store.inOrder()) {
             if (ship.getRoute().getTravelledDistance() > 10) {
                 for (Ship ship2 : store.inOrder()) {
                     if (ship.isClose(ship2)) {
-                        Pair<Ship,Ship> pair1 = new Pair<>(ship, ship2);
-                        Pair<Ship,Ship> pair2 = new Pair<>(ship2, ship);
+                        Pair<Ship, Ship> pair1 = new Pair<>(ship, ship2);
+                        Pair<Ship, Ship> pair2 = new Pair<>(ship2, ship);
                         if (!(pairList.contains(pair1)) || !(pairList.contains(pair2))) {
                             pairList.add(pair1);
                         }
