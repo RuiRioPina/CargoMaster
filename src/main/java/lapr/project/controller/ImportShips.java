@@ -16,7 +16,7 @@ public class ImportShips {
         //This class is not expected to be instantiated
     }
     public static List<Ship> importShips(String fileName) {
-
+        ShipStore store = App.getInstance().getCompany().getShipStore();
         List<Ship> ships = new ArrayList<>();
         Identification idShip;
         ShipCharacteristics characteristics;
@@ -67,6 +67,9 @@ public class ImportShips {
                 e.printStackTrace();
             }
 
+        }
+        for (Ship ship1 : ships) {
+            store.addShipToAVL(ship1);
         }
         return ships;
     }

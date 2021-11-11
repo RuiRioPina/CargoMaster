@@ -19,7 +19,7 @@ class ImportShipsTest {
 
     @Test
     void importShips() {
-        String fileName = "csvFiles/bships.csv";
+        String fileName = "csvFiles/sships.csv";
         List<Ship> shipsList = ImportShips.importShips(fileName);
         for (Ship ships : shipsList) {
             shipStore.addShipToAVL(ships);
