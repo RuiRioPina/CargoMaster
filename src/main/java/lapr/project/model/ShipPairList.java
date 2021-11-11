@@ -11,30 +11,18 @@ public class ShipPairList {
    private final List<Double> travelledDistanceList1;
 
     public ShipPairList(ShipStore shipStore) {
-        shipPairList1 = sortShipPairs(shipStore.getCloseShips());
+        shipPairList1 = shipStore.getCloseShips();
 travelledDistanceList1=sortShipList();
 removeRepeats();
 sortByDescendingOrder();
     }
 
-    private List<Pair<Ship, Ship>> sortShipPairs(List<Pair<Ship, Ship>> shipPairList) {
-        List<Pair<Ship, Ship>> pairList = new ArrayList<>();
-        for (Pair<Ship, Ship> shipPair : shipPairList) {
-            if (shipPair.getSecond().getShipId().getMmsi().compareTo(shipPair.getFirst().getShipId().getMmsi()) > 1) {
-                Pair<Ship, Ship> shipPair1 = new Pair<>(shipPair.getSecond(), shipPair.getFirst());
-                pairList.add(shipPair1);
-            } else {
-                pairList.add(shipPair);
-            }
-        }
-        return pairList;
-    }
 
-//    public void printList(){
-//        for (int i=0;i<shipPairList1.size();i++){
-//            System.out.println(shipPairList1.get(i).getFirst().getShipId().getMmsi()+ " "+ shipPairList1.get(i).getSecond().getShipId().getMmsi() + " " + travelledDistanceList1.get(i));
-//        }
-//    }
+    public void printList(){
+        for (int i=0;i<shipPairList1.size();i++){
+           System.out.println(shipPairList1.get(i).getFirst().getShipId().getMmsi()+ " "+ shipPairList1.get(i).getSecond().getShipId().getMmsi() + " " + travelledDistanceList1.get(i));
+        }
+   }
     private List<Double> sortShipList(){
         int n = shipPairList1.size();
         for (int i=0;i<n;i++){
