@@ -1,7 +1,7 @@
 package lapr.project.model;
 
 
-import lapr.project.data.utils.auth.app.App;
+import lapr.project.controller.App;
 import lapr.project.utils.AVL;
 import lapr.project.utils.BST;
 import lapr.project.utils.PrintToFile;

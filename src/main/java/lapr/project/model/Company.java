@@ -1,6 +1,5 @@
-package lapr.project.data.utils.auth.app;
+package lapr.project.model;
 
-import lapr.project.data.utils.auth.AuthFacade;
 import lapr.project.model.ShipStore;
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,7 +12,6 @@ public class Company implements Serializable {
 
     private int numberOfEmployees;
     private final String designation;
-    private final AuthFacade authFacade;
     private final ShipStore shipStore;
 
 
@@ -23,7 +21,7 @@ public class Company implements Serializable {
             throw new IllegalArgumentException("Designation cannot be blank.");
 
         this.designation = designation;
-        this.authFacade = new AuthFacade();
+
     }
 
     /**
@@ -38,12 +36,6 @@ public class Company implements Serializable {
     public String getDesignation() {
         return designation;
     }
-
-    public AuthFacade getAuthFacade() {
-        return authFacade;
-    }
-
-
 
     /**
      * Setter for the number of Employees in the company
