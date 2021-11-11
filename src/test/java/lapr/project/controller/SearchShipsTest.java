@@ -1,6 +1,5 @@
 package lapr.project.controller;
 
-import lapr.project.data.utils.auth.app.App;
 import lapr.project.model.Ship;
 import lapr.project.model.ShipStore;
 import lapr.project.utils.PrintToFile;
