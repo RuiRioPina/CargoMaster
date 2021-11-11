@@ -74,8 +74,8 @@ Ship ship4;
         shipStore.addShipToAVL(ship4);
         shipStore.organizeShipMessage();
         List<Pair<Ship,Ship>> shipPairList2=shipStore.getCloseShips();
-
         shipPairList= new ShipPairList(shipStore);
+
 
 
 
@@ -101,8 +101,21 @@ Ship ship4;
     }
     @Test
     public void getTravelledDistanceList(){
+
+        Pair<Ship,Ship> shipPair1= new Pair<>(ship,ship2);
+        Pair<Ship,Ship> shipPair2= new Pair<>(ship,ship3);
+        Pair<Ship,Ship> shipPair3= new Pair<>(ship2,ship3);
+        Pair<Ship,Ship> shipPair4= new Pair<>(ship4,ship);
+        List<Double> doubles= new ArrayList<>();
+        doubles.add(220.3);
+        List< Double> doubleList0= new ArrayList<>();
+        doubleList0.add(6655.627012147962);
+        doubleList0.add(2203.594184086753);
+        doubleList0.add(4452.032828061209);
         List<Double> travelledDistanceList= shipPairList.getTravelledDistanceList();
         assertEquals(travelledDistanceList,shipPairList.getTravelledDistanceList());
+        assertNotEquals(doubleList0,doubles);
+        assertEquals(doubleList0,travelledDistanceList);
     }
 
 }

@@ -18,11 +18,7 @@ sortByDescendingOrder();
     }
 
 
-    public void printList(){
-        for (int i=0;i<shipPairList1.size();i++){
-           System.out.println(shipPairList1.get(i).getFirst().getShipId().getMmsi()+ " "+ shipPairList1.get(i).getSecond().getShipId().getMmsi() + " " + travelledDistanceList1.get(i));
-        }
-   }
+
     private List<Double> sortShipList(){
         int n = shipPairList1.size();
         for (int i=0;i<n;i++){
