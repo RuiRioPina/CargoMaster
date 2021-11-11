@@ -1,9 +1,6 @@
 package lapr.project.model;
 
-import lapr.project.controller.ImportShips;
-import lapr.project.controller.ShipController;
-import lapr.project.data.utils.auth.app.App;
-import lapr.project.utils.AVL;
+import lapr.project.controller.App;
 import lapr.project.utils.BST;
 import lapr.project.utils.Pair;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +27,6 @@ class ShipStoreTest {
     @Test
     public void organizeMessagesShips() {
         //Example shown with one BST ship, but this method works for all BST ships
-        System.out.println("Before organize temporally");
         BST<Ship> beforeShips = store.getStore();
 
         store.organizeShipMessage();
@@ -44,14 +40,13 @@ class ShipStoreTest {
     public void getPositionOfShipData() {
         Location expected = new Location("54.27307", "-164.07348");
         String expected1 = expected.toString();
-        System.out.println(expected1);
 
         String MMSI = "636019825";
         String baseDateTime = "31/12/2020 23:27";
 
         Location result = store.getPositionOfShipData(MMSI, baseDateTime);
         String result1 = result.toString();
-        System.out.println(result1);
+
         assertEquals(expected1, result1);
         System.out.println("MMSI - " + MMSI + " | Data - " + baseDateTime + '\n' +
                 "Longitude " + result.getLongitude() + " | Latitude " + result.getLatitude());

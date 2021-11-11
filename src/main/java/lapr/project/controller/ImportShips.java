@@ -1,6 +1,5 @@
 package lapr.project.controller;
 
-import lapr.project.data.utils.auth.app.App;
 import lapr.project.model.*;
 
 import java.io.BufferedReader;
