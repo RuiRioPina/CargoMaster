@@ -181,7 +181,7 @@ Create TABLE WarehouseManager(
 );
 
 CREATE Table Ship(
-    mmsi    NUMBER(9,0) CONSTRAINT pk_mmsi        PRIMARY KEY,
+    mmsi    CHAR(9)     CONSTRAINT pk_mmsi        PRIMARY KEY,
     draft   NUMBER(5,3) CONSTRAINT nn_draft       NOT NULL,
     name    VARCHAR(42) CONSTRAINT nn_nameShip    NOT NULL,   
     imo     NUMBER(7,0) CONSTRAINT nn_NumberShip  NOT NULL,
@@ -195,12 +195,12 @@ CREATE Table Ship(
 );
 
 CREATE TABLE PositionShip(
-    mmsi        NUMBER(9,0)  CONSTRAINT pk_mmsiPositionShip        PRIMARY KEY,
+    mmsi        CHAR(9)      CONSTRAINT pk_mmsiPositionShip        PRIMARY KEY,
     latitude    NUMBER(5,3)  CONSTRAINT nn_latitudePositionShip    NOT NULL,
     longitude   NUMBER(6,3)  CONSTRAINT nn_longitudePositionShip   NOT NULL,
     cog         INTEGER      CONSTRAINT nn_cog                     NOT NULL,
     sog         NUMBER(6,3)  CONSTRAINT nn_sog                     NOT NULL,
-    heading     NUMBER(6,3) CONSTRAINT nn_headingPositionShip     NOT NULL,
+    heading     NUMBER(6,3)  CONSTRAINT nn_headingPositionShip     NOT NULL,
     position    NUMBER(9,0)  CONSTRAINT nn_positionPositionShip    NOT NULL,
     transceiver VARCHAR(42)  CONSTRAINT nn_transceiver             NOT NULL,
     CONSTRAINT ck_maxLatitudePositionShip   CHECK(latitude<=90),
@@ -220,6 +220,7 @@ DROP TABLE AMOUNT;
 drop TABLE TraficManager;
 drop TABLE ports;
 drop table Ship;
+drop table PositionShip;
 
 drop table CD;
 drop table MUSICA;
