@@ -50,7 +50,7 @@ Ship ship4;
         route2.add(dynamicEx1);
         route2.add(dynamicEx3);
         route2.add(dynamicEx5);
-         
+
 
         shipStore.organizeShipMessage();
         ShipDynamic dynamicEx11 = (new ShipDynamic("31/12/2020 16:32", new Location("42.70233", "-66.97726"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
@@ -90,8 +90,8 @@ Ship ship4;
         Pair<Ship,Ship> shipPair2= new Pair<>(ship,ship3);
         Pair<Ship,Ship> shipPair3= new Pair<>(ship2,ship3);
 
-        pairList0.add(shipPair1);
         pairList0.add(shipPair2);
+        pairList0.add(shipPair1);
         pairList0.add(shipPair3);
         List<Pair<Ship,Ship>> pairList1=new ArrayList<>();
         Pair<Ship,Ship> shipPair4= new Pair<>(ship4,ship);
