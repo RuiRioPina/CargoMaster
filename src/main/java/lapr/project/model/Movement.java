@@ -5,12 +5,12 @@ import lapr.project.utils.ShipValidation;
 public class Movement {
     private double sog;
     private double cog;
-    private double heading;
+    private String heading;
 
     public Movement() {
     }
 
-    public Movement(Double sog, Double cog, Double heading) {
+    public Movement(Double sog, Double cog, String heading) {
 
         ShipValidation.validateSog(sog);
         ShipValidation.validateCog(cog);
@@ -43,11 +43,11 @@ public class Movement {
         this.cog = cog;
     }
 
-    public Double getHeading() {
+    public String getHeading() {
         return heading;
     }
 
-    public void setHeading(double heading) {
+    public void setHeading(String heading) {
         this.heading = heading;
     }
 

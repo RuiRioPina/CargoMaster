@@ -57,7 +57,7 @@ public class ImportShips {
                 }
             }
         } catch (NullPointerException | IOException | IndexOutOfBoundsException e) {
-            System.out.println("An unexpected error occured. Please check the name of the csv file to import the data.");
+            LOGGER.log(Level.INFO, "An unexpected error occured. Please check the name of the csv file to import the data.");
         } finally {
             try {
                 if (br != null) {
@@ -95,7 +95,7 @@ public class ImportShips {
         String lon = elements[3];
         double sog = Double.parseDouble(elements[4]);
         double cog = Double.parseDouble(elements[5]);
-        double heading = Double.parseDouble(elements[6]);
+        String heading = elements[6];
 
         String cargo = elements[14];
         String transceiverClass = elements[15];

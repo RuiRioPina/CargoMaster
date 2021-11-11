@@ -282,22 +282,22 @@ class ShipValidationTest {
     @Test
     public void validateHeading() {
 
-        movement.setHeading(320);
+        movement.setHeading("320");
         ShipValidation.validateHeading(movement.getHeading());
     }
 
     @Test
     public void validateHeading1() {
 
-        movement.setHeading(359);
+        movement.setHeading("359");
         ShipValidation.validateHeading(movement.getHeading());
-        movement.setHeading(0);
+        movement.setHeading("0");
         ShipValidation.validateHeading(movement.getHeading());
     }
 
     @Test
     public void validateHeadingNotCompliant() {
-        movement.setHeading(380);
+        movement.setHeading("380");
 
         Throwable exception = assertThrows(IllegalArgumentException.class,
                 ()->{ShipValidation.validateHeading(movement.getHeading());} );

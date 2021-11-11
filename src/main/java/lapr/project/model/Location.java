@@ -8,7 +8,13 @@ public class Location {
 
     public Location(String latitude, String longitude) {
         ShipValidation.validateLongitude(longitude);
+        if(longitude.equals("181")) {
+            longitude = "not available";
+        }
         ShipValidation.validateLatitude(latitude);
+        if(latitude.equals("91")) {
+            longitude = "not available";
+        }
         this.longitude = longitude;
         this.latitude = latitude;
     }

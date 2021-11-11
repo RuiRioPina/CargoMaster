@@ -24,7 +24,7 @@ class ShipControllerTest {
         Identification id = new Identification("366980250","BRIAN","IMO8841943","WCP9410");
         ShipCharacteristics ch = new ShipCharacteristics(31,30.0,8.0,3.5);
         Route ro = new Route();
-        Movement mo = new Movement(0.0,195.0,174.0);
+        Movement mo = new Movement(0.0,195.0,"174.0");
         Location lo = new Location("22.34538", "47.57392");
         ShipDynamic s = new ShipDynamic("31/12/2020 13:11",lo,mo,"21","A");
         ro.add(s);
@@ -42,7 +42,7 @@ class ShipControllerTest {
         Identification id = new Identification("366980250","BRIAN","IMO8841943","WCP9410");
         ShipCharacteristics ch = new ShipCharacteristics(31,30.0,8.0,3.5);
         Route ro = new Route();
-        Movement mo = new Movement(0.0,195.0,174.0);
+        Movement mo = new Movement(0.0,195.0,"174.0");
         Location lo = new Location("22.34538", "47.57392");
         ShipDynamic s = new ShipDynamic("31/12/2020 13:11",lo,mo,"21","A");
         ro.add(s);
@@ -59,7 +59,7 @@ class ShipControllerTest {
         Identification id = new Identification("366980250","BRIAN","IMO8841943","WCP9410");
         ShipCharacteristics ch = new ShipCharacteristics(31,30.0,8.0,3.5);
         Route ro = new Route();
-        Movement mo = new Movement(0.0,195.0,174.0);
+        Movement mo = new Movement(0.0,195.0,"174.0");
         Location lo = new Location("22.34538", "47.57392");
         ShipDynamic s = new ShipDynamic("31/12/2020 13:11",lo,mo,"21","A");
         ro.add(s);

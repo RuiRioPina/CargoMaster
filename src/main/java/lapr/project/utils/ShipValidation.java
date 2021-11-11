@@ -87,9 +87,9 @@ public class ShipValidation {
 
     }
 
-    public static void validateHeading(double heading) {
-        if (heading != 511) {
-            if ((heading < 0 || heading > 359)) {
+    public static void validateHeading(String heading) {
+        if (!heading.equals("511")) {
+            if ((Double.parseDouble(heading) < 0 || Double.parseDouble(heading) > 360)) {
                 throw new IllegalArgumentException();
             }
         }
