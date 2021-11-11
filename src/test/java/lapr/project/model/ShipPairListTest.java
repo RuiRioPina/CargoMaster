@@ -50,8 +50,8 @@ Ship ship4;
         route2.add(dynamicEx1);
         route2.add(dynamicEx3);
         route2.add(dynamicEx5);
-         ship2 = new Ship(idShip2, shipCharacteristics, route2);
-       shipStore.addShipToAVL(ship2);
+         
+
         shipStore.organizeShipMessage();
         ShipDynamic dynamicEx11 = (new ShipDynamic("31/12/2020 16:32", new Location("42.70233", "-66.97726"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
         ShipDynamic dynamicEx31 = (new ShipDynamic("31/12/2020 17:03", new Location("32.81133", "-66.97587"), new Movement(13.4, 10.0, "356.0"), "NA", "A"));
@@ -60,7 +60,8 @@ Ship ship4;
         route3.add(dynamicEx11);
         route3.add(dynamicEx31);
         route3.add(dynamicEx51);
-         ship3 = new Ship(idShip3, shipCharacteristics, route3);
+        ship2 = new Ship(idShip2, shipCharacteristics, route3);
+         ship3 = new Ship(idShip3, shipCharacteristics, route2);
        shipStore.addShipToAVL(ship3);
        shipStore.organizeShipMessage();
         ShipDynamic dynamicEx12 = (new ShipDynamic("31/12/2020 17:03", new Location("02.92235", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
@@ -72,9 +73,11 @@ Ship ship4;
         route4.add(dynamicEx52);
          ship4 = new Ship(idShip4, shipCharacteristics, route4);
         shipStore.addShipToAVL(ship4);
+        shipStore.addShipToAVL(ship2);
         shipStore.organizeShipMessage();
         List<Pair<Ship,Ship>> shipPairList2=shipStore.getCloseShips();
         shipPairList= new ShipPairList(shipStore);
+
 
 
 
