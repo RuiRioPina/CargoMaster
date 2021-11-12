@@ -11,11 +11,13 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class ShipStore {
     private AVL<Ship> store = new AVL<>();
-
+    private static final Logger LOGGER = Logger.getLogger("MainLog");
 
     public void addShipToAVL(Ship ship) {
         store.insert(ship);
@@ -48,7 +50,7 @@ public class ShipStore {
         try {
             PrintToFile.print(store.inOrder().toString(), fileToBeWrittenTo);
         } catch (IllegalArgumentException | IOException e) {
-            System.out.println("Error");
+            LOGGER.log(Level.INFO, "An unexpected error occured.");
         }
     }
 
@@ -178,7 +180,7 @@ public class ShipStore {
         try {
             PrintToFile.printB(sout, fileToBeWrittenTo);
         } catch (IllegalArgumentException e) {
-            System.out.println("Error");
+            LOGGER.log(Level.INFO, "An unexpected error occured.");
         }
 
         return map2;
