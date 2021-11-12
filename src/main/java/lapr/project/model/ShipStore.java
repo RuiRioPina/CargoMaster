@@ -191,10 +191,7 @@ public class ShipStore {
                 for (Ship ship2 : store.inOrder()) {
                     if (ship.isClose(ship2)) {
                         Pair<Ship, Ship> pair1 = new Pair<>(ship, ship2);
-                        Pair<Ship, Ship> pair2 = new Pair<>(ship2, ship);
-                        if (!(pairList.contains(pair1)) || !(pairList.contains(pair2))) {
                             pairList.add(pair1);
-                        }
                     }
                 }
             }
