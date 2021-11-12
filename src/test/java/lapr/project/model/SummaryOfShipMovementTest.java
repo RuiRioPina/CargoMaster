@@ -1,10 +1,12 @@
 package lapr.project.model;
 
+import lapr.project.controller.ImportShips;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
 import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,5 +67,25 @@ public class SummaryOfShipMovementTest {
     public void getMapValue(){
         String expected="210950000";
         assertEquals(summaryOfShipMovement.getMapValue("MMSI"),expected);
+        String expected2="0D1H21M";
+        assertEquals(summaryOfShipMovement.getMapValue("Total Movement Time"),expected2);
+        String expected3= "1H21M";
+        assertNotEquals(summaryOfShipMovement.getMapValue("Total Movement Time"),expected);
+    }
+    @Test
+    public void testForBships(){
+        ShipStore shipStore= new ShipStore();
+        String fileName = "csvFiles/bships.csv";
+        List<Ship> shipsList = ImportShips.importShips(fileName);
+        for (Ship ships : shipsList) {
+            shipStore.addShipToAVL(ships);
+        }
+        shipStore.organizeShipMessage();
+        for (Ship ships: shipStore.getStore().inOrder()) {
+            SummaryOfShipMovement summaryOfShipMovement= new SummaryOfShipMovement(ships);
+            System.out.println(summaryOfShipMovement.toString());
+            System.out.println("/////////////////////////");
+        }
+
     }
 }
