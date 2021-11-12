@@ -52,7 +52,7 @@ public class Route {
     public double getMaxSog(){
         double temp=0;
         for (ShipDynamic shipd: route) {
-            if (shipd.getSog()>=temp){
+            if (shipd.getSog()>temp){
                 temp=shipd.getSog();
             }
         }
@@ -61,7 +61,7 @@ public class Route {
     public double getMaxCog(){
         double temp=0;
         for (ShipDynamic shipd: route) {
-            if (shipd.getCog()>=temp){
+            if (shipd.getCog()>temp){
                 temp=shipd.getCog();
             }
         }

@@ -1,5 +1,6 @@
 package lapr.project.model;
 
+import lapr.project.controller.App;
 import lapr.project.controller.ImportShips;
 import lapr.project.utils.Pair;
 import org.junit.jupiter.api.BeforeEach;
@@ -100,6 +101,13 @@ Ship ship4;
         assertEquals(pairList,shipPairList.getShipPairList());
         assertNotEquals(pairList1,pairList);
         assertEquals(pairList0,pairList);
+        ShipStore shipStore1= App.getInstance().getCompany().getShipStore();
+
+        shipStore1.organizeShipMessage();
+        ShipPairList shipPairList= new ShipPairList(shipStore1);
+        List<Pair<Ship,Ship>> shipl= shipPairList.getShipPairList();
+       assertNotEquals(shipl,App.getInstance().getCompany().getShipStore().getCloseShips());
+       assertEquals(shipl,shipPairList.getShipPairList());
 
     }
     @Test
