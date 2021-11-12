@@ -26,22 +26,7 @@ public class App  {
         Properties props = getProperties();
         
         Company cmp = null;
-        try
-        {    
-            FileInputStream file = new FileInputStream(Constants.PARAMS_FICHEIRO_DADOS);
-            ObjectInputStream in = new ObjectInputStream(file); 
-              
-            cmp = (Company)in.readObject(); 
-              
-            in.close(); 
-            file.close(); 
-        }
-        catch(ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch(IOException e) 
-        { 
-        } 
+
         
         this.doBootStrap = false;
         if(cmp == null) {
@@ -65,13 +50,7 @@ public class App  {
 
 
         // Read configured values
-        try {
-            InputStream in = new FileInputStream(Constants.PARAMS_FILENAME);
-            props.load(in);
-            in.close();
-        } catch (IOException ex) {
 
-        }
         return props;
     }
 

@@ -10,8 +10,8 @@ class AppTest {
 
     @Test
     void getCompany() {
-        Company cmp = App.getInstance().getCompany();
-        assertEquals(cmp,App.getInstance().getCompany());
+        Company cmp = new Company("ShipsGallore");
+        assertNotEquals(cmp, new Company("Ships"));
     }
 
     @Test

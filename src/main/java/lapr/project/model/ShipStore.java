@@ -63,8 +63,9 @@ public class ShipStore {
                 }
         }
 
-        assert location != null;
-        return location;
+        if (location != null) {
+            return location;
+        } else return new Location("0","0");
     }
 
     public List<Location> getPositionOfShipPeriod(String mMSI, String baseDateTime1, String baseDateTime2) throws ParseException {
@@ -182,6 +183,7 @@ public class ShipStore {
 
         return map2;
     }
+
 
 
     public List<Pair<Ship, Ship>> getCloseShips() {

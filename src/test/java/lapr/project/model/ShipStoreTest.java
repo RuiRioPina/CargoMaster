@@ -3,6 +3,7 @@ package lapr.project.model;
 import lapr.project.controller.App;
 import lapr.project.utils.BST;
 import lapr.project.utils.Pair;
+import lapr.project.utils.PrintToFile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +38,7 @@ class ShipStoreTest {
     }
 
     @Test
-    public void getPositionOfShipData() {
+    public void getPositionOfShipData() throws IOException {
         Location expected = new Location("54.27307", "-164.07348");
         String expected1 = expected.toString();
 
@@ -45,15 +46,18 @@ class ShipStoreTest {
         String baseDateTime = "31/12/2020 23:27";
 
         Location result = store.getPositionOfShipData(MMSI, baseDateTime);
+        Location error = store.getPositionOfShipData("333333333","31/12/2020 23:27");
         String result1 = result.toString();
 
         assertEquals(expected1, result1);
-        System.out.println("MMSI - " + MMSI + " | Data - " + baseDateTime + '\n' +
+        assertEquals(new Location("0","0").toString(),error.toString());
+        String uf = ("MMSI - " + MMSI + " | Data - " + baseDateTime + '\n' +
                 "Longitude " + result.getLongitude() + " | Latitude " + result.getLatitude());
+        PrintToFile.print(uf,"positionOfShipData.txt");
     }
 
     @Test
-    public void getPositionOfShipPeriod() throws ParseException {
+    public void getPositionOfShipPeriod() throws ParseException, IOException {
         Location l1 = new Location("42.7698", "-66.9759");
         Location l2 = new Location("42.77682", "-66.9756");
         Location l3 = new Location("42.7969", "-66.97547");
@@ -74,17 +78,19 @@ class ShipStoreTest {
 
         List<Location> result = store.getPositionOfShipPeriod(MMSI, baseDateTime1, baseDateTime2);
         assertEquals(locations.toString(), result.toString());
-        System.out.println("MMSI - " + MMSI + " | Period - " + baseDateTime1 + "  " + baseDateTime2);
-        for (int i = 0; i < result.size(); i++) {
-            System.out.println("Longitude " + result.get(i).getLongitude() + " | Latitude " + result.get(i).getLatitude());
+        StringBuilder uf = new StringBuilder();
+        uf.append("MMSI - ").append(MMSI).append(" | Period - ").append(baseDateTime1).append("  ").append(baseDateTime2).append('\n');
+        for (Location location : result) {
+            uf.append("Longitude ").append(location.getLongitude()).append(" | Latitude ").append(location.getLatitude()).append('\n');
         }
+        PrintToFile.printB(uf,"positionOfShipPeriod.txt");
     }
 
     @Test
     public void getTopNShipsSMALL() throws ParseException, IOException {
-         Map <Integer, List <Ship> > exp = new HashMap<>();
-         List <Ship> ship1 = new ArrayList<>();
-         store.organizeShipMessage();
+        Map <Integer, List <Ship> > exp = new HashMap<>();
+        List <Ship> ship1 = new ArrayList<>();
+        store.organizeShipMessage();
         for (Ship ship : store.getStore().inOrder()) {
             ship1.add(ship);
         }
