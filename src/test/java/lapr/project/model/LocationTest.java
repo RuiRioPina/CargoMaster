@@ -21,6 +21,27 @@ class LocationTest {
         route.add(new ShipDynamic("31/12/2020 17:33", new Location("43.02665", "-66.97076"), new Movement(12.5, 3.6, "354.0"), "NA", "A"));
         ship = new Ship(idShip,shipCharacteristics,route);
     }
+
+    @Test
+    public void testNotAvailable() {
+        Location location = new Location("30","181");
+        String actual = location.getLongitude();
+        String expected = "not available";
+        assertEquals(actual,expected);
+    }
+
+    @Test
+    public void testNotAvailable1() {
+
+        Location location = new Location("91","30");
+        String actual = location.getLatitude();
+        String expected = "not available";
+        assertEquals(expected,actual);
+    }
+
+
+
+
     @Test
     public void killRemoveCallTo1() {
 
@@ -62,7 +83,16 @@ class LocationTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testToString1() {
+        //Arrange
+        //Act
 
+        String actual = ship.getRoute().getRoute().get(0).getLocation().toString();
+        String expected = "Location{longitude=-66.97076, latitude=43.02665}";
+        //Assert
+        assertEquals(expected, actual);
+    }
 
     @Test
     public void testToString() {

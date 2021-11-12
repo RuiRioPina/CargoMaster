@@ -13,7 +13,7 @@ public class Location {
         }
         ShipValidation.validateLatitude(latitude);
         if(latitude.equals("91")) {
-            longitude = "not available";
+            latitude = "not available";
         }
         this.longitude = longitude;
         this.latitude = latitude;
