@@ -29,11 +29,9 @@ public class App  {
 
         
         this.doBootStrap = false;
-        if(cmp == null) {
-        	cmp = new Company(props.getProperty(Constants.PARAMS_COMPANY_DESIGNATION));
-        	this.doBootStrap = true;
-        }
-        
+        cmp = new Company(props.getProperty(Constants.PARAMS_COMPANY_DESIGNATION));
+        this.doBootStrap = true;
+
         this.company = cmp;
     }
 
