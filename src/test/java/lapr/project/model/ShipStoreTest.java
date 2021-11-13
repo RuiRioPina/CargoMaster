@@ -106,7 +106,7 @@ class ShipStoreTest {
         exp.put(60,ship4);
         exp.put(70,ship3);
         exp.put(80,ship2);
-        Map<Integer, List <Ship> > res = store.getTopNShips(2,"31/12/2021 00:00","31/12/2021 23:59");
+        Map<Integer, List <Ship> > res = store.getTopNShips(2,"31/12/2020 00:00","31/12/2020 23:59");
         //assertEquals(res,exp);
     }
 
@@ -144,6 +144,19 @@ class ShipStoreTest {
     public void getCloseShips(){
     List<Pair<Ship,Ship>> actualList=store.getCloseShips();
     assertEquals(actualList,store.getCloseShips());
+    }
+
+    @Test
+    public void getSize () {
+        int a = 0;
+        assertNotEquals(a,store.size());
+    }
+
+    @Test
+    public void getTopNShipsMut () throws ParseException, IOException {
+        Map<Integer, List <Ship> > res = store.getTopNShips(2,"31/12/2021 09:00","31/12/2021 10:00");
+        Map<Integer, List <Ship> > not = new HashMap<>();
+        assertNotEquals(res,not);
     }
 
 }
