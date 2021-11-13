@@ -12,7 +12,6 @@ public class Movement {
 
     public Movement(Double sog, Double cog, String heading) {
 
-        ShipValidation.validateSog(sog);
         ShipValidation.validateCog(cog);
         ShipValidation.validateHeading(heading);
         this.sog = sog;

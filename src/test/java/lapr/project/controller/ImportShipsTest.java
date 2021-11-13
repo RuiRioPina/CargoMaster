@@ -26,6 +26,15 @@ class ImportShipsTest {
         }
         assertEquals(shipStore.getStore().smallestElement(), shipStore.getStore().smallestElement());
     }
+    @Test
+    void importShips45() {
+        String fileName = "csvFiles/bships.csv";
+        List<Ship> shipsList = ImportShips.importShips(fileName);
+        for (Ship ships : shipsList) {
+            shipStore.addShipToAVL(ships);
+        }
+        assertEquals(shipStore.getStore().smallestElement(), shipStore.getStore().smallestElement());
+    }
 
     @Test
     void importShips1() {

@@ -73,12 +73,7 @@ public class ShipValidation {
         }
     }
 
-    public static void validateSog(double sog) {
-        if (sog < 0.0) {
-            throw new IllegalArgumentException();
-        }
 
-    }
 
     public static void validateCog(double cog) {
         if (cog > 359) {

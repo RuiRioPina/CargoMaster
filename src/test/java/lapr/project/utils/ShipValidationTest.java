@@ -240,25 +240,6 @@ class ShipValidationTest {
     }
 
     @Test
-    public void validateSog() {
-        movement.setSog(10);
-        ShipValidation.validateSog(movement.getSog());
-    }
-
-    @Test
-    public void validateSog1() {
-        movement.setSog(0);
-        ShipValidation.validateSog(movement.getSog());
-    }
-
-    @Test
-    public void validateSogNotCompliant() {
-        movement.setSog(-30);
-        Throwable exception = assertThrows(IllegalArgumentException.class,
-                ()->{ShipValidation.validateSog(movement.getSog());} );
-    }
-
-    @Test
     public void validateCog() {
         movement.setCog(300);
         ShipValidation.validateCog(movement.getCog());
