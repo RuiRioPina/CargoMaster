@@ -64,7 +64,7 @@ public class ImportShips {
                     br.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.INFO, "-");
             }
 
         }
