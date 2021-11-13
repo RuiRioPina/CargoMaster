@@ -192,7 +192,161 @@ a message will appear warning the user that no ship was found with that code.
 
 The AVL was the chosen solution since it has a more efficient way of searching a ship [O(nlogn)] than a BST [O(n^2)] or another type of structure.
 
+## US104 
 
+## As a traffic manager I wish to make a Summary of a ship's movements.
+
+## Analysis
+
+# System Sequence Diagram
+
+![US104_SSD](/docs/US104/US_104_SSD.svg)
+
+The traffic manager types the code for the ship and the system creates tha map with that ship's data.
+
+### Domain Model Diagram
+![US104_DM](/docs/US104/US_104_DM.svg)
+
+### Design
+
+### Class Diagram
+![US104_CD](/docs/US104/US104_CD.svg)
+
+The System receives a Ship and using its data gathers the data necessary to create the summary. Therefore practically all methods in this class diagram only retrieve and manipulate date.
+
+### Sequence Diagram
+![US104_SD](/docs/US104/US104_SD.svg)
+
+The system starts by receiving a ship, then creates an empty map and puts all the data in it, after that it returns the filled map.
+
+## Implementation
+### Creation of the map
+	public SummaryOfShipMovement(Ship ship){
+	this.ship=ship;
+	this.summaryMap=new HashMap<>();
+	summaryMap.put("MMSI",ship.getShipId().getMmsi());
+	summaryMap.put("Vessel Name",ship.getShipId().getShipName());
+	summaryMap.put("Start Base Date Time",ship.getStartBaseDateTime());
+	summaryMap.put("End Base Date Time",ship.getEndBaseDateTime());
+	summaryMap.put("Total Movement Time",calculateTravelTime());
+	summaryMap.put("Total Number Of Movements",String.format("%d",ship.getRoute().getSize()));
+	summaryMap.put("Max SOG",String.format("%.2f",ship.getRoute().getMaxSog()));
+	summaryMap.put("Mean SOG",String.format("%.2f",ship.getRoute().getMeanSog()));
+	summaryMap.put("Max COG",String.format("%.2f",ship.getRoute().getMaxCog()));
+	summaryMap.put("Mean COG",String.format("%.2f",ship.getRoute().getMeanCog()));
+	summaryMap.put("Travelled Distance",String.format("%.4f km",ship.getRoute().getTravelledDistance()));
+	summaryMap.put("Delta Distance",String.format("%.4f km",ship.getRoute().getDeltaDistance()));
+    }
+	
+### Example of a get() method
+public double getMaxCog(){
+        double temp=0;
+        for (ShipDynamic shipd: route) {
+            if (shipd.getCog()>temp){
+                temp=shipd.getCog();
+            }
+        }
+        return temp;
+    }
+
+##  Review
+
+I used a map to store the data so that a certain piece of the summary could be retrieved depending on the traffic manager's wishes.
+
+## US107 
+
+## As a Traffic manager, I want to return pairs of ships with routes with close departure/arrival coordinates (no more than 5 Kms away) and with different Travelled Distance.
+
+## Analysis
+
+# System Sequence Diagram
+
+![US107_SSD](/docs/US107/US_107_SSD.svg)
+
+The traffic manager receive a list of all the pairs of ships that are within the program and meet those conditions
+
+### Domain Model Diagram
+![US107_DM](/docs/US107/US_107_DM.svg)
+
+### Design
+
+### Class Diagram
+![US104_C7](/docs/US107/US107_CD.svg)
+
+There´s a method that checks if a ship fits the conditions asked by the traffic manager and another one that gets the travelled distance difference , after that a list of Pairs is created to
+store those pairs, after that there are methods that sort the list according to the acceptance criteria.
+
+### Sequence Diagram
+![US107_SD](/docs/US104/US107_SD.svg)
+
+The system starts by creating a list of the pair of ships and then creates another list with the travelled distance difference. After that it sorts bothe lists according to the acceptance 
+criteria. 
+
+## Implementation
+### Checking if a ship is close
+	public boolean isClose(Ship ship){
+        if (Route.distance(this.route.getDepartureLat(),this.route.getDepartureLong(),ship.getRoute().getDepartureLat(),ship.getRoute().getDepartureLong())>5){
+            return false;
+        }
+        if (Route.distance(this.route.getArrivalLat(),this.route.getArrivalLong(),ship.getRoute().getArrivalLat(),ship.getRoute().getArrivalLong())>5){
+            return false;
+        }
+        if (Route.distance(this.route.getArrivalLat(),this.route.getArrivalLong(),ship.getRoute().getArrivalLat(),ship.getRoute().getArrivalLong())==0){
+            return false;
+        }
+        return true;
+    }
+	
+### Creating the list 
+	public List<Pair<Ship, Ship>> getCloseShips() {
+        List<Pair<Ship, Ship>> pairList = new ArrayList<>();
+        for (Ship ship : store.inOrder()) {
+            if (ship.getRoute().getTravelledDistance() > 10) {
+                for (Ship ship2 : store.inOrder()) {
+                    if (ship.isClose(ship2)) {
+                        Pair<Ship, Ship> pair1 = new Pair<>(ship, ship2);
+                        pairList.add(pair1);
+                    }
+                }
+            }
+        }
+        return pairList;
+    }
+
+### Part of the sorting
+	private void sortByDescendingOrder(){
+        int cont =0;
+
+        for (int i=0;i<travelledDistanceList1.size();i++){
+            int j=i;
+            while (Integer.parseInt(shipPairList1.get(j).getFirst().getShipId().getMmsi())==Integer.parseInt(shipPairList1.get(i).getFirst().getShipId().getMmsi())){
+                cont++;
+                 j++;
+                 if (j==travelledDistanceList1.size()){
+                     break;
+                 }
+            }
+            if (cont>1) {
+                for (int b = i; b < i + cont; b++) {
+                    for (int d = i + 1; d < (i + cont ); d++) {
+                        if (travelledDistanceList1.get(d - 1) <= travelledDistanceList1.get(d)) {
+                            Pair<Ship, Ship> tempShip = new Pair<>(shipPairList1.get(d - 1).getFirst(), shipPairList1.get(d - 1).getSecond());
+                            double tempDouble = travelledDistanceList1.get(d - 1);
+                            shipPairList1.set(d - 1, shipPairList1.get(d));
+                            travelledDistanceList1.set(d - 1, travelledDistanceList1.get(d));
+                            shipPairList1.set(d, tempShip);
+                            travelledDistanceList1.set(d, tempDouble);
+                        }
+                    }
+                }
+            }
+            cont=0;
+        }
+    }
+	
+##  Review
+
+The sorting methods may be a little overcomplicated.
 
 ## US109
 
