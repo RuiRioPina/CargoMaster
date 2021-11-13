@@ -295,7 +295,7 @@ class ShipTest {
         assertFalse(route1.equals(o1));
         assertTrue(route1.equals(o));
         assertFalse(route1.equals(null));
-        assertNotEquals(route.getTravelledDistance(),78);
+        assertNotEquals(ship.getRouteTravelledDistance(),78);
     }
 
     @Test
