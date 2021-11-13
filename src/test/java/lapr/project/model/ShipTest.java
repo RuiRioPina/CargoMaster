@@ -276,28 +276,7 @@ class ShipTest {
         boolean actual = this.ship.compareTo(ship) < 0;
         assertEquals(expected, actual);
     }
-
-    @Test
-    public void testEquals() {
-        Identification identificationShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
-        ShipCharacteristics shipsCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
-        Route route1 = new Route();
-        route1.add(dynamic);
-        Ship ship = new Ship(identificationShip, shipsCharacteristics, route1);
-
-        boolean expected = true;
-        boolean actual = this.ship.equals(ship);
-        assertEquals(expected, actual);
-        Object o = route1;
-        Object o1 = null;
-        assertFalse(route1.equals(new Object()));
-        assertTrue(route1.equals(route1));
-        assertFalse(route1.equals(o1));
-        assertTrue(route1.equals(o));
-        assertFalse(route1.equals(null));
-        assertNotEquals(route.getTravelledDistance(),78);
-    }
-
+    
     @Test
     public void testEqualsNotCompliant() {
         Identification identificationShip = new Identification("510000000", "VARAMO", "IMO9395044", "C4SQ2");

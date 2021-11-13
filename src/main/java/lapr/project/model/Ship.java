@@ -79,13 +79,6 @@ public class Ship implements Comparable<Ship> {
         return this.getShipId().getMmsi().compareTo(ship.getShipId().getMmsi());
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Ship ship = (Ship) o;
-        return Objects.equals(shipId, ship.shipId) && Objects.equals(characteristics, ship.characteristics) && Objects.equals(route, ship.route);
-    }
 
     @Override
     public int hashCode() {
