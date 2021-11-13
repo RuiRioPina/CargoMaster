@@ -1,11 +1,10 @@
-package lapr.project.model;
+package lapr.project.data;
 
 
-import lapr.project.controller.App;
-import lapr.project.utils.AVL;
-import lapr.project.utils.BST;
-import lapr.project.utils.PrintToFile;
-import lapr.project.utils.Pair;
+import lapr.project.model.Location;
+import lapr.project.model.Ship;
+import lapr.project.model.ShipDynamic;
+import lapr.project.utils.*;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -99,6 +98,7 @@ public class ShipStore {
             ship2.add(ships);
         }
         shipAVL = reorganizeShipAVLAccordingToTheCode(ship2);
+        Ship ship1;
         for (Ship value : shipAVL.posOrder()) {
             s = shipAVL.find(value);
             if (s.getElement().getShipId().getImoID().equals(code) || s.getElement().getShipId().getCallsign().equals(code)

@@ -1,6 +1,7 @@
 package lapr.project.model;
 
 import lapr.project.controller.ImportShips;
+import lapr.project.data.ShipStore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

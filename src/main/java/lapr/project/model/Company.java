@@ -1,6 +1,6 @@
 package lapr.project.model;
 
-import lapr.project.model.ShipStore;
+import lapr.project.data.ShipStore;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
