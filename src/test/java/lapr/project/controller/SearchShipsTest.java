@@ -1,7 +1,7 @@
 package lapr.project.controller;
 
 import lapr.project.model.Ship;
-import lapr.project.data.ShipStore;
+import lapr.project.model.ShipStore;
 import lapr.project.utils.PrintToFile;
 import org.junit.jupiter.api.Test;
 

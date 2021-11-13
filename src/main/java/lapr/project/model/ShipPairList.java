@@ -1,7 +1,6 @@
 package lapr.project.model;
 
 
-import lapr.project.data.ShipStore;
 import lapr.project.utils.Pair;
 
 import java.util.ArrayList;

@@ -32,9 +32,9 @@ class MovementTest {
 
     @Test
     void convertCog() {
-        new Movement(30.0,0.0,"30.0");
-        new Movement(30.0,-1.0,"30.0");
-        new Movement(30.0,1.0,"30.0");
+        new Movement(30.0,0.0,"30.0").convertCogAndHeading(0.0);
+        new Movement(30.0,0.0,"30.0").convertCogAndHeading(-1.0);
+        new Movement(30.0,0.0,"30.0").convertCogAndHeading(1.0);
     }
 
     @Test
