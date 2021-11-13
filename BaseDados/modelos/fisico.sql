@@ -4,18 +4,18 @@ CREATE TABLE Client(
 );
 
 CREATE TABLE Amount(
-    idAmount        INTEGER         CONSTRAINT pk_Amount_idAmount        PRIMARY KEY,
-    maxWeight       NUMBER(5,3)     CONSTRAINT nn_Amount_maxWeight       NOT NULL,
-    weightEmpty     NUMBER(4,3)     CONSTRAINT nn_Amount_weightEmpty     NOT NULL,
-    maxWeightPacked NUMBER(5,3)     CONSTRAINT nn_Amount_maxWeightPacked NOT NULL,
-    maxVolume       NUMBER(5,3)     CONSTRAINT nn_Amount_maxVolume       NOT NULL,
+    idAmount        INTEGER          CONSTRAINT pk_Amount_idAmount        PRIMARY KEY,
+    maxWeight       NUMBER(10,2)     CONSTRAINT nn_Amount_maxWeight       NOT NULL,
+    weightEmpty     NUMBER(10,2)     CONSTRAINT nn_Amount_weightEmpty     NOT NULL,
+    maxWeightPacked NUMBER(10,2)     CONSTRAINT nn_Amount_maxWeightPacked NOT NULL,
+    maxVolume       NUMBER(10,2)     CONSTRAINT nn_Amount_maxVolume       NOT NULL,
     CONSTRAINT ck_Amount_maxWeightPacked   CHECK(maxWeightPacked<=maxWeight)
 );
 
 CREATE TABLE Dimension(
-    idDimension  INTEGER        CONSTRAINT   pk_Dimension_idDimensions  PRIMARY KEY,
-    lenght       NUMBER(5,3)    CONSTRAINT   nn_Dimension_lenght        NOT NULL,
-    height       NUMBER(5,3)    CONSTRAINT   nn_Dimension_height        NOT NULL
+    idDimension  INTEGER         CONSTRAINT   pk_Dimension_idDimensions  PRIMARY KEY,
+    lenght       NUMBER(10,2)    CONSTRAINT   nn_Dimension_lenght        NOT NULL,
+    height       NUMBER(10,2)    CONSTRAINT   nn_Dimension_height        NOT NULL
 );
 
 CREATE TABLE Container(
@@ -31,7 +31,7 @@ CREATE TABLE NumberContainer(
     equipmentIdentifier VARCHAR(1) CONSTRAINT  nn_NumberContainer_equipmentIdentifier   NOT NULL,
     serialNumber        VARCHAR(6) CONSTRAINT  nn_NumberContainer_serialNumber          NOT NULL,
     checkDigit          VARCHAR(1) CONSTRAINT  nn_NumberContainer_checkDigit            NOT NULL,
-    iso                 VARCHAR(4) CONSTRAINT  nn_NumberContainer_iso                   NOT NULL,
+    iso                 VARCHAR(4) CONSTRAINT  pk_NumberContainer_iso                   PRIMARY KEY,
     CONSTRAINT  uk_NumberContainer_ownerPrefix              UNIQUE(ownerPrefix),
     CONSTRAINT  uk_NumberContainer_serialNumber             UNIQUE(serialNumber),
     CONSTRAINT  uk_NumberContainer_chekDigit                UNIQUE(checkDigit),
@@ -44,25 +44,26 @@ CREATE TABLE Local(
 );
 
 CREATE TABLE Energy(
-    idEnergy     INTEGER      CONSTRAINT  pk_Energy_idEnergy       PRIMARY kEY,
-    nrGenerators INTEGER      CONSTRAINT  nn_Energy_nrGerators     NOT NULL,
-    power        NUMBER(6,3)  CONSTRAINT  nn_Energy_power          NOT NULL
+    idEnergy     INTEGER       CONSTRAINT  pk_Energy_idEnergy       PRIMARY kEY,
+    nrGenerators INTEGER       CONSTRAINT  nn_Energy_nrGerators     NOT NULL,
+    power        NUMBER(10,2)  CONSTRAINT  nn_Energy_power          NOT NULL
 );
 
 CREATE TABLE Measure(
     idMeasure   INTEGER         CONSTRAINT  pk_Measure_idMeasure     PRIMARY KEY,
-    lenght      NUMBER(5,3)     CONSTRAINT  nn_Measure_lenghtMeasure NOT NULL,
-    Weight      NUMBER(5,3)     CONSTRAINT  nn_Measure_weight        NOT NULL,
-    capacity    NUMBER(5,3)     CONSTRAINT  nn_Measure_capacity      NOT NULL
+    lenght      NUMBER(10,2)     CONSTRAINT  nn_Measure_lenghtMeasure NOT NULL,
+    Weight      NUMBER(10,2)     CONSTRAINT  nn_Measure_weight        NOT NULL,
+    capacity    NUMBER(10,2)     CONSTRAINT  nn_Measure_capacity      NOT NULL
 );
 
 CREATE TABLE Worker(
     idWorker         INTEGER        CONSTRAINT  pk_Worker_idWorker         PRIMARY KEY,
     name             VARCHAR(42)    CONSTRAINT  nn_Worker_nameWorker       NOT NULL,
-    walled           VARCHAR(200)   CONSTRAINT  nn_Worker_walled           NOT NULL,
+    address           VARCHAR(200)   CONSTRAINT  nn_Worker_walled           NOT NULL,
     phoneNumber      NUMBER(9,0)    CONSTRAINT  nn_Worker_phoneNumber      NOT NULL,
     nrIdentification INTEGER        CONSTRAINT  nn_Worker_nrIdentification NOT NULL,
-    CONSTRAINT uk_nrIdentification   UNIQUE(nrIdentification)
+    CONSTRAINT uk_nrIdentification      UNIQUE(nrIdentification),
+    CONSTRAINT ck_reg_Woker_phoneNumber CHECK(REGEXP_LIKE(PhoneNumber, '[0-9]{9}') )
 );
 
 CREATE TABLE TraficManager(
@@ -78,10 +79,10 @@ CREATE TABLE Position(
 );
 
 CREATE TABLE UnloadManifest(
-    idUnderloadManifest INTEGER     CONSTRAINT  pk_UnloadManifest_idUnderloadManifest PRIMARY KEY,
-    grossWeight         NUMBER(5,3) CONSTRAINT  nn_UnloadManifest_grossWeightUnload   NOT NULL,
-    idLocal             INTEGER     REFERENCES  Local(idLocal),
-    idPosition          INTEGER     REFERENCES  Position(idPosition)
+    idUnderloadManifest INTEGER      CONSTRAINT  pk_UnloadManifest_idUnderloadManifest PRIMARY KEY,
+    grossWeight         NUMBER(10,2) CONSTRAINT  nn_UnloadManifest_grossWeightUnload   NOT NULL,
+    idLocal             INTEGER      REFERENCES  Local(idLocal),
+    idPosition          INTEGER      REFERENCES  Position(idPosition)
 );
 
 CREATE TABLE Vehicle(
@@ -90,11 +91,11 @@ CREATE TABLE Vehicle(
 );
 
 CREATE TABLE LoadManifest(
-    idLoadManifest INTEGER      CONSTRAINT  pk_LoadManifest_idLoadManifest   PRIMARY KEY,
-    grossWeight    NUMBER(5,3)  CONSTRAINT  nn_LoadManifest_grossWeightLoad  NOT NULL,
-    iso            VARCHAR(4)   REFERENCES Container(iso),
-    idPosition     INTEGER      REFERENCES Position(idPosition),
-    idVehicle      INTEGER      REFERENCES Vehicle(idVehicle)
+    idLoadManifest INTEGER       CONSTRAINT  pk_LoadManifest_idLoadManifest   PRIMARY KEY,
+    grossWeight    NUMBER(10,2)  CONSTRAINT  nn_LoadManifest_grossWeightLoad  NOT NULL,
+    iso            VARCHAR(4)    REFERENCES Container(iso),
+    idPosition     INTEGER       REFERENCES Position(idPosition),
+    idVehicle      INTEGER       REFERENCES Vehicle(idVehicle)
 );
 
 CREATE TABLE Port(
@@ -106,7 +107,7 @@ CREATE TABLE Port(
     idLocal     INTEGER     CONSTRAINT  pk_idLocalPorts     PRIMARY KEY,
     CONSTRAINT ck_Port_maxLatitude   CHECK(latitude<=90),
     CONSTRAINT ck_Port_minLatitude   CHECK(latitude>=-90),
-    CONSTRAINT ck_Port_maxLongitude  CHECK(longitude<=-180),
+    CONSTRAINT ck_Port_maxLongitude  CHECK(longitude<=180),
     CONSTRAINT ck_Port_minLongitude  CHECK(longitude>=-180)
 );
 
@@ -119,7 +120,7 @@ CREATE TABLE Warehouse(
     idLocal     INTEGER     CONSTRAINT pk_Warehouse_idLocalWarehouse      PRIMARY KEY,
     CONSTRAINT ck_Warehouse_maxLatitude   CHECK(latitude<=90),
     CONSTRAINT ck_Warehouse_minLatitude   CHECK(latitude>=-90),
-    CONSTRAINT ck_Warehouse_maxLongitude  CHECK(longitude<=-180),
+    CONSTRAINT ck_Warehouse_maxLongitude  CHECK(longitude<=180),
     CONSTRAINT ck_Warehouse_minLongitude  CHECK(longitude>=-180)
 );
 
@@ -140,9 +141,9 @@ CREATE TABLE ChiefEletrical(
     idWorker         INTEGER        REFERENCES Worker(idWorker)
 );
 
-CREATE TABLE ShipCaptian(
-    qualification VARCHAR(42)  CONSTRAINT  nn_ShipCaptian_qualificationShipCaptian   NOT NULL,
-    idWorker      INTEGER      CONSTRAINT  pk_ShipCaptian_idWorkerShipCaptian        PRIMARY KEY
+CREATE TABLE ShipCaptain(
+    qualification VARCHAR(42)  CONSTRAINT  nn_ShipCaptain_qualificationShipCaptain  NOT NULL,
+    idWorker      INTEGER      CONSTRAINT  pk_ShipCaptain_idWorkerShipCaptain      PRIMARY KEY
 );
 
 CREATE TABLE FleetManager(
@@ -180,7 +181,7 @@ CREATE Table Ship(
     idMeasure           REFERENCES Measure(idMeasure),
     idEnergy            REFERENCEs Energy(idEnergy),
     idChiefEletrical    REFERENCES ChiefEletrical(idChiefEletrical),
-    idWorker            REFERENCES ShipCaptian(idWorker),
+    idWorker            REFERENCES ShipCaptain(idWorker),
     idFleet             REFERENCES FleetManager(idFleet),
     CONSTRAINT ck_reg_Ship_mmsi      CHECK(REGEXP_LIKE(mmsi, '[0-9]{9}') ),
     CONSTRAINT ck_reg_Ship_imo       CHECK(REGEXP_LIKE(imo, '[IMO][0-9]{7}') )
@@ -194,27 +195,36 @@ CREATE TABLE PositionShip(
     sog         NUMBER(6,3)  CONSTRAINT nn_sog                     NOT NULL,
     heading     NUMBER(6,3)  CONSTRAINT nn_headingPositionShip     NOT NULL,
     position    NUMBER(9,0)  CONSTRAINT nn_positionPositionShip    NOT NULL,
-    transceiver VARCHAR(42)  CONSTRAINT nn_transceiver             NOT NULL,
-    CONSTRAINT ck_PositionShip_maxLatitude  CHECK(latitude<=90),
+    transceiver VARCHAR(1)  CONSTRAINT nn_transceiver              NOT NULL,
+    CONSTRAINT ck_PositionShip_maxLatitude  CHECK(latitude<=90 OR latitude=91),
     CONSTRAINT ck_PositionShip_minLatitude  CHECK(latitude>=-90),
-    CONSTRAINT ck_PositionShip_nullLatitude check(latitude=91),
-    CONSTRAINT ck_PositionShip_maxLongitude CHECK(longitude<=-180),
+    CONSTRAINT ck_PositionShip_maxLongitude CHECK(longitude<=181),
     CONSTRAINT ck_PositionShip_minLongitude CHECK(longitude>=-180),
-    CONSTRAINT ck_PositionShip_nulLongitude CHECK(longitude=181),
-    CONSTRAINT ck_PositionShip_maxCog       CHECK(longitude<=359),
-    CONSTRAINT ck_PositionShip_minCog       CHECK(longitude>=0),
-    CONSTRAINT ck_PositionShip_maxheading   CHECK(longitude<=359),
-    CONSTRAINT ck_PositionShip_minheading   CHECK(longitude>=0)
+    CONSTRAINT ck_PositionShip_maxCog       CHECK(cog<=359),
+    CONSTRAINT ck_PositionShip_minCog       CHECK(cog>=0),
+    CONSTRAINT ck_PositionShip_maxheading   CHECK(heading<=359 OR heading=511),
+    CONSTRAINT ck_PositionShip_minheading   CHECK(heading>=0),
+    CONSTRAINT ck_PositionShip_transceiver  CHECK(REGEXP_LIKE(transceiver,'A|B'))
 );
 
-ALTER TABLE Container        ADD CONSTRAINT  fk_NumberContainer_iso                 FOREIGN KEY (iso)        REFERENCES Container(iso);
+CREATE TABLE Call(
+    hourCall VARCHAR(8),
+    dateCall DATE,
+    mmsi     NUMBER(9,0) CONSTRAINT nn_Call_mmsi     NOT NULL,
+    CONSTRAINT pk_CALL_hour_dateCall PRIMARY KEY (hourCall, dateCall),
+    CONSTRAINT ck_reg_Call_hourCall CHECK(REGEXP_LIKE(hourCall, '[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}') )
+);
+
+
+ALTER TABLE NumberContainer  ADD CONSTRAINT  fk_NumberContainer_iso                 FOREIGN KEY (iso)        REFERENCES Container(iso);
 ALTER TABLE TraficManager    ADD CONSTRAINT  fk_TraficManager_idWorker              FOREIGN KEY (idWorker)   REFERENCES Worker(idWorker);
 ALTER TABLE Port             ADD CONSTRAINT  fk_Port_idLocal                        FOREIGN KEY (idLocal)    REFERENCES LOCAL(idLocal);
 ALTER TABLE Warehouse        ADD CONSTRAINT  fk_Warehouse_idLocal                   FOREIGN KEY (idLocal)    REFERENCES LOCAL(idLocal);
 ALTER TABLE TruckDriver      ADD CONSTRAINT  fk_TruckDriver_idWorkerTruckDriver     FOREIGN KEY (idWorker)   REFERENCES Worker(idWorker);
-ALTER TABLE ShipCaptian      ADD CONSTRAINT  fk_ShipCaptian_idWorkerShipCaptian     FOREIGN KEY (idWorker)   REFERENCES Worker(idWorker);
+ALTER TABLE ShipCaptain      ADD CONSTRAINT  fk_ShipCaptain_idWorkerShipCaptain     FOREIGN KEY (idWorker)   REFERENCES Worker(idWorker);
 ALTER TABLE PortStaff        ADD CONSTRAINT  fk_PortStaff_idWorkerPortStaff         FOREIGN KEY (idWorker)   REFERENCES Worker(idWorker);
 ALTER TABLE PortManager      ADD CONSTRAINT  fk_PortManager_idWorkerPortManager     FOREIGN KEY (idWorker)   REFERENCES Worker(idWorker);
 ALTER TABLE WarehouseStaff   ADD CONSTRAINT  fk_WarehouseStaff_idWarehouseStaff     FOREIGN KEY (idWorker)   REFERENCES Worker(idWorker);
 ALTER TABLE WarehouseManager ADD CONSTRAINT  fk_WarehouseManager_idWarehouseManager FOREIGN KEY (idWorker)   REFERENCES Worker(idWorker);
 ALTER TABLE PositionShip     ADD CONSTRAINT  fk_PositionShip_mmsi                   FOREIGN KEY (mmsi)       REFERENCES Ship(mmsi);
+ALTER TABLE Call             ADD CONSTRAINT  fk_Call_mmsi                           FOREIGN KEY (mmsi)       REFERENCES Ship(mmsi);
