@@ -36,4 +36,15 @@ class MovementTest {
         new Movement(30.0,0.0,"30.0").convertCogAndHeading(-1.0);
         new Movement(30.0,0.0,"30.0").convertCogAndHeading(1.0);
     }
+
+    @Test
+    public void setters(){
+       Movement u = new Movement(30.0,0.0,"30.0");
+       u.setCog(2);
+       assertEquals(u.getCog(),2);
+       u.setHeading("2");
+       assertEquals("2",u.getHeading());
+       u.setSog(2);
+       assertEquals(2,u.getSog());
+    }
 }

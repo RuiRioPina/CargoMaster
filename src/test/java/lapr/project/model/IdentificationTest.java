@@ -179,4 +179,19 @@ class IdentificationTest {
         //Assert
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void equalsMut () {
+        Identification id = new Identification("210950000","VARAMO","IMO9395044","C4SQ2");
+        Object o = id;
+        Object o1 = null;
+        assertTrue(id.equals(new Identification("210950000","VARAMO","IMO9395044","C4SQ2")));
+        assertTrue(id.equals(o));
+        assertFalse(id.equals(null));
+        assertFalse(id.equals(o1));
+        assertFalse(o.equals(o1));
+        ShipCharacteristics sc = null;
+        assertFalse(id.equals(sc));
+        assertTrue(id.equals(id));
+    }
 }
