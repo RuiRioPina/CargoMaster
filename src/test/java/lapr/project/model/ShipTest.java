@@ -288,6 +288,14 @@ class ShipTest {
         boolean expected = true;
         boolean actual = this.ship.equals(ship);
         assertEquals(expected, actual);
+        Object o = route1;
+        Object o1 = null;
+        assertFalse(route1.equals(new Object()));
+        assertTrue(route1.equals(route1));
+        assertFalse(route1.equals(o1));
+        assertTrue(route1.equals(o));
+        assertFalse(route1.equals(null));
+        assertNotEquals(route.getTravelledDistance(),78);
     }
 
     @Test
