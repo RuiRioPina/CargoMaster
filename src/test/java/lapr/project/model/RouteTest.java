@@ -73,6 +73,8 @@ public class RouteTest {
     public void getMaxSog(){
         double maxSOG = 13.4;
         double wrongSOG=12.5;
+        assertNotEquals(15,route.getMaxSog(),0.01);
+        assertNotEquals(12.4,route.getMaxSog(),0.01);
         assertEquals(maxSOG,route.getMaxSog(),0.01);
         assertNotEquals(wrongSOG,route.getMaxSog(),0.01);
     }
@@ -87,6 +89,8 @@ public class RouteTest {
     public void getMaxCog(){
         double maxCOG = 10;
         double wrongCOG=4.2;
+        assertNotEquals(11,route.getMaxCog(),0.01);
+        assertNotEquals(9,route.getMaxCog(),0.01);
         assertEquals(maxCOG,route.getMaxCog(),0.01);
         assertNotEquals(wrongCOG,route.getMaxCog(),0.01);
     }
