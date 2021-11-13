@@ -56,9 +56,6 @@ public class App  {
     private void bootstrap() {
 
 
-        this.company.setNumberOfEmployees(0);
-
-        ShipStore store = this.company.getShipStore();
         String fileName = "csvFiles/bships.csv";
         ImportShips.importShips(fileName);
 
