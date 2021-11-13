@@ -6,9 +6,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class RouteTest {
@@ -117,5 +118,22 @@ public class RouteTest {
         double expected= 32.01;
         double actual = route.getTravelledDistance();
         assertEquals(expected,actual,0.01);
+    }
+    @Test
+    public void equalsMut (){
+        ShipDynamic dynamic1 = (new ShipDynamic("31/12/2020 17:03", new Location("42.92236", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
+        ShipDynamic dynamic2 = (new ShipDynamic("31/12/2020 17:13", new Location("42.95969", "-66.97106"), new Movement(12.9, 8.1, "358.0"), "NA", "A"));
+        Route rou = new Route();
+        rou.add(dynamic1);
+        rou.add(dynamic2);
+        Object o = rou;
+        Object o1 = null;
+        assertTrue(rou.equals(rou));
+        assertTrue(rou.equals(o));
+        assertFalse(rou.equals(null));
+        assertFalse(rou.equals(o1));
+        assertFalse(o.equals(o1));
+        ShipCharacteristics sc = null;
+        assertFalse(rou.equals(sc));
     }
 }
