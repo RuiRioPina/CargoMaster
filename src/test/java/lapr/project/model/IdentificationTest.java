@@ -134,23 +134,19 @@ class IdentificationTest {
         assertEquals(expected, actual);
     }
 
-
     @Test
-    public void testToString() {
-        //Arrange
-        //Act
-
-        String actual = ship.getShipId().getImoID().toString();
+    public void setSearchCode() {
+        ship.getShipId().setSearchCode("IMO9395044");
+        String actual = ship.getShipId().getSearchCode();
         String expected = "IMO9395044";
         //Assert
         assertEquals(expected, actual);
     }
 
     @Test
-    public void setSearchCode() {
-        ship.getShipId().setSearchCode("IMO9395044");
-        String actual = ship.getShipId().getSearchCode();
-        String expected = "IMO9395044";
+    public void testHashCode() {
+        int actual = hashCode();
+        int expected = hashCode();;
         //Assert
         assertEquals(expected, actual);
     }
@@ -193,5 +189,16 @@ class IdentificationTest {
         ShipCharacteristics sc = null;
         assertFalse(id.equals(sc));
         assertTrue(id.equals(id));
+    }
+
+    @Test
+    public void testToString() {
+        //Arrange
+        //Act
+
+        String actual = ship.getShipId().toString();
+        String expected = ship.getShipId().toString();
+        //Assert
+        assertEquals(expected, actual);
     }
 }

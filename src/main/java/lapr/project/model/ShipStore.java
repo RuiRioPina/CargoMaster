@@ -1,11 +1,10 @@
 package lapr.project.model;
 
 
-import lapr.project.controller.App;
 import lapr.project.utils.AVL;
 import lapr.project.utils.BST;
-import lapr.project.utils.PrintToFile;
 import lapr.project.utils.Pair;
+import lapr.project.utils.PrintToFile;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -67,7 +66,7 @@ public class ShipStore {
 
         if (location != null) {
             return location;
-        } else return new Location("0","0");
+        } else return new Location("0", "0");
     }
 
     public List<Location> getPositionOfShipPeriod(String mMSI, String baseDateTime1, String baseDateTime2) throws ParseException {
@@ -103,13 +102,10 @@ public class ShipStore {
             s = shipAVL.find(value);
             if (s.getElement().getShipId().getImoID().equals(code) || s.getElement().getShipId().getCallsign().equals(code)
                     || s.getElement().getShipId().getMmsi().equals(code)) {
-                ship = s.getElement();
+                return s.getElement();
             }
         }
-        if (ship == null) {
-            throw new IllegalArgumentException();
-        }
-        return ship;
+        throw new IllegalArgumentException();
     }
 
     public Map<Integer, List<Ship>> getTopNShips(int n, String start, String end) throws ParseException, IOException {
@@ -187,7 +183,6 @@ public class ShipStore {
     }
 
 
-
     public List<Pair<Ship, Ship>> getCloseShips() {
         List<Pair<Ship, Ship>> pairList = new ArrayList<>();
         for (Ship ship : store.inOrder()) {
@@ -195,7 +190,7 @@ public class ShipStore {
                 for (Ship ship2 : store.inOrder()) {
                     if (ship.isClose(ship2)) {
                         Pair<Ship, Ship> pair1 = new Pair<>(ship, ship2);
-                            pairList.add(pair1);
+                        pairList.add(pair1);
                     }
                 }
             }

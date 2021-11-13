@@ -8,6 +8,7 @@ public class Movement {
     private String heading;
 
     public Movement() {
+
     }
 
     public Movement(Double sog, Double cog, String heading) {

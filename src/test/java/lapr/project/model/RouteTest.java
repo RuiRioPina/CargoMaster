@@ -78,6 +78,36 @@ public class RouteTest {
         assertEquals(maxSOG,route.getMaxSog(),0.01);
         assertNotEquals(wrongSOG,route.getMaxSog(),0.01);
     }
+
+    @Test
+    public void getMaxSogTestEqualShipDynamics(){
+        Route route = new Route();
+        ShipDynamic dynamic = new ShipDynamic("31/12/2020 17:03", new Location("42.92236", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A");
+        route.add(dynamic);
+        route.add(dynamic);
+        double maxSOG = 12.5;
+        double wrongSOG=12.3;
+        assertNotEquals(15,route.getMaxSog(),0.01);
+        assertNotEquals(12.4,route.getMaxSog(),0.01);
+        assertEquals(maxSOG,route.getMaxSog(),0.01);
+        assertNotEquals(wrongSOG,route.getMaxSog(),0.01);
+    }
+
+    @Test
+    public void getMaxCogEqualShipDynamic(){
+        Route route = new Route();
+        ShipDynamic dynamic = new ShipDynamic("31/12/2020 17:03", new Location("42.92236", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A");
+        route.add(dynamic);
+        route.add(dynamic);
+        double maxCOG = 2.4;
+        double wrongCOG=4.2;
+        assertNotEquals(11,route.getMaxCog(),0.01);
+        assertNotEquals(9,route.getMaxCog(),0.01);
+        assertEquals(maxCOG,route.getMaxCog(),0.01);
+        assertNotEquals(wrongCOG,route.getMaxCog(),0.01);
+    }
+
+
     @Test
     public void getMeanSOG(){
         double meanSOG=12.9;
@@ -139,5 +169,49 @@ public class RouteTest {
         assertFalse(o.equals(o1));
         ShipCharacteristics sc = null;
         assertFalse(rou.equals(sc));
+    }
+
+    @Test
+    public void testgetDepartureLong() {
+        //Arrange
+        //Act
+
+        double actual = ship.getRoute().getDepartureLong();
+        double expected = -66.97726;
+        //Assert
+        assertEquals(expected, actual, 0.001);
+    }
+
+    @Test
+    public void testgetDepartureLat() {
+        //Arrange
+        //Act
+
+        double actual = ship.getRoute().getDepartureLat();
+        double expected = 42.73879;
+        //Assert
+        assertEquals(expected, actual, 0.001);
+    }
+
+    @Test
+    public void testHashCode() {
+        //Arrange
+        //Act
+
+        int actual = hashCode();
+        int expected = hashCode();
+        //Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToString() {
+        //Arrange
+        //Act
+
+        String actual = ship.getRoute().toString();
+        String expected = ship.getRoute().toString();
+        //Assert
+        assertEquals(expected, actual);
     }
 }
