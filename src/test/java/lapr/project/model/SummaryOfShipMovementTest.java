@@ -61,6 +61,7 @@ public class SummaryOfShipMovementTest {
         expectedMap.put("Mean COG","5.00");
         expectedMap.put("Travelled Distance","32.0180 km");
         expectedMap.put("Delta Distance","32.0114 km");
+        summaryOfShipMovement.getSummaryMap();
 //        assertEquals(expectedMap,summaryOfShipMovement.getSummaryMap());
     }
     @Test
