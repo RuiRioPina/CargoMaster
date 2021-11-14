@@ -79,13 +79,40 @@ public class SummaryOfShipMovementTest {
     public void testForBships()throws IOException {
         String fim="";
         ShipStore shipStore= new ShipStore();
-        String fileName = "csvFiles/bships.csv";
+        String fileName = "csvFiles/sships.csv";
         List<Ship> shipsList = ImportShips.importShips(fileName);
         for (Ship ships : shipsList) {
             shipStore.addShipToAVL(ships);
         }
         shipStore.organizeShipMessage();
-        final String fileToBeWrittenTo = "SummaryOfBShips.txt";
+        final String fileToBeWrittenTo = "SummaryOfSShips.txt";
+
+
+        for (Ship ships: shipStore.getStore().inOrder()) {
+            SummaryOfShipMovement summaryOfShipMovement= new SummaryOfShipMovement(ships);
+            System.out.println(summaryOfShipMovement.toString());
+            System.out.println("/////////////////////////");
+            fim+=summaryOfShipMovement.toString()+"\n";
+
+        }
+        try {
+
+            PrintToFile.print(fim, fileToBeWrittenTo);
+        } catch (IllegalArgumentException e) {
+
+        }
+    }
+    @Test
+    public void testForSships()throws IOException {
+        String fim="";
+        ShipStore shipStore= new ShipStore();
+        String fileName = "csvFiles/sships.csv";
+        List<Ship> shipsList = ImportShips.importShips(fileName);
+        for (Ship ships : shipsList) {
+            shipStore.addShipToAVL(ships);
+        }
+        shipStore.organizeShipMessage();
+        final String fileToBeWrittenTo = "SummaryOfSShips.txt";
 
 
         for (Ship ships: shipStore.getStore().inOrder()) {
