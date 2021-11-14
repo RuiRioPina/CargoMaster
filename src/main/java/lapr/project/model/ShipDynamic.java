@@ -71,24 +71,41 @@ public class ShipDynamic {
         this.transceiverClass = transceiverClass;
     }
 
+    /**
+     * get method for a LocalDateTime object created by a string.
+     * @return LocalDateTime object with date
+     */
     public LocalDateTime getBaseDateTimeLDT() {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(baseDateTime, format);
         return dateTime;
     }
 
+    /**
+     * get method for the SOG of the message
+     * @return double with the SOG value
+     */
     public double getSog() {
         return this.movement.getSog();
     }
-
+    /**
+     * get method for the COG of the message
+     * @return double with the COG value
+     */
     public double getCog() {
         return this.movement.getCog();
     }
-
+    /**
+     * get method for the latitude of the message
+     * @return double with the latitude value
+     */
     public String getLatitude() {
         return this.location.getLatitude();
     }
-
+    /**
+     * get method for the longitude of the message
+     * @return double with the longitude value
+     */
     public String getLongitude() {
         return this.location.getLongitude();
     }

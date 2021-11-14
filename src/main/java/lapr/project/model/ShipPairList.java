@@ -10,6 +10,10 @@ public class ShipPairList {
    private final List<Pair<Ship, Ship>> shipPairList1;
    private final List<Double> travelledDistanceList1;
 
+    /**
+     * Creates the ShipPairListObject
+     * @param shipStore- ShipStore used to get the ships from
+     */
     public ShipPairList(ShipStore shipStore) {
         shipPairList1 = shipStore.getCloseShips();
 travelledDistanceList1=sortShipList();
@@ -18,7 +22,10 @@ sortByDescendingOrder();
     }
 
 
-
+    /**
+     * Reorders the pairs according to the mmsi and creates the travelled distance difference list.
+     * @return a list of double with the travelled distance difference between the pairs in it.
+     */
     private List<Double> sortShipList(){
         int n = shipPairList1.size();
         for (int i=0;i<n;i++){
@@ -36,6 +43,10 @@ sortByDescendingOrder();
         }
         return travelledDistanceList;
     }
+
+    /**
+     * Removes all the repeat pairs (there are pairs that are (x,y) and (y,x)) and it removes one of them.
+     */
     private void removeRepeats(){
         int cont =0;
         for (int i=0;i<shipPairList1.size();i++){
@@ -52,11 +63,23 @@ sortByDescendingOrder();
             cont=0;
         }
     }
+
+    /**
+     * used in removing repeat pairs to see if they are equal
+     * @param pair1 pair number 1
+     * @param pair2 pair number 2
+     * @return boolean data saying if the pairs are equal or not
+     */
     private boolean equalShipPairs(Pair<Ship,Ship> pair1,Pair<Ship,Ship> pair2){
         double sum1 =Integer.parseInt(pair1.getFirst().getShipId().getMmsi())+Integer.parseInt(pair1.getSecond().getShipId().getMmsi());
         double sum2 =Integer.parseInt(pair2.getFirst().getShipId().getMmsi())+Integer.parseInt(pair2.getSecond().getShipId().getMmsi());
         return sum2==sum1;
     }
+
+    /**
+     * sorts the pairs by with equal starting mmsi by descending order of travelled distance difference, first by seeing all the pairs with the same starting and mmsi
+     * and then performs a bubble sort according to the travelled distance difference.
+     */
     private void sortByDescendingOrder(){
         int cont =0;
 
@@ -86,9 +109,19 @@ sortByDescendingOrder();
             cont=0;
         }
     }
+
+    /**
+     * returns the list with the pairs.
+     * @return list with pairs
+     */
     public List<Pair<Ship,Ship>> getShipPairList(){
         return this.shipPairList1;
     }
+
+    /**
+     * returns the list with the travelled distance difference.
+     * @return list with doubles(travelled distance difference).
+     */
     public List<Double> getTravelledDistanceList(){
         return this.travelledDistanceList1;
     }

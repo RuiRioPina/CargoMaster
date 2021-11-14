@@ -230,7 +230,10 @@ public class ShipStore {
         return map2;
     }
 
-
+    /**
+     * creates a list of pairs of ships that are close from the store's avl
+     * @return List with ship Pairs
+     */
     public List<Pair<Ship, Ship>> getCloseShips() {
         List<Pair<Ship, Ship>> pairList = new ArrayList<>();
         for (Ship ship : store.inOrder()) {

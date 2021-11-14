@@ -97,18 +97,31 @@ public class Ship implements Comparable<Ship> {
         this.route = route;
     }
 
+    /**
+     * get method for the start base date time String
+     * @return String with the Start date
+     */
     public String getStartBaseDateTime() {
         return this.route.getStartDateTime();
     }
-
+    /**
+     * get method for the end base date time String
+     * @return String with the end date
+     */
     public String getEndBaseDateTime() {
         return this.route.getEndDateTime();
     }
-
+    /**
+     * get method for the start base date time LocalDateTime
+     * @return LocalDateTime with the Start date
+     */
     public LocalDateTime getStartBaseDateTimeLDT() {
         return this.route.getStartDateTimeLDT();
     }
-
+    /**
+     * get method for the end base date time LocalDateTime
+     * @return LocalDateTime with the end date
+     */
     public LocalDateTime getEndBaseDateTimeLDT() {
         return this.route.getEndDateTimeLDT();
     }
@@ -162,6 +175,11 @@ public class Ship implements Comparable<Ship> {
                 route + '\n';
     }
 
+    /**
+     * compares the distance of two ships arrival and departure locations and compares them
+     * @param ship ship to be compared
+     * @return boolean value saying whether ships are close or not.
+     */
     public boolean isClose(Ship ship) {
         if (Route.distance(this.route.getDepartureLat(), this.route.getDepartureLong(), ship.getRoute().getDepartureLat(), ship.getRoute().getDepartureLong()) > 5) {
             return false;
