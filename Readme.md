@@ -122,6 +122,61 @@ When all the Ships have been created, the system will add it to the AVL in the S
     store.addShipToAVL(ship1);
     }
 
+## Testing
+
+## Test 1: Import the ships from the csv and make sure the ship exists
+
+    @Test
+    void importShips() {
+        String fileName = "csvFiles/sships.csv";
+        List<Ship> shipsList = ImportShips.importShips(fileName);
+        for (Ship ships : shipsList) {
+            shipStore.addShipToAVL(ships);
+        }
+        Ship expected = shipStore.findShipDetails("IMO9395044");
+        assertEquals(expected, shipStore.getStore().smallestElement());
+    }
+
+We import the ships using the the method importShips, and then we assert that the smallest element is the expected one (Varamo), using the findDetails method.
+
+## Test 2: Import the ships from the csv and make sure the ship exists
+
+    @Test
+    void importShips1() {
+    String fileName = "csvFiles/shipID.csv";
+    List<Ship> shipsList = ImportShips.importShips(fileName);
+    String code = "338888000";
+    for (Ship ships : shipsList) {
+        ships.getShipId().setSearchCode(code);
+        shipStore.addShipToAVL(ships);
+    }
+    Ship ship = shipStore.findShipDetails(code);
+    Ship actual = shipStore.getStore().find(ship).getElement();
+    Ship expected = shipStore.getStore().find(ship).getElement();
+    assertEquals(actual, expected);
+    }
+
+We import the ships using the the method importShips, and then we assert that the smallest element is the expected one, using the findDetails method.
+
+## Test 3: Import the ships from the csv and assert that a ship was in another csv was not imported
+
+    @Test
+    void importShips3() {
+    String fileName = "csvFiles/shipID.csv";
+    List<Ship> shipsList = ImportShips.importShips(fileName);
+    String code = "IMO9395044";
+    for (Ship ships : shipsList) {
+         ships.getShipId().setSearchCode(code);
+         shipStore.addShipToAVL(ships);
+    }
+    Throwable exception = assertThrows(IllegalArgumentException.class,
+    ()->{ Ship ship = shipStore.findShipDetails(code);;} );
+    }
+
+We import the ships using the method importShips, that a ship existent in another csv is one imported.
+
+
+
 ## Review
 
 There are some validations that have turned out to be ambiguous that could not get responded by the client and the solution
@@ -187,6 +242,51 @@ a message will appear warning the user that no ship was found with that code.
                 return s.getElement();
             }
         }
+
+## Testing 
+
+### Test 1: Make sure the findDetails method finds the correct ship using its callsign.
+    @Test
+    public void searchShipDetails() throws IOException {
+    final String fileToBeWrittenTo = "resultSearchDetails.txt";
+        try {
+             Ship ship = store.findShipDetails("DHBN");
+             System.out.println(ship);
+             PrintToFile.print(ship.toString(), fileToBeWrittenTo);
+        } catch (IllegalArgumentException e) {
+            System.out.println("The vessel to be searched does not exist. Please introduce a valid code!");
+        }
+    }
+
+### Test 2: Make sure the findDetails method finds the correct ship using its mmsi.
+
+        public void searchShipDetais1() throws IOException {
+        final String fileToBeWrittenTo = "resultSearchDetails.txt";
+
+        try {
+            Ship ship = store.findShipDetails("367008090");
+            System.out.println(ship);
+            PrintToFile.print(ship.toString(), fileToBeWrittenTo);
+        } catch (IllegalArgumentException e) {
+            System.out.println("The vessel to be searched does not exist. Please introduce a valid code!");
+        }
+    }
+
+### Test 3: Make sure the findDetails method finds the correct ship using its imo.
+
+        @Test
+        public void searchShipDetails2() throws IOException {
+        final String fileToBeWrittenTo = "resultSearchDetails.txt";
+
+        try {
+            Ship ship = store.findShipDetails("IMO7437068");
+            System.out.println(ship);
+            PrintToFile.print(ship.toString(), fileToBeWrittenTo);
+        } catch (IllegalArgumentException e) {
+            System.out.println("The vessel to be searched does not exist. Please introduce a valid code!");
+        }
+    }
+
 
 ## Review
 
