@@ -134,48 +134,44 @@ Ship ship4;
     }
     @Test
     public void testForSshipsPairList()throws IOException {
-        String fim="";
-        ShipStore shipStore= new ShipStore();
-        String fileName = "csvFiles/sships.csv";
-        List<Ship> shipsList = ImportShips.importShips(fileName);
-        for (Ship ships : shipsList) {
-            shipStore.addShipToAVL(ships);
+        String fin="";
+        ShipStore shipStores= new ShipStore();
+        String fileNames = "csvFiles/sships.csv";
+        List<Ship> shipsLists = ImportShips.importShips(fileNames);
+        for (Ship ships : shipsLists) {
+            shipStores.addShipToAVL(ships);
         }
-        shipStore.organizeShipMessage();
+        shipStores.organizeShipMessage();
         final String fileToBeWrittenTo = "sshipsShipPairList.txt";
-        ShipPairList spl = new ShipPairList(shipStore);
+        ShipPairList spl = new ShipPairList(shipStores);
 
         for (int i=0;i<spl.getShipPairList().size();i++) {
-            fim+= spl.getShipPairList().get(i).getFirst().getShipId().getMmsi()+ " " + spl.getShipPairList().get(i).getSecond().getShipId().getMmsi() +" "+ spl.getTravelledDistanceList().get(i) +" km \n";
-
+            fin+= spl.getShipPairList().get(i).getFirst().getShipId().getMmsi()+ " " + spl.getShipPairList().get(i).getSecond().getShipId().getMmsi() +" "+ spl.getTravelledDistanceList().get(i) +" km \n";
         }
         try {
-
-            PrintToFile.print(fim, fileToBeWrittenTo);
+            PrintToFile.print(fin, fileToBeWrittenTo);
         } catch (IllegalArgumentException e) {
-
         }
     }
     @Test
     public void testForBshipsPairList()throws IOException {
-        String fim="";
-        ShipStore shipStore= new ShipStore();
-        String fileName = "csvFiles/bships.csv";
-        List<Ship> shipsList = ImportShips.importShips(fileName);
-        for (Ship ships : shipsList) {
-            shipStore.addShipToAVL(ships);
+        String fin="";
+        ShipStore shipStores= new ShipStore();
+        String fileNames = "csvFiles/bships.csv";
+        List<Ship> shipsLists = ImportShips.importShips(fileNames);
+        for (Ship ships : shipsLists) {
+            shipStores.addShipToAVL(ships);
         }
-        shipStore.organizeShipMessage();
-        final String fileToBeWrittenTo = "BshipsShipPairList.txt";
-        ShipPairList spl = new ShipPairList(shipStore);
+        shipStores.organizeShipMessage();
+        final String fileToBeWrittenTos = "BshipsShipPairList.txt";
+        ShipPairList spl = new ShipPairList(shipStores);
 
         for (int i=0;i<spl.getShipPairList().size();i++) {
-            fim+= spl.getShipPairList().get(i).getFirst().getShipId().getMmsi()+ " " + spl.getShipPairList().get(i).getSecond().getShipId().getMmsi() +" "+ spl.getTravelledDistanceList().get(i) +" km \n";
+            fin+= spl.getShipPairList().get(i).getFirst().getShipId().getMmsi()+ " " + spl.getShipPairList().get(i).getSecond().getShipId().getMmsi() +" "+ spl.getTravelledDistanceList().get(i) +" km \n";
 
         }
         try {
-
-            PrintToFile.print(fim, fileToBeWrittenTo);
+            PrintToFile.print(fin, fileToBeWrittenTos);
         } catch (IllegalArgumentException e) {
 
         }
