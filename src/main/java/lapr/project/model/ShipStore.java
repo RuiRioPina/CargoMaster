@@ -13,15 +13,29 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+/**
+ * The ShipStore class which will have an instance of an AVL
+ */
 public class ShipStore {
+    /**
+     * The AVL itself
+     */
     private AVL<Ship> store = new AVL<>();
     private static final Logger LOGGER = Logger.getLogger("MainLog");
 
+    /**
+     * Inserting a ship to the AVL
+     * @param ship the ship being inserted
+     */
     public void addShipToAVL(Ship ship) {
         store.insert(ship);
     }
 
+    /**
+     * Creates a new AVL reorganized by the search code of the ships
+     * @param ship the ships to be reorganized
+     * @return an AVL reorganized by the type of code pretended
+     */
     public AVL<Ship> reorganizeShipAVLAccordingToTheCode(List<Ship> ship) {
         AVL<Ship> newShipAVL = new AVL<>();
         for (Ship ship3 : ship) {
@@ -87,6 +101,12 @@ public class ShipStore {
 
         return position;
     }
+
+    /**
+     * With a certain code it searches for the ship in the AVL containing that code
+     * @param code the code being searched for
+     * @return the Ship if it was found or throws an Exception saying it wasn't found
+     */
 
     public Ship findShipDetails(String code) {
         final String fileToBeWrittenTo = "resultSearchDetails.txt";

@@ -11,12 +11,26 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * This class will import the ships using an csv provided by the User
+ */
+
 public class ImportShips {
     private static final Logger LOGGER = Logger.getLogger("MainLog");
+
+    /**
+     * Construtor that will not be used since this class is not to be instantiated
+     */
 
     private ImportShips() {
         //This class is not expected to be instantiated
     }
+
+    /**
+     * This method will go through the csv lines one by one and will instantiate all the members of the ship class, and then it will add the ships to the AVL
+     * @param fileName the name of csv where the ships will be imported from
+     * @return a list of ships that will be useful for some US
+     */
 
     public static List<Ship> importShips(String fileName) {
         final String fileToBeWrittenTo = "linesNotImported.txt";
@@ -84,6 +98,12 @@ public class ImportShips {
         return ships;
     }
 
+    /**
+     * Class for instantiating the Identification of the Ship using the result of the import of the ships
+     * @param elements the attributes related to the Identification
+     * @return the instance of Identification to be later used in the Ship
+     */
+
     private static Identification createIdentification(String[] elements) {
 
         String mmsi = elements[0];
@@ -93,6 +113,12 @@ public class ImportShips {
         return new Identification(mmsi, vesselName, imo, callsign);
     }
 
+    /**
+     * Class for instantiating the ShipCharacteristics of the Ship using the result of the import of the ships
+     * @param elements the attributes related to the ShipCharacteristics
+     * @return the instance of ShipCharacteristics to be later used in the Ship
+     */
+
     private static ShipCharacteristics createCharacteristics(String[] elements) {
         int vesselType = Integer.parseInt(elements[10]);
         double length = Double.parseDouble(elements[11]);
@@ -101,6 +127,12 @@ public class ImportShips {
 
         return new ShipCharacteristics(vesselType, length, width, draft);
     }
+
+    /**
+     * Class for instantiating the ShipDynamic of the Ship using the result of the import of the ships
+     * @param elements the attributes related to the ShipDynamic
+     * @return the instance of ShipDynamic to be later used in the Ship
+     */
 
     private static ShipDynamic createShipDynamic(String[] elements) {
         String baseDateTime = elements[1];

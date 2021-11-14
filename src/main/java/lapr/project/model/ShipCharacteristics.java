@@ -4,16 +4,22 @@ package lapr.project.model;
 import lapr.project.utils.ShipValidation;
 
 import java.util.Objects;
-
+/**
+ * This class will contain the characteristics related attributes of a ship
+ */
 public class ShipCharacteristics {
     private int vesselType;
     private Double length;
     private Double width;
     private Double draft;
-
+    /**
+     * The empty public constructor
+     */
     public ShipCharacteristics() {
     }
-
+    /**
+     * Public constructor with all its attributes being initialized and verified.
+     */
     public ShipCharacteristics(int vesselType, Double length, Double width, Double draft) {
         ShipValidation.validateVesselType(vesselType);
         ShipValidation.validateShipSizes(length);
@@ -24,6 +30,10 @@ public class ShipCharacteristics {
         this.width = width;
         this.draft = draft;
     }
+    /**
+     * Overriding the toString method for the Characteristics
+     * @return the String containing the informations of a Characteristics
+     */
     @Override
     public String toString() {
         return String.format("%nVesselType: %s,Length: %s,Width: %s,Draft: %s",vesselType,length,width,draft);

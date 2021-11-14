@@ -4,17 +4,23 @@ import lapr.project.utils.ShipValidation;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
+/**
+ * This class will contain the shipDynamics related attributes of a ship
+ */
 public class ShipDynamic {
     private String baseDateTime;
     private Location location;
     private String cargo;
     private Movement movement;
     private String transceiverClass;
-
+    /**
+     * The empty public constructor
+     */
     public ShipDynamic() {
     }
-
+    /**
+     * Public constructor with all its attributes being initialized and verified.
+     */
     public ShipDynamic(String baseDateTime, Location location, Movement movement, String cargo, String transceiverClass) {
         ShipValidation.validateBaseDateTime(baseDateTime);
         ShipValidation.validateTransceiverClass(transceiverClass);

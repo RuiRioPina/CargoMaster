@@ -5,9 +5,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class will be a list of ShipDynamics
+ */
+
 public class Route {
+    /**
+     * The list itself
+     */
     List<ShipDynamic> route = new ArrayList<>();
 
+
+    /**
+     * Method for adding shipDynamics for the route
+     * @param shipDynamic the shipDynamic of a ship
+     */
     public void add(ShipDynamic shipDynamic) {
         route.add(shipDynamic);
     }
@@ -34,60 +46,69 @@ public class Route {
     public int hashCode() {
         return Objects.hash(route);
     }
-    public LocalDateTime getStartDateTimeLDT(){
+
+    public LocalDateTime getStartDateTimeLDT() {
         return route.get(0).getBaseDateTimeLDT();
     }
-    public String getStartDateTime(){
+
+    public String getStartDateTime() {
         return route.get(0).getBaseDateTime();
     }
-    public LocalDateTime getEndDateTimeLDT(){
-        return route.get(route.size()-1).getBaseDateTimeLDT();
+
+    public LocalDateTime getEndDateTimeLDT() {
+        return route.get(route.size() - 1).getBaseDateTimeLDT();
     }
-    public String getEndDateTime(){
-        return route.get(route.size()-1).getBaseDateTime();
+
+    public String getEndDateTime() {
+        return route.get(route.size() - 1).getBaseDateTime();
     }
-    public int getSize(){
+
+    public int getSize() {
         return this.route.size();
     }
-    public double getMaxSog(){
-        double temp=0;
-        for (ShipDynamic shipd: route) {
-            if (shipd.getSog()>temp){
-                temp=shipd.getSog();
+
+    public double getMaxSog() {
+        double temp = 0;
+        for (ShipDynamic shipd : route) {
+            if (shipd.getSog() > temp) {
+                temp = shipd.getSog();
             }
         }
         return temp;
     }
-    public double getMaxCog(){
-        double temp=0;
-        for (ShipDynamic shipd: route) {
-            if (shipd.getCog()>temp){
-                temp=shipd.getCog();
+
+    public double getMaxCog() {
+        double temp = 0;
+        for (ShipDynamic shipd : route) {
+            if (shipd.getCog() > temp) {
+                temp = shipd.getCog();
             }
         }
         return temp;
     }
-    public double getMeanSog(){
-        double sum =0;
-        for (ShipDynamic shipd: route) {
-            sum+=shipd.getSog();
+
+    public double getMeanSog() {
+        double sum = 0;
+        for (ShipDynamic shipd : route) {
+            sum += shipd.getSog();
 
         }
-        return sum/route.size();
+        return sum / route.size();
     }
-    public double getMeanCog(){
-        double sum =0;
-        for (ShipDynamic shipd: route) {
-            sum+=shipd.getCog();
+
+    public double getMeanCog() {
+        double sum = 0;
+        for (ShipDynamic shipd : route) {
+            sum += shipd.getCog();
 
         }
-        return sum/route.size();
+        return sum / route.size();
     }
+
     public static double distance(double lat1, double lon1, double lat2, double lon2) {
         if ((lat1 == lat2) && (lon1 == lon2)) {
             return 0;
-        }
-        else {
+        } else {
             double theta = lon1 - lon2;
             double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
             dist = Math.acos(dist);
@@ -97,31 +118,37 @@ public class Route {
             return (dist);
         }
     }
-    public double getTravelledDistance(){
-        double distanceSum=0;
-        for (int i=0;i<route.size()-1;i++){
-            String lat1=route.get(i).getLatitude();
-            String long1=route.get(i).getLongitude();
-            String lat2=route.get(i+1).getLatitude();
-            String long2=route.get(i+1).getLongitude();
-            distanceSum+=distance(Double.parseDouble(lat1),Double.parseDouble(long1),Double.parseDouble(lat2),Double.parseDouble(long2));
+
+    public double getTravelledDistance() {
+        double distanceSum = 0;
+        for (int i = 0; i < route.size() - 1; i++) {
+            String lat1 = route.get(i).getLatitude();
+            String long1 = route.get(i).getLongitude();
+            String lat2 = route.get(i + 1).getLatitude();
+            String long2 = route.get(i + 1).getLongitude();
+            distanceSum += distance(Double.parseDouble(lat1), Double.parseDouble(long1), Double.parseDouble(lat2), Double.parseDouble(long2));
         }
         return distanceSum;
     }
-    public double getDeltaDistance(){
-        return distance(Double.parseDouble(route.get(0).getLatitude()),Double.parseDouble(route.get(0).getLongitude()),Double.parseDouble(route.get(route.size()-1).getLatitude()),Double.parseDouble(route.get(route.size()-1).getLongitude()));
+
+    public double getDeltaDistance() {
+        return distance(Double.parseDouble(route.get(0).getLatitude()), Double.parseDouble(route.get(0).getLongitude()), Double.parseDouble(route.get(route.size() - 1).getLatitude()), Double.parseDouble(route.get(route.size() - 1).getLongitude()));
     }
-    public double getDepartureLat(){
+
+    public double getDepartureLat() {
         return Double.parseDouble(route.get(0).getLatitude());
     }
-    public double getDepartureLong(){
+
+    public double getDepartureLong() {
         return Double.parseDouble(route.get(0).getLongitude());
     }
-    public double getArrivalLat(){
-        return Double.parseDouble(route.get(route.size()-1).getLatitude());
+
+    public double getArrivalLat() {
+        return Double.parseDouble(route.get(route.size() - 1).getLatitude());
     }
-    public double getArrivalLong(){
-        return Double.parseDouble(route.get(route.size()-1).getLongitude());
+
+    public double getArrivalLong() {
+        return Double.parseDouble(route.get(route.size() - 1).getLongitude());
     }
 
 }
