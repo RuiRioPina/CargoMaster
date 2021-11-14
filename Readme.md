@@ -265,6 +265,23 @@ The system organizes ship positional messages and checks the position of a ship 
 
         return position;
     }
+    
+### TEST for CheckPositionData
+
+     @Test
+     public void getPositionOfShipData() throws IOException {
+        Location expected = new Location("54.27307", "-164.07348");
+
+        String MMSI = "636019825";
+        String baseDateTime = "31/12/2020 23:27";
+
+        Location result = store.getPositionOfShipData(MMSI, baseDateTime);
+        Location error = store.getPositionOfShipData("333333333","31/12/2020 23:27");
+        
+        assertEquals(expected,result);
+        assertNotEquals(error, result
+       
+     }
 
 ## Review
 
@@ -380,6 +397,32 @@ The system starts by inutilize the messages without the period, then gets the to
         }
         ...
         }
+        
+### TEST for getTopNShips
+
+    @Test
+    public void getTopNShipsSMALL() throws ParseException, IOException {
+        Map <Integer, List <Ship> > exp = new HashMap<>();
+        List <Ship> ship1 = new ArrayList<>();
+        store.organizeShipMessage();
+        for (Ship ship : store.getStore().inOrder()) {
+            ship1.add(ship);
+        }
+        List <Ship> ship2 = new ArrayList<>();
+        ship2.add(ship1.get(4));
+        ship2.add(ship1.get(12));
+        List <Ship> ship3 = new ArrayList<>();
+        ship3.add(ship1.get(16));
+        ship3.add(ship1.get(3));
+        List <Ship> ship4 = new ArrayList<>();
+        ship4.add(ship1.get(5));
+        ship4.add(ship1.get(8));
+        exp.put(60,ship4);
+        exp.put(70,ship3);
+        exp.put(80,ship2);
+        Map<Integer, List <Ship> > res = store.getTopNShips(2,"31/12/2020 00:00","31/12/2020 23:59");
+        assertEquals(res,exp);
+    }
         
 ##  Review
 
