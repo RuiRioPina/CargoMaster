@@ -334,7 +334,7 @@ The system starts by receiving a ship, then creates an empty map and puts all th
     }
 	
 ### Example of a get() method
-public double getMaxCog(){
+	public double getMaxCog(){
         double temp=0;
         for (ShipDynamic shipd: route) {
             if (shipd.getCog()>temp){
@@ -343,6 +343,10 @@ public double getMaxCog(){
         }
         return temp;
     }
+	
+##	Test
+
+I started by creating a custom ship and route and retrieved the data myself and then checked if the program got the same.
 
 ##  Review
 
@@ -452,7 +456,7 @@ There´s a method that checks if a ship fits the conditions asked by the traffic
 store those pairs, after that there are methods that sort the list according to the acceptance criteria.
 
 ### Sequence Diagram
-![US107_SD](/docs/US104/US_107_SD.svg)
+![US107_SD](/docs/US107/US_107_SD.svg)
 
 The system starts by creating a list of the pair of ships and then creates another list with the travelled distance difference. After that it sorts bothe lists according to the acceptance 
 criteria. 
@@ -519,6 +523,9 @@ criteria.
         }
     }
 	
+## Testing 
+
+To test this US I used a couple of made up points to see if the ships would appear. After that, I used the bShips file to test the sorting .	
 ##  Review
 
 The sorting methods may be a little overcomplicated.
