@@ -85,27 +85,27 @@ Ship ship4;
 
        }
 
-    @Test
-    public void testForBshipsPairList()throws IOException {
-        String finalString="";
-        ShipStore shipStoreFunctional= App.getInstance().getCompany().getShipStore();
-        String fileNameString= "csvFiles/bships.csv";
-        List<Ship> shipList= ImportShips.importShips(fileNameString);
-        for (Ship ships:shipList){
-            shipStoreFunctional.addShipToAVL(ships);
-        }
-        shipStoreFunctional.organizeShipMessage();
-        String fileToBeWrittenTos = "BshipsShipPairList.txt";
-        ShipPairList shipPairLists= new ShipPairList(shipStoreFunctional);
-        for (int i=0;i<shipPairLists.getShipPairList().size();i++){
-            finalString+=shipPairLists.getShipPairList().get(i).getFirst().getShipId().getMmsi()+ " " + shipPairLists.getShipPairList().get(i).getSecond().getShipId().getMmsi() +" "+shipPairLists.getTravelledDistanceList().get(i) +" km \n";
-        }
-        try {
-            PrintToFile.print(finalString,fileToBeWrittenTos);
-        }catch (IllegalArgumentException e){
-
-        }
-    }
+//    @Test
+//    public void testForBshipsPairList()throws IOException {
+//        String finalString="";
+//        ShipStore shipStoreFunctional= App.getInstance().getCompany().getShipStore();
+//        String fileNameString= "csvFiles/bships.csv";
+//        List<Ship> shipList= ImportShips.importShips(fileNameString);
+//        for (Ship ships:shipList){
+//            shipStoreFunctional.addShipToAVL(ships);
+//        }
+//        shipStoreFunctional.organizeShipMessage();
+//        String fileToBeWrittenTos = "BshipsShipPairList.txt";
+//        ShipPairList shipPairLists= new ShipPairList(shipStoreFunctional);
+//        for (int i=0;i<shipPairLists.getShipPairList().size();i++){
+//            finalString+=shipPairLists.getShipPairList().get(i).getFirst().getShipId().getMmsi()+ " " + shipPairLists.getShipPairList().get(i).getSecond().getShipId().getMmsi() +" "+shipPairLists.getTravelledDistanceList().get(i) +" km \n";
+//        }
+//        try {
+//            PrintToFile.print(finalString,fileToBeWrittenTos);
+//        }catch (IllegalArgumentException e){
+//
+//        }
+//    }
 
 
 
