@@ -265,6 +265,23 @@ The system organizes ship positional messages and checks the position of a ship 
 
         return position;
     }
+    
+### TEST for CheckPositionData
+
+     @Test
+     public void getPositionOfShipData() throws IOException {
+        Location expected = new Location("54.27307", "-164.07348");
+
+        String MMSI = "636019825";
+        String baseDateTime = "31/12/2020 23:27";
+
+        Location result = store.getPositionOfShipData(MMSI, baseDateTime);
+        Location error = store.getPositionOfShipData("333333333","31/12/2020 23:27");
+        
+        assertEquals(expected,result);
+        assertNotEquals(error, result
+       
+     }
 
 ## Review
 
