@@ -88,7 +88,7 @@ Ship ship4;
     @Test
     public void testForBshipsPairList()throws IOException {
         String finalString="";
-        ShipStore shipStoreFunctional= new ShipStore();
+        ShipStore shipStoreFunctional= App.getInstance().getCompany().getShipStore();
         String fileNameString= "csvFiles/bships.csv";
         List<Ship> shipList= ImportShips.importShips(fileNameString);
         for (Ship ships:shipList){
@@ -155,26 +155,26 @@ Ship ship4;
         assertEquals(doubleList0.get(1),travelledDistanceList.get(1),0.0001);
         assertEquals(doubleList0.get(2),travelledDistanceList.get(2),0.0001);
     }
-    @Test
-    public void testForSshipsPairList()throws IOException{
-        String finalString="";
-        ShipStore shipStoreFunctional=new ShipStore();
-        String fileNameString="csvFiles/sships.csv";
-        List<Ship> shipList=ImportShips.importShips(fileNameString);
-        for(Ship ships:shipList){
-        shipStoreFunctional.addShipToAVL(ships);
-        }
-        shipStoreFunctional.organizeShipMessage();
-        String fileToBeWrittenTos="SshipsShipPairList.txt";
-        ShipPairList shipPairLists=new ShipPairList(shipStoreFunctional);
-        for(int i=0;i<shipPairLists.getShipPairList().size();i++){
-        finalString+=shipPairLists.getShipPairList().get(i).getFirst().getShipId().getMmsi()+" "+shipPairLists.getShipPairList().get(i).getSecond().getShipId().getMmsi()+" "+shipPairLists.getTravelledDistanceList().get(i)+" km \n";
-        }
-        try{
-        PrintToFile.print(finalString,fileToBeWrittenTos);
-        }catch(IllegalArgumentException e){
-
-
-        }
-        }
+//    @Test
+//    public void testForSshipsPairList()throws IOException{
+//        String finalString="";
+//        ShipStore shipStoreFunctional=new ShipStore();
+//        String fileNameString="csvFiles/sships.csv";
+//        List<Ship> shipList=ImportShips.importShips(fileNameString);
+//        for(Ship ships:shipList){
+//        shipStoreFunctional.addShipToAVL(ships);
+//        }
+//        shipStoreFunctional.organizeShipMessage();
+//        String fileToBeWrittenTos="SshipsShipPairList.txt";
+//        ShipPairList shipPairLists=new ShipPairList(shipStoreFunctional);
+//        for(int i=0;i<shipPairLists.getShipPairList().size();i++){
+//        finalString+=shipPairLists.getShipPairList().get(i).getFirst().getShipId().getMmsi()+" "+shipPairLists.getShipPairList().get(i).getSecond().getShipId().getMmsi()+" "+shipPairLists.getTravelledDistanceList().get(i)+" km \n";
+//        }
+//        try{
+//        PrintToFile.print(finalString,fileToBeWrittenTos);
+//        }catch(IllegalArgumentException e){
+//
+//
+//        }
+//        }
 }
