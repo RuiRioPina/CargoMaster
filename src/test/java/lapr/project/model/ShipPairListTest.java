@@ -133,6 +133,49 @@ Ship ship4;
         assertEquals(doubleList0.get(2),travelledDistanceList.get(2),0.0001);
     }
 
+    @Test
+    public void testForSshipsPairList()throws IOException {
+        String fin="";
+        ShipStore shipStores= new ShipStore();
+        String fileNames = "csvFiles/sships.csv";
+        List<Ship> shipsLists = ImportShips.importShips(fileNames);
+        for (Ship ships : shipsLists) {
+            shipStores.addShipToAVL(ships);
+        }
+        shipStores.organizeShipMessage();
+        final String fileToBeWrittenTo = "sshipsShipPairList.txt";
+        ShipPairList spl = new ShipPairList(shipStores);
 
+        for (int i=0;i<spl.getShipPairList().size();i++) {
+            fin+= spl.getShipPairList().get(i).getFirst().getShipId().getMmsi()+ " " + spl.getShipPairList().get(i).getSecond().getShipId().getMmsi() +" "+ spl.getTravelledDistanceList().get(i) +" km \n";
+        }
+        try {
+            PrintToFile.print(fin, fileToBeWrittenTo);
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    @Test
+    public void testForBshipsPairList()throws IOException {
+        String fin="";
+        ShipStore shipStores= new ShipStore();
+        String fileNames = "csvFiles/bships.csv";
+        List<Ship> shipsLists = ImportShips.importShips(fileNames);
+        for (Ship ships : shipsLists) {
+            shipStores.addShipToAVL(ships);
+        }
+        shipStores.organizeShipMessage();
+        final String fileToBeWrittenTos = "BshipsShipPairList.txt";
+        ShipPairList spl = new ShipPairList(shipStores);
+
+        for (int i=0;i<spl.getShipPairList().size();i++) {
+            fin+= spl.getShipPairList().get(i).getFirst().getShipId().getMmsi()+ " " + spl.getShipPairList().get(i).getSecond().getShipId().getMmsi() +" "+ spl.getTravelledDistanceList().get(i) +" km \n";
+
+        }
+        try {
+            PrintToFile.print(fin, fileToBeWrittenTos);
+        } catch (IllegalArgumentException e) {
+
+        }
+    }
 
 }
