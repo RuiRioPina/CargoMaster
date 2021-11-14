@@ -52,6 +52,9 @@ public class ShipStore {
         return store;
     }
 
+    /**
+     * Organizes all ships and sends them organized to a txt file.
+     */
     public void organizeShipMessage() {
         Map<Integer, List<Ship>> shipsByLevel = store.nodesByLevel();
         for (Map.Entry<Integer, List<Ship>> entry : shipsByLevel.entrySet()) {
@@ -67,7 +70,12 @@ public class ShipStore {
         }
     }
 
-
+    /**
+     * Checks the position of a ship using his mmsi code in a certain data.
+     * @param mMSI - code of the ship.
+     * @param baseDateTime - data to check the postion.
+     * @return - Position of the Ship.
+     */
     public Location getPositionOfShipData(String mMSI, String baseDateTime) {
         Location location = null;
 
@@ -83,6 +91,13 @@ public class ShipStore {
         } else return new Location("0", "0");
     }
 
+    /**
+     * Checks the positions of a ships using his mmsi code in a certain period.
+     * @param mMSI - code of the ship.
+     * @param baseDateTime1 - initial date.
+     * @param baseDateTime2 - final date.
+     * @return - List with all positions in the period.
+     */
     public List<Location> getPositionOfShipPeriod(String mMSI, String baseDateTime1, String baseDateTime2) throws ParseException {
         organizeShipMessage();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
@@ -134,6 +149,13 @@ public class ShipStore {
         throw new IllegalArgumentException();
     }
 
+    /**
+     * Method to get the top N ships with the most travelled distance for every vessel type, in a certain period.
+     * @param n - number of ships.
+     * @param start - initial date.
+     * @param end - final date.
+     * @return Map with vessel type = key and the list with the ships. A txt file is generated with all information.
+     */
     public Map<Integer, List<Ship>> getTopNShips(int n, String start, String end) throws ParseException, IOException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         Date d1 = sdf.parse(start);
