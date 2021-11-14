@@ -1,10 +1,12 @@
 package lapr.project.model;
 
 import lapr.project.controller.ImportShips;
+import lapr.project.utils.PrintToFile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -74,7 +76,8 @@ public class SummaryOfShipMovementTest {
         assertNotEquals(summaryOfShipMovement.getMapValue("Total Movement Time"),expected);
     }
     @Test
-    public void testForBships(){
+    public void testForBships()throws IOException {
+        String fim="";
         ShipStore shipStore= new ShipStore();
         String fileName = "csvFiles/bships.csv";
         List<Ship> shipsList = ImportShips.importShips(fileName);
@@ -82,11 +85,21 @@ public class SummaryOfShipMovementTest {
             shipStore.addShipToAVL(ships);
         }
         shipStore.organizeShipMessage();
+        final String fileToBeWrittenTo = "SummaryOfBShips.txt";
+
+
         for (Ship ships: shipStore.getStore().inOrder()) {
             SummaryOfShipMovement summaryOfShipMovement= new SummaryOfShipMovement(ships);
             System.out.println(summaryOfShipMovement.toString());
             System.out.println("/////////////////////////");
-        }
+            fim+=summaryOfShipMovement.toString()+"\n";
 
+        }
+        try {
+
+            PrintToFile.print(fim, fileToBeWrittenTo);
+        } catch (IllegalArgumentException e) {
+
+        }
     }
 }

@@ -192,7 +192,293 @@ a message will appear warning the user that no ship was found with that code.
 
 The AVL was the chosen solution since it has a more efficient way of searching a ship [O(nlogn)] than a BST [O(n^2)] or another type of structure.
 
+## US103
 
+###As a traffic manager I wish to have the positional messages temporally organized and associated with each of the ships.
+
+### Analysis:
+
+### System Sequence Diagram
+![US103_SSD](/docs/US103/US103_SSD.svg)
+
+The Traffic Manager will need to organize ship messages and check a position(s) in a data or period.
+
+### Domain Model Diagram
+![US103_SSD](/docs/US103/US103_DM.svg)
+
+### Design
+
+### Class Diagram
+![US103_CD](/docs/US103/US103_CD.svg)
+
+The class ShipStore has the three methods to complete this US. Organize messages, check position in a data and check positions in a period.
+
+### Sequence Diagram
+![US103_SD](/docs/US103/US103_SD.svg)
+
+The system organizes ship positional messages and checks the position of a ship in a data or period.
+
+## Implementation
+### Organizing Ship Messages
+
+    public void organizeShipMessage() {
+        Map<Integer, List<Ship>> shipsByLevel = store.nodesByLevel();
+        for (Map.Entry<Integer, List<Ship>> entry : shipsByLevel.entrySet()) {
+            for (Ship ship : entry.getValue()) {
+                ship.getRoute().getRoute().sort(Comparator.comparing(ShipDynamic::getBaseDateTime));
+            }
+        }
+        }
+
+### Check Position Data
+
+    public Location getPositionOfShipData(String mMSI, String baseDateTime) {
+        Location location = null;
+
+        for (Ship ship : store.inOrder()) {
+            for (int i = 0; i < ship.getRoute().getRoute().size(); i++)
+                if (ship.getRoute().getRoute().get(i).getBaseDateTime().equals(baseDateTime) 
+                        && ship.getShipId().getMmsi().equals(mMSI)) {
+                    location = ship.getRoute().getRoute().get(i).getLocation();
+                }
+        }
+        return location
+        }
+        
+### Check Position Period
+
+    public List<Location> getPositionOfShipPeriod(String mMSI, String baseDateTime1, String baseDateTime2) throws ParseException {
+        organizeShipMessage();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        Date d1 = sdf.parse(baseDateTime1);
+        Date d2 = sdf.parse(baseDateTime2);
+
+        List<Location> position = new ArrayList<>();
+
+        for (Ship ship : store.inOrder()) {
+            for (int j = 0; j < ship.getRoute().getRoute().size(); j++)
+                if (sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).after(d1) &&
+                        sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).before(d2) && ship.getShipId().getMmsi().equals(mMSI)) {
+                    position.add(ship.getRoute().getRoute().get(j).getLocation());
+                }
+        }
+
+        return position;
+    }
+
+## Review
+
+Ships positional messages are organized and a txt is generated with all information to fullfil the requirements
+
+## US104 
+
+## As a traffic manager I wish to make a Summary of a ship's movements.
+
+## Analysis
+
+# System Sequence Diagram
+
+![US104_SSD](/docs/US104/US_104_SSD.svg)
+
+The traffic manager types the code for the ship and the system creates tha map with that ship's data.
+
+### Domain Model Diagram
+![US104_DM](/docs/US104/US_104_DM.svg)
+
+### Design
+
+### Class Diagram
+![US104_CD](/docs/US104/US104_CD.svg)
+
+The System receives a Ship and using its data gathers the data necessary to create the summary. Therefore practically all methods in this class diagram only retrieve and manipulate date.
+
+### Sequence Diagram
+![US104_SD](/docs/US104/US104_SD.svg)
+
+The system starts by receiving a ship, then creates an empty map and puts all the data in it, after that it returns the filled map.
+
+## Implementation
+### Creation of the map
+	public SummaryOfShipMovement(Ship ship){
+	this.ship=ship;
+	this.summaryMap=new HashMap<>();
+	summaryMap.put("MMSI",ship.getShipId().getMmsi());
+	summaryMap.put("Vessel Name",ship.getShipId().getShipName());
+	summaryMap.put("Start Base Date Time",ship.getStartBaseDateTime());
+	summaryMap.put("End Base Date Time",ship.getEndBaseDateTime());
+	summaryMap.put("Total Movement Time",calculateTravelTime());
+	summaryMap.put("Total Number Of Movements",String.format("%d",ship.getRoute().getSize()));
+	summaryMap.put("Max SOG",String.format("%.2f",ship.getRoute().getMaxSog()));
+	summaryMap.put("Mean SOG",String.format("%.2f",ship.getRoute().getMeanSog()));
+	summaryMap.put("Max COG",String.format("%.2f",ship.getRoute().getMaxCog()));
+	summaryMap.put("Mean COG",String.format("%.2f",ship.getRoute().getMeanCog()));
+	summaryMap.put("Travelled Distance",String.format("%.4f km",ship.getRoute().getTravelledDistance()));
+	summaryMap.put("Delta Distance",String.format("%.4f km",ship.getRoute().getDeltaDistance()));
+    }
+	
+### Example of a get() method
+public double getMaxCog(){
+        double temp=0;
+        for (ShipDynamic shipd: route) {
+            if (shipd.getCog()>temp){
+                temp=shipd.getCog();
+            }
+        }
+        return temp;
+    }
+
+##  Review
+
+I used a map to store the data so that a certain piece of the summary could be retrieved depending on the traffic manager's wishes.
+
+## US106 
+
+## As a Traffic Manager I want to get the top-N ships with the most kilometres travelled and their average speed (MeanSOG).
+
+## Analysis
+
+# System Sequence Diagram
+
+![US106_SSD](/docs/US106/US106_SSD.svg)
+
+The traffic manager wants the top N ships with most travelled distance and their meanSog for every vessel type, in a period.
+
+### Domain Model Diagram
+![US106_DM](/docs/US106/US106_DM.svg)
+
+### Design
+
+### Class Diagram
+![US106_CD](/docs/US106/US106_CD.svg)
+
+### Sequence Diagram
+![US106_SD](/docs/US106/US106_SD.svg)
+
+The system starts by inutilize the messages without the period, then gets the top N with the most travelled distance and their meanSOG.
+
+## Implementation
+### getTopNShips
+    ...
+	for (Ship ship : avl.inOrder()) {
+            for (int j = 0; j < ship.getRoute().getRoute().size(); j++) {
+                if (!(sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).after(d1) &&
+                        sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).before(d2))) {
+                    ship.getRoute().getRoute().remove(j);
+                    ;
+                }
+            }
+        }
+     ...
+     for (Integer vesselType : map.keySet()) {
+            for (int i = 0; i < n && n <= map.get(vesselType).size(); i++) {
+                topNShips.add(map.get(vesselType).get(i));
+                sh.add(map.get(vesselType).get(i));
+                map2.put(vesselType, topNShips);
+
+            }
+            topNShips = new ArrayList<>();
+        }
+        ...
+        }
+        
+##  Review
+
+This US was very difficult to implement due to the extreme conditions to meet all requirements. I was undecided on the best way to return the information, a Map or a BST.
+
+## US107 
+
+## As a Traffic manager, I want to return pairs of ships with routes with close departure/arrival coordinates (no more than 5 Kms away) and with different Travelled Distance.
+
+## Analysis
+
+# System Sequence Diagram
+
+![US107_SSD](/docs/US107/US_107_SSD.svg)
+
+The traffic manager receive a list of all the pairs of ships that are within the program and meet those conditions
+
+### Domain Model Diagram
+![US107_DM](/docs/US107/US_107_DM.svg)
+
+### Design
+
+### Class Diagram
+![US104_C7](/docs/US107/US107_CD.svg)
+
+There´s a method that checks if a ship fits the conditions asked by the traffic manager and another one that gets the travelled distance difference , after that a list of Pairs is created to
+store those pairs, after that there are methods that sort the list according to the acceptance criteria.
+
+### Sequence Diagram
+![US107_SD](/docs/US104/US107_SD.svg)
+
+The system starts by creating a list of the pair of ships and then creates another list with the travelled distance difference. After that it sorts bothe lists according to the acceptance 
+criteria. 
+
+## Implementation
+### Checking if a ship is close
+	public boolean isClose(Ship ship){
+        if (Route.distance(this.route.getDepartureLat(),this.route.getDepartureLong(),ship.getRoute().getDepartureLat(),ship.getRoute().getDepartureLong())>5){
+            return false;
+        }
+        if (Route.distance(this.route.getArrivalLat(),this.route.getArrivalLong(),ship.getRoute().getArrivalLat(),ship.getRoute().getArrivalLong())>5){
+            return false;
+        }
+        if (Route.distance(this.route.getArrivalLat(),this.route.getArrivalLong(),ship.getRoute().getArrivalLat(),ship.getRoute().getArrivalLong())==0){
+            return false;
+        }
+        return true;
+    }
+	
+### Creating the list 
+	public List<Pair<Ship, Ship>> getCloseShips() {
+        List<Pair<Ship, Ship>> pairList = new ArrayList<>();
+        for (Ship ship : store.inOrder()) {
+            if (ship.getRoute().getTravelledDistance() > 10) {
+                for (Ship ship2 : store.inOrder()) {
+                    if (ship.isClose(ship2)) {
+                        Pair<Ship, Ship> pair1 = new Pair<>(ship, ship2);
+                        pairList.add(pair1);
+                    }
+                }
+            }
+        }
+        return pairList;
+    }
+
+### Part of the sorting
+	private void sortByDescendingOrder(){
+        int cont =0;
+
+        for (int i=0;i<travelledDistanceList1.size();i++){
+            int j=i;
+            while (Integer.parseInt(shipPairList1.get(j).getFirst().getShipId().getMmsi())==Integer.parseInt(shipPairList1.get(i).getFirst().getShipId().getMmsi())){
+                cont++;
+                 j++;
+                 if (j==travelledDistanceList1.size()){
+                     break;
+                 }
+            }
+            if (cont>1) {
+                for (int b = i; b < i + cont; b++) {
+                    for (int d = i + 1; d < (i + cont ); d++) {
+                        if (travelledDistanceList1.get(d - 1) <= travelledDistanceList1.get(d)) {
+                            Pair<Ship, Ship> tempShip = new Pair<>(shipPairList1.get(d - 1).getFirst(), shipPairList1.get(d - 1).getSecond());
+                            double tempDouble = travelledDistanceList1.get(d - 1);
+                            shipPairList1.set(d - 1, shipPairList1.get(d));
+                            travelledDistanceList1.set(d - 1, travelledDistanceList1.get(d));
+                            shipPairList1.set(d, tempShip);
+                            travelledDistanceList1.set(d, tempDouble);
+                        }
+                    }
+                }
+            }
+            cont=0;
+        }
+    }
+	
+##  Review
+
+The sorting methods may be a little overcomplicated.
 
 ## US109
 
@@ -211,7 +497,13 @@ There was no Design done, since it is a simple script that won't have any intera
 
 ## Review
 
+## US110
 
+###As Project Manager, I want the team to define the naming conventions to apply when defining identifiers or writing SQL or PL/SQL code. The naming conventions mayevolve as new database and programming objects are known.
+
+### Naming Conventions
+
+You can find the file with the naming conventions in the BaseDados folder.
 
 
 
