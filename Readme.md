@@ -331,6 +331,60 @@ public double getMaxCog(){
 
 I used a map to store the data so that a certain piece of the summary could be retrieved depending on the traffic manager's wishes.
 
+## US106 
+
+## As a Traffic Manager I want to get the top-N ships with the most kilometres travelled and their average speed (MeanSOG).
+
+## Analysis
+
+# System Sequence Diagram
+
+![US106_SSD](/docs/US106/US106_SSD.svg)
+
+The traffic manager wants the top N ships with most travelled distance and their meanSog for every vessel type, in a period.
+
+### Domain Model Diagram
+![US106_DM](/docs/US106/US106_DM.svg)
+
+### Design
+
+### Class Diagram
+![US106_CD](/docs/US106/US106_CD.svg)
+
+### Sequence Diagram
+![US106_SD](/docs/US106/US106_SD.svg)
+
+The system starts by inutilize the messages without the period, then gets the top N with the most travelled distance and their meanSOG.
+
+## Implementation
+### getTopNShips
+    ...
+	for (Ship ship : avl.inOrder()) {
+            for (int j = 0; j < ship.getRoute().getRoute().size(); j++) {
+                if (!(sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).after(d1) &&
+                        sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).before(d2))) {
+                    ship.getRoute().getRoute().remove(j);
+                    ;
+                }
+            }
+        }
+     ...
+     for (Integer vesselType : map.keySet()) {
+            for (int i = 0; i < n && n <= map.get(vesselType).size(); i++) {
+                topNShips.add(map.get(vesselType).get(i));
+                sh.add(map.get(vesselType).get(i));
+                map2.put(vesselType, topNShips);
+
+            }
+            topNShips = new ArrayList<>();
+        }
+        ...
+        }
+        
+##  Review
+
+This US was very difficult to implement due to the extreme conditions to meet all requirements. I was undecided on the best way to return the information, a Map or a BST.
+
 ## US107 
 
 ## As a Traffic manager, I want to return pairs of ships with routes with close departure/arrival coordinates (no more than 5 Kms away) and with different Travelled Distance.
