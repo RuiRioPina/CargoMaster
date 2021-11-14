@@ -497,7 +497,13 @@ There was no Design done, since it is a simple script that won't have any intera
 
 ## Review
 
+## US110
 
+###As Project Manager, I want the team to define the naming conventions to apply when defining identifiers or writing SQL or PL/SQL code. The naming conventions mayevolve as new database and programming objects are known.
+
+### Naming Conventions
+
+You can find the file with the naming conventions in the BaseDados folder.
 
 
 
