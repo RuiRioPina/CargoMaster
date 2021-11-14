@@ -89,7 +89,7 @@ Ship ship4;
     public void testForBshipsPairList()throws IOException {
         String finalString="";
         ShipStore shipStoreFunctional= new ShipStore();
-        String fileNameString= "csvfiles/bships.csv";
+        String fileNameString= "csvFiles/bships.csv";
         List<Ship> shipList= ImportShips.importShips(fileNameString);
         for (Ship ships:shipList){
             shipStoreFunctional.addShipToAVL(ships);
@@ -159,7 +159,7 @@ Ship ship4;
     public void testForSshipsPairList()throws IOException{
         String finalString="";
         ShipStore shipStoreFunctional=new ShipStore();
-        String fileNameString="csvfiles/sships.csv";
+        String fileNameString="csvFiles/sships.csv";
         List<Ship> shipList=ImportShips.importShips(fileNameString);
         for(Ship ships:shipList){
         shipStoreFunctional.addShipToAVL(ships);
