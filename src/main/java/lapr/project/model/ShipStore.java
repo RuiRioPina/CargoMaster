@@ -89,6 +89,7 @@ public class ShipStore {
     }
 
     public Ship findShipDetails(String code) {
+        final String fileToBeWrittenTo = "resultSearchDetails.txt";
         BST.Node<Ship> s;
         AVL<Ship> shipAVL;
         Ship ship = null;
@@ -102,7 +103,12 @@ public class ShipStore {
             s = shipAVL.find(value);
             if (s.getElement().getShipId().getImoID().equals(code) || s.getElement().getShipId().getCallsign().equals(code)
                     || s.getElement().getShipId().getMmsi().equals(code)) {
-                return s.getElement();
+                try {
+                    PrintToFile.print(s.getElement().toString(), fileToBeWrittenTo);
+                    return s.getElement();
+                } catch (IOException e) {
+                    LOGGER.log(Level.INFO, "The ship was not found");
+                }
             }
         }
         throw new IllegalArgumentException();

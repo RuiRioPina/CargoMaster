@@ -1,6 +1,7 @@
 package lapr.project.controller;
 
 import lapr.project.model.*;
+import lapr.project.utils.PrintToFile;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,10 +13,16 @@ import java.util.logging.Logger;
 
 public class ImportShips {
     private static final Logger LOGGER = Logger.getLogger("MainLog");
+
     private ImportShips() {
         //This class is not expected to be instantiated
     }
+
     public static List<Ship> importShips(String fileName) {
+        final String fileToBeWrittenTo = "linesNotImported.txt";
+
+        StringBuilder sout = new StringBuilder("");
+
         ShipStore store = App.getInstance().getCompany().getShipStore();
         List<Ship> ships = new ArrayList<>();
         Identification idShip;
@@ -43,7 +50,8 @@ public class ImportShips {
                         ships.add(ship);
                     } catch (Exception e) {
                         ship = null;
-                        LOGGER.log(Level.INFO, String.format("Failed to import line %d", size));
+                        sout.append("Failed to import line ").append(size);
+                        sout.append('\n');
                     }
                 }
                 if (ship != null) {
@@ -52,7 +60,8 @@ public class ImportShips {
                         route.add(shipDynamic);
                         ship.setRoute(route);
                     } catch (Exception e) {
-                        LOGGER.log(Level.INFO, String.format("Failed to import line %d", size));
+                        sout.append("Failed to import line ").append(size);
+                        sout.append('\n');
                     }
                 }
             }
@@ -60,10 +69,11 @@ public class ImportShips {
             LOGGER.log(Level.INFO, "An unexpected error occured. Please check the name of the csv file to import the data.");
         } finally {
             try {
+                PrintToFile.printB(sout, fileToBeWrittenTo);
                 if (br != null) {
                     br.close();
                 }
-            } catch (IOException e) {
+            } catch (IOException | IllegalArgumentException e) {
                 LOGGER.log(Level.INFO, "-");
             }
 
