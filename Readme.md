@@ -398,6 +398,32 @@ The system starts by inutilize the messages without the period, then gets the to
         ...
         }
         
+### TEST for getTopNShips
+
+    @Test
+    public void getTopNShipsSMALL() throws ParseException, IOException {
+        Map <Integer, List <Ship> > exp = new HashMap<>();
+        List <Ship> ship1 = new ArrayList<>();
+        store.organizeShipMessage();
+        for (Ship ship : store.getStore().inOrder()) {
+            ship1.add(ship);
+        }
+        List <Ship> ship2 = new ArrayList<>();
+        ship2.add(ship1.get(4));
+        ship2.add(ship1.get(12));
+        List <Ship> ship3 = new ArrayList<>();
+        ship3.add(ship1.get(16));
+        ship3.add(ship1.get(3));
+        List <Ship> ship4 = new ArrayList<>();
+        ship4.add(ship1.get(5));
+        ship4.add(ship1.get(8));
+        exp.put(60,ship4);
+        exp.put(70,ship3);
+        exp.put(80,ship2);
+        Map<Integer, List <Ship> > res = store.getTopNShips(2,"31/12/2020 00:00","31/12/2020 23:59");
+        assertEquals(res,exp);
+    }
+        
 ##  Review
 
 This US was very difficult to implement due to the extreme conditions to meet all requirements. I was undecided on the best way to return the information, a Map or a BST.
