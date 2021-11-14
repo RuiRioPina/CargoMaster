@@ -132,6 +132,54 @@ Ship ship4;
         assertEquals(doubleList0.get(1),travelledDistanceList.get(1),0.0001);
         assertEquals(doubleList0.get(2),travelledDistanceList.get(2),0.0001);
     }
+    @Test
+    public void testForSshipsPairList()throws IOException {
+        String fim="";
+        ShipStore shipStore= new ShipStore();
+        String fileName = "csvFiles/sships.csv";
+        List<Ship> shipsList = ImportShips.importShips(fileName);
+        for (Ship ships : shipsList) {
+            shipStore.addShipToAVL(ships);
+        }
+        shipStore.organizeShipMessage();
+        final String fileToBeWrittenTo = "sshipsShipPairList.txt";
+        ShipPairList spl = new ShipPairList(shipStore);
+
+        for (int i=0;i<spl.getShipPairList().size();i++) {
+            fim+= spl.getShipPairList().get(i).getFirst().getShipId().getMmsi()+ " " + spl.getShipPairList().get(i).getSecond().getShipId().getMmsi() +" "+ spl.getTravelledDistanceList().get(i) +" km \n";
+
+        }
+        try {
+
+            PrintToFile.print(fim, fileToBeWrittenTo);
+        } catch (IllegalArgumentException e) {
+
+        }
+    }
+    @Test
+    public void testForBshipsPairList()throws IOException {
+        String fim="";
+        ShipStore shipStore= new ShipStore();
+        String fileName = "csvFiles/bships.csv";
+        List<Ship> shipsList = ImportShips.importShips(fileName);
+        for (Ship ships : shipsList) {
+            shipStore.addShipToAVL(ships);
+        }
+        shipStore.organizeShipMessage();
+        final String fileToBeWrittenTo = "BshipsShipPairList.txt";
+        ShipPairList spl = new ShipPairList(shipStore);
+
+        for (int i=0;i<spl.getShipPairList().size();i++) {
+            fim+= spl.getShipPairList().get(i).getFirst().getShipId().getMmsi()+ " " + spl.getShipPairList().get(i).getSecond().getShipId().getMmsi() +" "+ spl.getTravelledDistanceList().get(i) +" km \n";
+
+        }
+        try {
+
+            PrintToFile.print(fim, fileToBeWrittenTo);
+        } catch (IllegalArgumentException e) {
+
+        }
+    }
 
 
 }
