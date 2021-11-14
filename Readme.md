@@ -192,6 +192,84 @@ a message will appear warning the user that no ship was found with that code.
 
 The AVL was the chosen solution since it has a more efficient way of searching a ship [O(nlogn)] than a BST [O(n^2)] or another type of structure.
 
+## US103
+
+###As a traffic manager I wish to have the positional messages temporally organized and associated with each of the ships.
+
+### Analysis:
+
+### System Sequence Diagram
+![US103_SSD](/docs/US103/US103_SSD.svg)
+
+The Traffic Manager will need to organize ship messages and check a position(s) in a data or period.
+
+### Domain Model Diagram
+![US103_SSD](/docs/US103/US103_DM.svg)
+
+### Design
+
+### Class Diagram
+![US103_CD](/docs/US103/US103_CD.svg)
+
+The class ShipStore has the three methods to complete this US. Organize messages, check position in a data and check positions in a period.
+
+### Sequence Diagram
+![US103_SD](/docs/US103/US103_SD.svg)
+
+The system organizes ship positional messages and checks the position of a ship in a data or period.
+
+## Implementation
+### Organizing Ship Messages
+
+    public void organizeShipMessage() {
+        Map<Integer, List<Ship>> shipsByLevel = store.nodesByLevel();
+        for (Map.Entry<Integer, List<Ship>> entry : shipsByLevel.entrySet()) {
+            for (Ship ship : entry.getValue()) {
+                ship.getRoute().getRoute().sort(Comparator.comparing(ShipDynamic::getBaseDateTime));
+            }
+        }
+        }
+
+### Check Position Data
+
+    public Location getPositionOfShipData(String mMSI, String baseDateTime) {
+        Location location = null;
+
+        for (Ship ship : store.inOrder()) {
+            for (int i = 0; i < ship.getRoute().getRoute().size(); i++)
+                if (ship.getRoute().getRoute().get(i).getBaseDateTime().equals(baseDateTime) 
+                        && ship.getShipId().getMmsi().equals(mMSI)) {
+                    location = ship.getRoute().getRoute().get(i).getLocation();
+                }
+        }
+        return location
+        }
+        
+### Check Position Period
+
+    public List<Location> getPositionOfShipPeriod(String mMSI, String baseDateTime1, String baseDateTime2) throws ParseException {
+        organizeShipMessage();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        Date d1 = sdf.parse(baseDateTime1);
+        Date d2 = sdf.parse(baseDateTime2);
+
+        List<Location> position = new ArrayList<>();
+
+        for (Ship ship : store.inOrder()) {
+            for (int j = 0; j < ship.getRoute().getRoute().size(); j++)
+                if (sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).after(d1) &&
+                        sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).before(d2) && ship.getShipId().getMmsi().equals(mMSI)) {
+                    position.add(ship.getRoute().getRoute().get(j).getLocation());
+                }
+        }
+
+        return position;
+    }
+
+## Review
+
+Ships positional messages are organized and a txt is generated with all information to fullfil the requirements
+
 ## US104 
 
 ## As a traffic manager I wish to make a Summary of a ship's movements.
