@@ -36,13 +36,13 @@ This report is divided into the differents User Stories developed during Sprint 
 
 * US110 Jorge Ferreira
 
-##Use Case Diagram
+## Use Case Diagram
 
 ![US101_SSD](/docs/UCD.svg)
 
 These are all the Use Cases to be developed during Sprint 1.
 
-##Domain Model
+## Domain Model
 
 ![US101_SSD](/docs/DM.svg)
 
@@ -51,12 +51,12 @@ the solution to the functionalities pretended.
 
 ## Relational Model
 
-![Relational Model](/BaseDados/US108/logico.pdf)
+![Relational Model](/BaseDados/US108/modelos/logico.jpg)
 
 
 ## US101 
 
-###As a traffic manager, I which to import ships from a text file into a BST.
+### As a traffic manager, I which to import ships from a text file into a BST.
 
 ### Analysis
 ### System Sequence Diagram
@@ -129,7 +129,7 @@ was done this. If there were some validations that were not the intended, it can
 
 ## US102
 
-###As a traffic manager I wish to search the details of a ship using any of its codes: MMSI, IMO or Call Sign.
+### As a traffic manager I wish to search the details of a ship using any of its codes: MMSI, IMO or Call Sign.
 
 ### Analysis:
 
@@ -144,7 +144,7 @@ The Traffic Manager will need to type the code to search the ship so that It can
 ### Design
 
 ### Class Diagram
-![US102_CD](/docs/US101/US102_CD.svg)
+![US102_CD](/docs/US102/US102_CD.svg)
 
 The design patterns used in US102 are the same as in the US101, since we basically only need to use the result of US101 and manipulate it.
 For the intended solution it was added some methods such as returnCodeAccordingToTheCodeFormat(code) in the class Identification, findShipDetails and reorganizeAVLAccordingToTheCode(code) on the shipStore.
@@ -192,6 +192,84 @@ a message will appear warning the user that no ship was found with that code.
 
 The AVL was the chosen solution since it has a more efficient way of searching a ship [O(nlogn)] than a BST [O(n^2)] or another type of structure.
 
+## US103
+
+### As a traffic manager I wish to have the positional messages temporally organized and associated with each of the ships.
+
+### Analysis:
+
+### System Sequence Diagram
+![US103_SSD](/docs/US103/US103_SSD.svg)
+
+The Traffic Manager will need to organize ship messages and check a position(s) in a data or period.
+
+### Domain Model Diagram
+![US103_SSD](/docs/US103/US103_DM.svg)
+
+### Design
+
+### Class Diagram
+![US103_CD](/docs/US103/US103_CD.svg)
+
+The class ShipStore has the three methods to complete this US. Organize messages, check position in a data and check positions in a period.
+
+### Sequence Diagram
+![US103_SD](/docs/US103/US103_SD.svg)
+
+The system organizes ship positional messages and checks the position of a ship in a data or period.
+
+## Implementation
+### Organizing Ship Messages
+
+    public void organizeShipMessage() {
+        Map<Integer, List<Ship>> shipsByLevel = store.nodesByLevel();
+        for (Map.Entry<Integer, List<Ship>> entry : shipsByLevel.entrySet()) {
+            for (Ship ship : entry.getValue()) {
+                ship.getRoute().getRoute().sort(Comparator.comparing(ShipDynamic::getBaseDateTime));
+            }
+        }
+        }
+
+### Check Position Data
+
+    public Location getPositionOfShipData(String mMSI, String baseDateTime) {
+        Location location = null;
+
+        for (Ship ship : store.inOrder()) {
+            for (int i = 0; i < ship.getRoute().getRoute().size(); i++)
+                if (ship.getRoute().getRoute().get(i).getBaseDateTime().equals(baseDateTime) 
+                        && ship.getShipId().getMmsi().equals(mMSI)) {
+                    location = ship.getRoute().getRoute().get(i).getLocation();
+                }
+        }
+        return location
+        }
+        
+### Check Position Period
+
+    public List<Location> getPositionOfShipPeriod(String mMSI, String baseDateTime1, String baseDateTime2) throws ParseException {
+        organizeShipMessage();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        Date d1 = sdf.parse(baseDateTime1);
+        Date d2 = sdf.parse(baseDateTime2);
+
+        List<Location> position = new ArrayList<>();
+
+        for (Ship ship : store.inOrder()) {
+            for (int j = 0; j < ship.getRoute().getRoute().size(); j++)
+                if (sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).after(d1) &&
+                        sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).before(d2) && ship.getShipId().getMmsi().equals(mMSI)) {
+                    position.add(ship.getRoute().getRoute().get(j).getLocation());
+                }
+        }
+
+        return position;
+    }
+
+## Review
+
+Ships positional messages are organized and a txt is generated with all information to fullfil the requirements
+
 ## US104 
 
 ## As a traffic manager I wish to make a Summary of a ship's movements.
@@ -200,12 +278,12 @@ The AVL was the chosen solution since it has a more efficient way of searching a
 
 # System Sequence Diagram
 
-![US104_SSD](/docs/US104/US_104_SSD.svg)
+![US104_SSD](/docs/US104/US104_SSD.svg)
 
 The traffic manager types the code for the ship and the system creates tha map with that ship's data.
 
 ### Domain Model Diagram
-![US104_DM](/docs/US104/US_104_DM.svg)
+![US104_DM](/docs/US104/US104_DM.svg)
 
 ### Design
 
@@ -253,6 +331,60 @@ public double getMaxCog(){
 
 I used a map to store the data so that a certain piece of the summary could be retrieved depending on the traffic manager's wishes.
 
+## US106 
+
+## As a Traffic Manager I want to get the top-N ships with the most kilometres travelled and their average speed (MeanSOG).
+
+## Analysis
+
+# System Sequence Diagram
+
+![US106_SSD](/docs/US106/US106_SSD.svg)
+
+The traffic manager wants the top N ships with most travelled distance and their meanSog for every vessel type, in a period.
+
+### Domain Model Diagram
+![US106_DM](/docs/US106/US106_DM.svg)
+
+### Design
+
+### Class Diagram
+![US106_CD](/docs/US106/US106_CD.svg)
+
+### Sequence Diagram
+![US106_SD](/docs/US106/US106_SD.svg)
+
+The system starts by inutilize the messages without the period, then gets the top N with the most travelled distance and their meanSOG.
+
+## Implementation
+### getTopNShips
+    ...
+	for (Ship ship : avl.inOrder()) {
+            for (int j = 0; j < ship.getRoute().getRoute().size(); j++) {
+                if (!(sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).after(d1) &&
+                        sdf.parse(ship.getRoute().getRoute().get(j).getBaseDateTime()).before(d2))) {
+                    ship.getRoute().getRoute().remove(j);
+                    ;
+                }
+            }
+        }
+     ...
+     for (Integer vesselType : map.keySet()) {
+            for (int i = 0; i < n && n <= map.get(vesselType).size(); i++) {
+                topNShips.add(map.get(vesselType).get(i));
+                sh.add(map.get(vesselType).get(i));
+                map2.put(vesselType, topNShips);
+
+            }
+            topNShips = new ArrayList<>();
+        }
+        ...
+        }
+        
+##  Review
+
+This US was very difficult to implement due to the extreme conditions to meet all requirements. I was undecided on the best way to return the information, a Map or a BST.
+
 ## US107 
 
 ## As a Traffic manager, I want to return pairs of ships with routes with close departure/arrival coordinates (no more than 5 Kms away) and with different Travelled Distance.
@@ -271,13 +403,13 @@ The traffic manager receive a list of all the pairs of ships that are within the
 ### Design
 
 ### Class Diagram
-![US104_C7](/docs/US107/US107_CD.svg)
+![US104_C7](/docs/US107/US_107_CD.svg)
 
 There´s a method that checks if a ship fits the conditions asked by the traffic manager and another one that gets the travelled distance difference , after that a list of Pairs is created to
 store those pairs, after that there are methods that sort the list according to the acceptance criteria.
 
 ### Sequence Diagram
-![US107_SD](/docs/US104/US107_SD.svg)
+![US107_SD](/docs/US104/US_107_SD.svg)
 
 The system starts by creating a list of the pair of ships and then creates another list with the travelled distance difference. After that it sorts bothe lists according to the acceptance 
 criteria. 
@@ -350,22 +482,19 @@ The sorting methods may be a little overcomplicated.
 
 ## US109
 
-###As Project Manager, I want the team to draft an SQL script to test whether the database verifies all the data integrity restrictions that are required to fulfil the purpose of the system and the business constraints of the UoD.
-
-### Analysis:
-
-There was no Analysis done, since it is a simple script that won't have any interaction with user.
-### Design
-
-There was no Design done, since it is a simple script that won't have any interaction with user.
+### As Project Manager, I want the team to draft an SQL script to test whether the database verifies all the data integrity restrictions that are required to fulfil the purpose of the system and the business constraints of the UoD.
 
 ## Implementation
 
-![US109_Script](/BaseDados/US109/ScriptSQL.sql)
+You can find the file sql script in the BaseDados folder.
 
-## Review
+## US110
 
+###As Project Manager, I want the team to define the naming conventions to apply when defining identifiers or writing SQL or PL/SQL code. The naming conventions mayevolve as new database and programming objects are known.
 
+### Naming Conventions
+
+You can find the file with the naming conventions in the BaseDados folder.
 
 
 
@@ -384,7 +513,7 @@ Java source and test files are located in folder src.
 
 Pom.xml file controls the project build.
 
-# Notes
+### Notes
 In this file, DO NOT EDIT the following elements:
 
 * groupID
@@ -410,11 +539,11 @@ The following folder is solely used by Intellij Idea IDE :
 # How was the .gitignore file generated?
 .gitignore file was generated based on https://www.gitignore.io/ with the following keywords:
 
-- Java
-- Maven
-- Eclipse
-- NetBeans
-- Intellij
+  - Java
+  - Maven
+  - Eclipse
+  - NetBeans
+  - Intellij
 
 # Who do I talk to?
 In case you have any problem, please email Nuno Bettencourt (nmb@isep.ipp.pt).
@@ -425,29 +554,34 @@ In case you have any problem, please email Nuno Bettencourt (nmb@isep.ipp.pt).
 
 Execute the "test" goals.
 
-`$ mvn test`
-
+```shell
+$ mvn test
+```
 ## How to generate the javadoc for source code?
 
 Execute the "javadoc:javadoc" goal.
 
-`$ mvn javadoc:javadoc`
-
+```shell
+$ mvn javadoc:javadoc
+```
 This generates the source code javadoc in folder "target/site/apidocs/index.html".
 
 ## How to generate the javadoc for test cases code?
 
 Execute the "javadoc:test-javadoc" goal.
 
-`$ mvn javadoc:test-javadoc`
-
+```shell
+$ mvn javadoc:test-javadoc
+```
 This generates the test cases javadoc in folder "target/site/testapidocs/index.html".
 
 ## How to generate Jacoco's Code Coverage Report?
 
 Execute the "jacoco:report" goal.
 
-`$ mvn test jacoco:report`
+```shell
+$ mvn test jacoco:report
+```
 
 This generates a jacoco code coverage report in folder "target/site/jacoco/index.html".
 
@@ -455,16 +589,18 @@ This generates a jacoco code coverage report in folder "target/site/jacoco/index
 
 Execute the "org.pitest:pitest-maven:mutationCoverage" goal.
 
-`$ mvn test org.pitest:pitest-maven:mutationCoverage`
-
+```shell
+$ mvn test org.pitest:pitest-maven:mutationCoverage
+```
 This generates a PIT Mutation coverage report in folder "target/pit-reports/YYYYMMDDHHMI".
 
 ## How to combine different maven goals in one step?
 
 You can combine different maven goals in the same command. For example, to locally run your project just like on jenkins, use:
 
-`$ mvn clean test jacoco:report org.pitest:pitest-maven:mutationCoverage`
-
+```shell
+$ mvn clean test jacoco:report org.pitest:pitest-maven:mutationCoverage
+```
 ## How to perform a faster pit mutation analysis?
 
 Do not clean build => remove "clean"
@@ -476,38 +612,10 @@ Use more threads to perform the analysis. The number is dependent on each comput
 Temporarily remove timestamps from reports.
 
 Example:
-
-`$ mvn test jacoco:report org.pitest:pitest-maven:mutationCoverage -DhistoryInputFile=target/fasterPitMutationTesting-history.txt -DhistoryOutputFile=target/fasterPitMutationTesting-history.txt -Dsonar.pitest.mode=reuseReport -Dthreads=4 -DtimestampedReports=false`
-
+```shell
+$ mvn test jacoco:report org.pitest:pitest-maven:mutationCoverage -DhistoryInputFile=target/fasterPitMutationTesting-history.txt -DhistoryOutputFile=target/fasterPitMutationTesting-history.txt -Dsonar.pitest.mode=reuseReport -Dthreads=4 -DtimestampedReports=false
+```
 ## Where do I configure my database connection?
 
-Each group should configure their database connection on file:
-
+Each group should configure their database connection on the file:
 * src/main/resources/application.properties
-
-# Oracle repository
-
-If you get the following error:
-
-```
-[ERROR] Failed to execute goal on project 
-bike-sharing: Could not resolve dependencies for project 
-lapr3:bike-sharing:jar:1.0-SNAPSHOT: 
-Failed to collect dependencies at 
-com.oracle.jdbc:ojdbc7:jar:12.1.0.2: 
-Failed to read artifact descriptor for 
-com.oracle.jdbc:ojdbc7:jar:12.1.0.2: 
-Could not transfer artifact 
-com.oracle.jdbc:ojdbc7:pom:12.1.0.2 
-from/to maven.oracle.com (https://maven.oracle.com): 
-Not authorized , ReasonPhrase:Authorization Required. 
--> [Help 1]
-```
-
-Follow these steps:
-
-https://blogs.oracle.com/dev2dev/get-oracle-jdbc-drivers-and-ucp-from-oracle-maven-repository-without-ides
-
-You do not need to set a proxy.
-
-You can use existing dummy Oracle credentials available at http://bugmenot.com.
