@@ -1,0 +1,105 @@
+@startuml
+skinparam classAttributeIconSize 0
+left to right direction
+
+
+
+class Identification {
+-mmsi: String
+-shipName: String
+-imoID: String
++toString()
++equals(ship)
++acessorMethods()
+}
+
+class ShipEnergy {
+- numbersOfEnergyGenerators: int
+- generatorPowerOutput: int
++toString()
++equals(ship)
++acessorMethods()
+}
+
+class ShipCharacteristics {
+- vesselType: int
+- length: int
+- width: int
+- capacity: int
+- draft: int
++toString()
++equals(ship)
++acessorMethods
+}
+
+class "Ship"{
+-idShip: Identification
+-energy: ShipEnergy
+-characteristics: ShipCharacteristics
+-route:Route
++toString()
++equals(ship)
++validateIdentification()
++validateEnergy()
++validateCharacteristics()
++validateRoute()
++acessorMethods()
+
++Ship(idShip, energy, characteristics)
++...()
+}
+
+class ShipStore {
+  -AVL <Ship> shipStore
+  +createShip(idShip, energy, characteristics, route)
+  +saveShip(ship)
+  +getShip()
+}
+
+class ImportShips {
+-createIdentification(elements)
+-createCharacteristics(elements)
+-createShipDynamic(elements)
+}
+
+Class "ShipDynamic" {
+-baseDateTime:LocalDateTime
+-location:Location
+-movement:MovementData
+-transceiverClass:String
++acessorMethods()
+}
+
+Class "Location" {
+-longitude:double
+-latitude:double
++acessorMethods()
+}
+
+Class "Route" {
+-route:List<ShipDynamic>
++getShipDynamic()
++acessorMethods()
+}
+
+Class "MovementData" {
+-sog:int
+-cog:int
+-heading:int
++acessorMethods()
+}
+
+ImportShips ..> Identification
+ImportShips ..> ShipEnergy
+ImportShips ..> ShipCharacteristics
+ImportShips ..> MovementData
+ImportShips ..> Location
+ShipCharacteristics --> ShipStore
+ShipEnergy --> ShipStore
+Identification --> ShipStore
+ShipDynamic --> Route
+Route --> ShipStore
+Location --> ShipDynamic
+MovementData --> ShipDynamic
+ShipStore "1" --> "*" Ship
+@enduml

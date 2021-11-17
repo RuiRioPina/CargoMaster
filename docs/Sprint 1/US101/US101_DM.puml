@@ -1,0 +1,58 @@
+@startuml
+skinparam classAttributeIconSize 0
+left to right direction
+class Ship {
+-MMSI
+-name
+-IMOIDnumber
+-numberOfEnergyGenerators
+-generatorPowerOutput
+-callSign
+-vesselTypeCode
+-width
+-length
+-capacity
+-draft
+}
+
+class TrafficManager{
+-userID
+-name
+}
+class ShipDynamic{
+-baseDateTime
+-latitude
+-longitude
+-SOG
+-COG
+-heading
+-position
+-transceiverClass
+}
+
+class Identification{
+-mmsi
+-shipName
+-callSign
+-imoID
+}
+
+class Characteristics{
+-vesselType
+-lenght
+-width
+-capacity
+-draft
+}
+class Route{
+-routeID
+}
+
+
+TrafficManager "1" --> "1..*" Ship : imports >
+Ship "1" --> "1..*" Route : has >
+Ship "1" -r-> "1" Characteristics: contains >
+Ship "1" --> "1" Identification: contains >
+Route "1" --> "1..*" ShipDynamic : contains >
+Company"1" --> "1..*" Ship : owns >
+@enduml
