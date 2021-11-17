@@ -61,23 +61,23 @@ the solution to the functionalities pretended.
 ### Analysis
 ### System Sequence Diagram
 
-![US101_SSD](/docs/US101/US101_SSD.svg)
+![US101_SSD](/docs/Sprint1/US101/US101_SSD.svg)
 
 The Traffic Manager will need to select the csv to import the ships from by typing it. With that the system will do its operations and will present the user the result.
 
 ### Domain Model Diagram
-![US101_SSD](/docs/US101/US101_DM.svg)
+![US101_SSD](/docs/Sprint1/US101/US101_DM.svg)
 
 ### Design
 ### Class Diagram
-![US101_CD](/docs/US101/US101_CD.svg)
+![US101_CD](/docs/Sprint1/US101/US101_CD.svg)
 
 We will use the Store pattern to store the "Ships" on the class ShipStore, which will contain an AVL tree containing the instances
 of Ships imported from the csv. The class Ship has been decomposed into smaller classes that only have one function, in compliance
 with the GRASP pattern.
 
 ### System Diagram
-![US101_SD](/docs/US101/US101_SD.svg)
+![US101_SD](/docs/Sprint1/US101/US101_SD.svg)
 
 The system will receive the file to be imported and will scan through its lines, one by one, on the elements to be added to the ships instances.
 It will only store the elements regarding its identification, if it is a new ship. If not it only stores its movements and adds it to the refering Ship.
@@ -189,23 +189,23 @@ was done this. If there were some validations that were not the intended, it can
 ### Analysis:
 
 ### System Sequence Diagram
-![US102_SSD](/docs/US102/US102_SSD.svg)
+![US102_SSD](/docs/Sprint1/US102/US102_SSD.svg)
 
 The Traffic Manager will need to type the code to search the ship so that It can present the user the details for that ship. With that the system will do its operations and will present the user the result.
 
 ### Domain Model Diagram
-![US102_SSD](/docs/US102/US102_DM.svg)
+![US102_SSD](/docs/Sprint1/US102/US102_DM.svg)
 
 ### Design
 
 ### Class Diagram
-![US102_CD](/docs/US102/US102_CD.svg)
+![US102_CD](/docs/Sprint1/US102/US102_CD.svg)
 
 The design patterns used in US102 are the same as in the US101, since we basically only need to use the result of US101 and manipulate it.
 For the intended solution it was added some methods such as returnCodeAccordingToTheCodeFormat(code) in the class Identification, findShipDetails and reorganizeAVLAccordingToTheCode(code) on the shipStore.
 
 ### Sequence Diagram
-![US101_SD](/docs/US102/US102_SD.svg)
+![US101_SD](/docs/Sprint1/US102/US102_SD.svg)
 
 The system will receive the code for the ship to be searched, and will set the searchCode for the Ships to that code. With that the system will find
 what type of code has been introduced by the user, using the ShipValidation class, which contains auxiliary methods just to validate data.
@@ -299,22 +299,22 @@ The AVL was the chosen solution since it has a more efficient way of searching a
 ### Analysis:
 
 ### System Sequence Diagram
-![US103_SSD](/docs/US103/US103_SSD.svg)
+![US103_SSD](/docs/Sprint1/US103/US103_SSD.svg)
 
 The Traffic Manager will need to organize ship messages and check a position(s) in a data or period.
 
 ### Domain Model Diagram
-![US103_SSD](/docs/US103/US103_DM.svg)
+![US103_SSD](/docs/Sprint1/US103/US103_DM.svg)
 
 ### Design
 
 ### Class Diagram
-![US103_CD](/docs/US103/US103_CD.svg)
+![US103_CD](/docs/Sprint1/US103/US103_CD.svg)
 
 The class ShipStore has the three methods to complete this US. Organize messages, check position in a data and check positions in a period.
 
 ### Sequence Diagram
-![US103_SD](/docs/US103/US103_SD.svg)
+![US103_SD](/docs/Sprint1/US103/US103_SD.svg)
 
 The system organizes ship positional messages and checks the position of a ship in a data or period.
 
@@ -395,22 +395,22 @@ Ships positional messages are organized and a txt is generated with all informat
 
 # System Sequence Diagram
 
-![US104_SSD](/docs/US104/US104_SSD.svg)
+![US104_SSD](/docs/Sprint1/US104/US104_SSD.svg)
 
 The traffic manager types the code for the ship and the system creates tha map with that ship's data.
 
 ### Domain Model Diagram
-![US104_DM](/docs/US104/US104_DM.svg)
+![US104_DM](/docs/Sprint1/US104/US104_DM.svg)
 
 ### Design
 
 ### Class Diagram
-![US104_CD](/docs/US104/US104_CD.svg)
+![US104_CD](/docs/Sprint1/US104/US104_CD.svg)
 
 The System receives a Ship and using its data gathers the data necessary to create the summary. Therefore practically all methods in this class diagram only retrieve and manipulate date.
 
 ### Sequence Diagram
-![US104_SD](/docs/US104/US104_SD.svg)
+![US104_SD](/docs/Sprint1/US104/US104_SD.svg)
 
 The system starts by receiving a ship, then creates an empty map and puts all the data in it, after that it returns the filled map.
 
@@ -460,20 +460,20 @@ I used a map to store the data so that a certain piece of the summary could be r
 
 # System Sequence Diagram
 
-![US106_SSD](/docs/US106/US106_SSD.svg)
+![US106_SSD](/docs/Sprint1/US106/US106_SSD.svg)
 
 The traffic manager wants the top N ships with most travelled distance and their meanSog for every vessel type, in a period.
 
 ### Domain Model Diagram
-![US106_DM](/docs/US106/US106_DM.svg)
+![US106_DM](/docs/Sprint1/US106/US106_DM.svg)
 
 ### Design
 
 ### Class Diagram
-![US106_CD](/docs/US106/US106_CD.svg)
+![US106_CD](/docs/Sprint1/US106/US106_CD.svg)
 
 ### Sequence Diagram
-![US106_SD](/docs/US106/US106_SD.svg)
+![US106_SD](/docs/Sprint1/US106/US106_SD.svg)
 
 The system starts by inutilize the messages without the period, then gets the top N with the most travelled distance and their meanSOG.
 
@@ -540,23 +540,23 @@ This US was very difficult to implement due to the extreme conditions to meet al
 
 # System Sequence Diagram
 
-![US107_SSD](/docs/US107/US_107_SSD.svg)
+![US107_SSD](/docs/Sprint1/US107/US_107_SSD.svg)
 
 The traffic manager receive a list of all the pairs of ships that are within the program and meet those conditions
 
 ### Domain Model Diagram
-![US107_DM](/docs/US107/US_107_DM.svg)
+![US107_DM](/docs/Sprint1/US107/US_107_DM.svg)
 
 ### Design
 
 ### Class Diagram
-![US104_C7](/docs/US107/US_107_CD.svg)
+![US104_C7](/docs/Sprint1/US107/US_107_CD.svg)
 
 There´s a method that checks if a ship fits the conditions asked by the traffic manager and another one that gets the travelled distance difference , after that a list of Pairs is created to
 store those pairs, after that there are methods that sort the list according to the acceptance criteria.
 
 ### Sequence Diagram
-![US107_SD](/docs/US107/US_107_SD.svg)
+![US107_SD](/docs/Sprint1/US107/US_107_SD.svg)
 
 The system starts by creating a list of the pair of ships and then creates another list with the travelled distance difference. After that it sorts bothe lists according to the acceptance 
 criteria. 
