@@ -1,6 +1,8 @@
 CREATE TABLE Client(
-    idClient INTEGER     CONSTRAINT pk_Client_idClient PRIMARY KEY,
-    name     VARCHAR(42) CONSTRAINT nn_Client_name     NOT NULL
+    idClient               INTEGER     CONSTRAINT pk_Client_idClient         PRIMARY KEY,
+    nameClient             VARCHAR(42) CONSTRAINT nn_Client_name             NOT NULL,
+    nrIdentificationClient INTEGER     CONSTRAINT nn_Client_nrIdentification NOT NULL,
+    CONSTRAINT uk_Client_nrIdentification      UNIQUE(nrIdentificationClient)
 );
 
 CREATE TABLE Amount(
@@ -58,14 +60,21 @@ CREATE TABLE Measure(
     capacity    NUMBER(10,2)     CONSTRAINT  nn_Measure_capacity      NOT NULL
 );
 
+CREATE TABLE Address(
+    codAddress INTEGER     CONSTRAINT pk_Address_codAddress PRIMARY KEY,
+    doorNumber INTEGER     CONSTRAINT nn_Address_doorNumber NOT NULL,
+    street     VARCHAR(42) CONSTRAINT nn_Address_street NOT NULL,
+    parish     VARCHAR(42) CONSTRAINT nn_Address_parish NOT NULL
+);
+
 CREATE TABLE Worker(
-    idWorker         INTEGER        CONSTRAINT  pk_Worker_idWorker         PRIMARY KEY,
-    nameWorker       VARCHAR(42)    CONSTRAINT  nn_Worker_nameWorker       NOT NULL,
-    address          VARCHAR(200)   CONSTRAINT  nn_Worker_walled           NOT NULL,
-    phoneNumber      NUMBER(9,0)    CONSTRAINT  nn_Worker_phoneNumber      NOT NULL,
-    nrIdentification INTEGER        CONSTRAINT  nn_Worker_nrIdentification NOT NULL,
-    CONSTRAINT uk_nrIdentification      UNIQUE(nrIdentification),
-    CONSTRAINT ck_reg_Woker_phoneNumber CHECK(REGEXP_LIKE(PhoneNumber, '[0-9]{9}') )
+    idWorker         INTEGER        CONSTRAINT  pk_Worker_idWorker                PRIMARY KEY,
+    nameWorker       VARCHAR(42)    CONSTRAINT  nn_Worker_nameWorker              NOT NULL,
+    phoneNumber      NUMBER(9,0)    CONSTRAINT  nn_Worker_phoneNumber             NOT NULL,
+    nrIdentification INTEGER        CONSTRAINT  nn_Worker_nrIdentification        NOT NULL,
+    codAddress       INTEGER        REFERENCES  Address(codAddress),
+    CONSTRAINT uk_Worker_nrIdentification   UNIQUE(nrIdentification),
+    CONSTRAINT ck_reg_Woker_phoneNumber     CHECK(REGEXP_LIKE(PhoneNumber, '[0-9]{9}') )
 );
 
 CREATE TABLE TraficManager(
