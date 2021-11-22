@@ -13,10 +13,12 @@ public class Company implements Serializable {
     private int numberOfEmployees;
     private final String designation;
     private final ShipStore shipStore;
+    private final PortStore portStore;
 
 
     public Company(String designation) {
         this.shipStore = new ShipStore();
+        this.portStore = new PortStore();
         if (StringUtils.isBlank(designation))
             throw new IllegalArgumentException("Designation cannot be blank.");
 
@@ -49,5 +51,9 @@ public class Company implements Serializable {
 
     public ShipStore getShipStore() {
         return shipStore;
+    }
+
+    public PortStore getPortStore() {
+        return portStore;
     }
 }

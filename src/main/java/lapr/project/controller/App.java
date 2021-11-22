@@ -53,6 +53,8 @@ public class App  {
         String fileName = "csvFiles/bships.csv";
         ImportShips.importShips(fileName);
 
+        fileName = "csvFiles/bports.csv";
+        ImportPorts.importPorts(fileName);
     }
 
 
