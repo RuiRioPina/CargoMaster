@@ -70,7 +70,6 @@ CREATE TABLE Address(
 CREATE TABLE Worker(
     idWorker         INTEGER        CONSTRAINT  pk_Worker_idWorker                PRIMARY KEY,
     nameWorker       VARCHAR(42)    CONSTRAINT  nn_Worker_nameWorker              NOT NULL,
-    phoneNumber      NUMBER(9,0)    CONSTRAINT  nn_Worker_phoneNumber             NOT NULL,
     nrIdentification INTEGER        CONSTRAINT  nn_Worker_nrIdentification        NOT NULL,
     codAddress       INTEGER        REFERENCES  Address(codAddress),
     CONSTRAINT uk_Worker_nrIdentification   UNIQUE(nrIdentification),
@@ -190,16 +189,14 @@ CREATE TABLE Route(
 );
 
 CREATE TABLE PositionShip(
-    mmsi           NUMBER(9,0),
-    idPisitionShip INTEGER      CONSTRAINT pk_PositionShip_idPisitionShip PRIMARY KEY,
+    idPositionShip INTEGER      CONSTRAINT pk_PositionShip_idPisitionShip PRIMARY KEY,
     latitude       NUMBER(5,3)  CONSTRAINT nn_PositionShip__latitude      NOT NULL,
     longitude      NUMBER(6,3)  CONSTRAINT nn_PositionShip__longitude     NOT NULL,
     cog            INTEGER      CONSTRAINT nn_PositionShip_cog            NOT NULL,
     sog            NUMBER(6,3)  CONSTRAINT nn_PositionShip_sog            NOT NULL,
-    PositionShip   NUMBER(6,3)  CONSTRAINT nn_PositionShip_heading        NOT NULL,
-    position       NUMBER(9,0)  CONSTRAINT nn_PositionShip_position       NOT NULL,
     transceiver    VARCHAR(1)   CONSTRAINT nn_PositionShip_transceiver    NOT NULL,
     heading        NUMBER(6,3)  CONSTRAINT nn_headingPositionShip         NOT NULL,
+    mmsi           REFERENCES   Ship(mmsi),
     CONSTRAINT ck_PositionShip_maxLatitude  CHECK(latitude<=90 OR latitude=91),
     CONSTRAINT ck_PositionShip_minLatitude  CHECK(latitude>=-90),
     CONSTRAINT ck_PositionShip_Longitude    CHECK(longitude<=181 AND longitude>=-180),
@@ -256,7 +253,6 @@ ALTER TABLE NumberContainer  ADD CONSTRAINT  fk_NumberContainer_iso             
 ALTER TABLE Historic         ADD CONSTRAINT  fk_Historic_iso                        FOREIGN KEY (iso)               REFERENCES Container(iso);
 ALTER TABLE Port             ADD CONSTRAINT  fk_Port_idLocalPosition                FOREIGN KEY (idLocalPosition)   REFERENCES LocalPosition(idLocalPosition);
 ALTER TABLE Warehouse        ADD CONSTRAINT  fk_Warehouse_idLocalPosition           FOREIGN KEY (idLocalPosition)   REFERENCES LocalPosition(idLocalPosition);
-ALTER TABLE PositionShip     ADD CONSTRAINT  fk_PositionShip_mmsi                   FOREIGN KEY (mmsi)              REFERENCES Ship(mmsi);
 ALTER TABLE Route            ADD CONSTRAINT  fk_Route_mmsi                          FOREIGN KEY (mmsi)              REFERENCES Ship(mmsi);
 ALTER TABLE TraficManager    ADD CONSTRAINT  fk_TraficManager_idWorker              FOREIGN KEY (idWorker)          REFERENCES Worker(idWorker);
 ALTER TABLE TruckDriver      ADD CONSTRAINT  fk_TruckDriver_idWorkerTruckDriver     FOREIGN KEY (idWorker)          REFERENCES Worker(idWorker);
