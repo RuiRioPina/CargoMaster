@@ -72,8 +72,7 @@ CREATE TABLE Worker(
     nameWorker       VARCHAR(42)    CONSTRAINT  nn_Worker_nameWorker              NOT NULL,
     nrIdentification INTEGER        CONSTRAINT  nn_Worker_nrIdentification        NOT NULL,
     codAddress       INTEGER        REFERENCES  Address(codAddress),
-    CONSTRAINT uk_Worker_nrIdentification   UNIQUE(nrIdentification),
-    CONSTRAINT ck_reg_Woker_phoneNumber     CHECK(REGEXP_LIKE(PhoneNumber, '[0-9]{9}') )
+    CONSTRAINT uk_Worker_nrIdentification   UNIQUE(nrIdentification)
 );
 
 CREATE TABLE TraficManager(
