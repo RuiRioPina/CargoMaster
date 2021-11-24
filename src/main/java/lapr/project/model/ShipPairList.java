@@ -16,9 +16,9 @@ public class ShipPairList {
      */
     public ShipPairList(ShipStore shipStore) {
         shipPairList1 = shipStore.getCloseShips();
-travelledDistanceList1=sortShipList();
-removeRepeats();
-sortByDescendingOrder();
+        travelledDistanceList1=sortShipList();
+        removeRepeats();
+        sortByDescendingOrder();
     }
 
 
