@@ -7,7 +7,7 @@ CREATE TABLE UserApplication(
 
 CREATE TABLE Address(
     codAddress INTEGER     CONSTRAINT pk_Address_codAddress PRIMARY KEY,
-    nrDorr     INTEGER     CONSTRAINT nn_Address_doorNumber NOT NULL,
+    nrDoor     INTEGER     CONSTRAINT nn_Address_nrdoor NOT NULL,
     street     VARCHAR(42) CONSTRAINT nn_Address_street NOT NULL,
     parish     VARCHAR(42) CONSTRAINT nn_Address_parish NOT NULL
 );
@@ -64,7 +64,7 @@ CREATE TABLE Manifest(
     typeManifest   VARCHAR(42)  CONSTRAINT nn_Manifest_typeManifest NOT NULL,
     dateManifest   DATE         CONSTRAINT nn_Manifest_dateManifest NOT NULL, 
     idPosition     REFERENCES Position(idPosition),
-    CONSTRAINT     ck_reg_Manifest_dateManifest CHECK(REGEXP_LIKE(dateManifest, 'LOAD|UNLOAD|load|unload') )
+    CONSTRAINT     ck_reg_Manifest_typeManifest CHECK(REGEXP_LIKE(dateManifest, 'LOAD|UNLOAD|load|unload') )
 );
 
 CREATE TABLE Dimension(
@@ -76,12 +76,12 @@ CREATE TABLE Dimension(
 CREATE TABLE Container(
     iso             VARCHAR(4)   CONSTRAINT  pk_Container_iso             PRIMARY KEY,
     certificate     VARCHAR(6)   CONSTRAINT  nn_Container_certificate     NOT NULL,
-    typeConteiner   INTEGER      CONSTRAINT  nn_Container_typeConteiner   NOT NULL,
+    typeContainer   INTEGER      CONSTRAINT  nn_Container_typeContainer   NOT NULL,
     numberContainer VARCHAR(11)  CONSTRAINT  nn_Conatiner_numberContainer NOT NULL,
     load            VARCHAR(100) CONSTRAINT  NN_Container_load            NOT NULL,
     idManifest      INTEGER     REFERENCES Manifest(idManifest),
     idDimension     INTEGER     REFERENCES Dimension(idDimension),
-    CONSTRAINT      ck_Container_typeConteiner       CHECK(typeConteiner>=0),
+    CONSTRAINT      ck_Container_typeConteiner       CHECK(typeContainer>=0),
     CONSTRAINT      ck_reg_Container_numberContainer CHECK(REGEXP_LIKE(numberContainer, '[A-Z]{3}[U|J|Z][1-9]{7}') )
 );
 
@@ -106,7 +106,7 @@ CREATE TABLE Facility(
     code            INTEGER     CONSTRAINT  pk_idLocalPort      PRIMARY KEY,
     country         VARCHAR(42) CONSTRAINT  nn_country          NOT NULL,
     continent       VARCHAR(42) CONSTRAINT  nn_Continent        NOT NULL,
-    namePort        VARCHAR(42) CONSTRAINT  nn_namePort         NOT NULL,
+    nameFacility    VARCHAR(42) CONSTRAINT  nn_nameFacility     NOT NULL,
     latitude        NUMBER(5,3) CONSTRAINT  nn_latitudePort     NOT NULL,
     longitude       NUMBER(6,3) CONSTRAINT  nn_longitudePort    NOT NULL,
     idManifest      INTEGER     REFERENCES  Manifest(idManifest),
