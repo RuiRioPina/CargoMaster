@@ -6,7 +6,6 @@ CREATE TABLE UserApplication(
     CONSTRAINT pk_UserApplication_idUser PRIMARY KEY(idUser)
 );
 
-
 CREATE TABLE Address(
     codAddress INTEGER     CONSTRAINT pk_Address_codAddress PRIMARY KEY,
     nrDoor     INTEGER     CONSTRAINT nn_Address_nrDoor NOT NULL,
@@ -42,10 +41,6 @@ CREATE TABLE ChiefEletrical(
     CONSTRAINT  pk_ChiefEletrical_idChiefEletrical     PRIMARY KEY(idChiefEletrical)
 );
 
-CREATE Table WarehouseStaff(
-    idWorker NUMBER    CONSTRAINT  pk_WarehouseStaff_idWarehouseStaff    PRIMARY KEY
-);
-
 CREATE TABLE TraficManager(
     idWorker NUMBER CONSTRAINT  pk_TraficManager_idWorkerManager  PRIMARY KEY
 );
@@ -78,9 +73,17 @@ CREATE TABLE Manifest(
     dateManifest   DATE         CONSTRAINT nn_Manifest_dateManifest NOT NULL,
     idPosition     NUMBER       REFERENCES Position(idPosition),
     CONSTRAINT     ck_reg_Manifest_typeManifest CHECK(REGEXP_LIKE(typeManifest, 'LOAD|UNLOAD|load|unload') ),
-    CONSTRAINT     pk_Manifest_iDManifest   PRIMARY KEY(idManifest)
+    CONSTRAINT     pk_Manifest_iDManifest       PRIMARY KEY(idManifest)
 );
 
+CREATE TABLE Client(
+    idClient               NUMBER GENERATED ALWAYS as IDENTITY(START with 1 INCREMENT by 1),
+    nameClient             VARCHAR(42) CONSTRAINT nn_Client_name             NOT NULL,
+    nrIdentificationClient INTEGER     CONSTRAINT nn_Client_nrIdentification NOT NULL,
+    idUser                 NUMBER      REFERENCES UserApplication(idUser),
+    CONSTRAINT uk_Client_nrIdentification      UNIQUE(nrIdentificationClient),
+    CONSTRAINT pk_Client_idClient         PRIMARY KEY(idClient)
+);
 
 CREATE TABLE Container(
     iso             VARCHAR(4)   CONSTRAINT  pk_Container_iso             PRIMARY KEY,
@@ -88,10 +91,16 @@ CREATE TABLE Container(
     typeContainer   INTEGER      CONSTRAINT  nn_Container_typeContainer   NOT NULL,
     numberContainer VARCHAR(11)  CONSTRAINT  nn_Conatiner_numberContainer NOT NULL,
     load            VARCHAR(100) CONSTRAINT  NN_Container_load            NOT NULL,
-    idManifest      NUMBER       REFERENCES Manifest(idManifest),
     idDimension     NUMBER       REFERENCES Dimension(idDimension),
+    idClient        NUMBER       REFERENCES Client(idClient),
     CONSTRAINT      ck_Container_typeConteiner       CHECK(typeContainer>=0),
     CONSTRAINT      ck_reg_Container_numberContainer CHECK(REGEXP_LIKE(numberContainer, '[A-Z]{3}[U|J|Z][1-9]{7}') )
+);
+
+CREATE TABLE ContainerManifest(
+    idManifest  NUMBER,
+    iso         VARCHAR(4),
+    CONSTRAINT  pk_ContainerManifest PRIMARY KEY(idManifest,iso)
 );
 
 CREATE TABLE CapacityContainer(
@@ -102,25 +111,19 @@ CREATE TABLE CapacityContainer(
     maxVolume       NUMBER(10,2)     CONSTRAINT nn_CapacityContainer_maxVolume       NOT NULL
 );
 
-CREATE TABLE Client(
-    idClient               NUMBER GENERATED ALWAYS as IDENTITY(START with 1 INCREMENT by 1),
-    nameClient             VARCHAR(42) CONSTRAINT nn_Client_name             NOT NULL,
-    nrIdentificationClient INTEGER     CONSTRAINT nn_Client_nrIdentification NOT NULL,
-    iso                    VARCHAR(4)  REFERENCES Container(iso),
-    idUser                 NUMBER      REFERENCES UserApplication(idUser),
-    CONSTRAINT uk_Client_nrIdentification      UNIQUE(nrIdentificationClient),
-    CONSTRAINT pk_Client_idClient         PRIMARY KEY(idClient)
+CREATE TABLE CountryCountinent(
+    idCountryContinent NUMBER GENERATED ALWAYS as IDENTITY(START with 1 INCREMENT by 1),
+    country         VARCHAR(42) CONSTRAINT  nn_Facility_country       NOT NULL,
+    continent       VARCHAR(42) CONSTRAINT  nn_Facility_Continent     NOT NULL
 );
 
 CREATE TABLE Facility(
-    codeFacility    INTEGER     CONSTRAINT  pk_Facility_codeFacility  PRIMARY KEY,
-    country         VARCHAR(42) CONSTRAINT  nn_Facility_country       NOT NULL,
-    continent       VARCHAR(42) CONSTRAINT  nn_Facility_Continent     NOT NULL,
-    nameFacility    VARCHAR(42) CONSTRAINT  nn_Facility_nameFacility  NOT NULL,
-    latitude        NUMBER(5,3) CONSTRAINT  nn_Facility_latitude      NOT NULL,
-    longitude       NUMBER(6,3) CONSTRAINT  nn_Facility_longitudePort NOT NULL,
-    idManifest      NUMBER      CONSTRAINT  nn_Facility_idManifest    NOT NULL,
-    idWorker        NUMBER      REFERENCES  WarehouseStaff(idWorker),
+    codeFacility       INTEGER     CONSTRAINT  pk_Facility_codeFacility       PRIMARY KEY,
+    nameFacility       VARCHAR(42) CONSTRAINT  nn_Facility_nameFacility       NOT NULL,
+    latitude           NUMBER(5,3) CONSTRAINT  nn_Facility_latitude           NOT NULL,
+    longitude          NUMBER(6,3) CONSTRAINT  nn_Facility_longitudePort      NOT NULL,
+    idManifest         NUMBER      CONSTRAINT  nn_Facility_idManifest         NOT NULL,
+    idCountryContinent NUMBER      CONSTRAINT  nn_Facility_idCountryContinent NOT NULL,
     CONSTRAINT ck_Facility_Latitude   CHECK(latitude<=90 AND latitude>=-90),
     CONSTRAINT ck_Facility_Longitude  CHECK(longitude<=180 AND longitude>=-180)
 );
@@ -145,8 +148,13 @@ CREATE TABLE Trip(
     startFacility INTEGER REFERENCES Facility(codeFacility),
     endFacility   INTEGER REFERENCES Facility(codeFacility),
     idVehicle     INTEGER REFERENCES Vehicle(idVehicle),
-    codeFacility  INTEGER REFERENCES Facility(codeFacility),
     CONSTRAINT    pk_Trip_idTrip       PRIMARY KEY(idTrip)
+);
+
+CREATE TABLE TripFacility(
+    idTrip       NUMBER,
+    codeFacility NUMBER,
+    CONSTRAINT   pk_TripFacility PRIMARY KEY(idTrip,codeFacility)
 );
 
 CREATE TABLE Energy(
@@ -211,28 +219,27 @@ CREATE TABLE Transceiver(
     CONSTRAINT     pk_Transceiver_idTransceiver PRIMARY KEY(idTransceiver)
 );
 
-Create TABLE WarehouseManager(
-    idWorker NUMBER     CONSTRAINT  pk_WarehouseManager_idWarehouseManager  PRIMARY KEY,
-    code     NUMBER     REFERENCES Facility(codeFacility)
+CREATE TABLE FacilityManager(
+    type         VARCHAR(42) CONSTRAINT pk_FacilityManager_type         PRIMARY KEY,
+    idWorker     NUMBER      CONSTRAINT nn_FacilityManager_idWorker     NOT NULL,
+    codeFacility NUMBER      CONSTRAINT nn_FacilityManager_codeFacility NOT NULL
 );
 
-Create TABLE PortManager(
-    idWorker NUMBER     CONSTRAINT  pk_PortManager_idWorkerPortManager  PRIMARY KEY,
-    code     NUMBER     REFERENCES Facility(codeFacility)
-);
-
-CREATE TABLE PortStaff(
-    idWorker NUMBER     CONSTRAINT  pk_PortStaff_idWorkerPortStaff  PRIMARY KEY,
-    code     NUMBER     REFERENCES Facility(codeFacility)
+CREATE TABLE FacilityStaff(
+    type         VARCHAR(42) CONSTRAINT pk_FacilityStaff_type         PRIMARY KEY,
+    idWorker     NUMBER      CONSTRAINT nn_FacilityStaff_idWorker     NOT NULL,
+    codeFacility NUMBER      CONSTRAINT nn_FacilityStaff_codeFacility NOT NULL
 );
 
 ALTER TABLE CapacityContainer ADD CONSTRAINT  fk_CapacityContainer_iso               FOREIGN KEY (iso)               REFERENCES Container(iso);
 ALTER TABLE TruckDriver       ADD CONSTRAINT  fk_TruckDriver_idWorker_TruckDriver    FOREIGN KEY (idWorker)          REFERENCES Worker(idWorker);
 ALTER TABLE CallShip          ADD CONSTRAINT  fk_Call_mmsi                           FOREIGN KEY (mmsi)              REFERENCES Ship(mmsi);
 ALTER TABLE ShipCaptain       ADD CONSTRAINT  fk_ShipCaptain_idWorkerShipCaptain     FOREIGN KEY (idWorker)          REFERENCES Worker(idWorker);
-ALTER TABLE WarehouseManager  ADD CONSTRAINT  fk_WarehouseManager_idWorker           FOREIGN KEY (idWorker)          REFERENCES Worker(idWorker);
-ALTER TABLE PortManager       ADD CONSTRAINT  fk_PortManager_idWorkerPortManager     FOREIGN KEY (idWorker)          REFERENCES Worker(idWorker);
-ALTER TABLE WarehouseStaff    ADD CONSTRAINT  fk_WarehouseStaff_idWarehouseStaff     FOREIGN KEY (idWorker)          REFERENCES Worker(idWorker);
-ALTER TABLE PortStaff         ADD CONSTRAINT  fk_PortStaff_idWorkerPortStaff         FOREIGN KEY (idWorker)          REFERENCES Worker(idWorker);
 ALTER TABLE TraficManager     ADD CONSTRAINT  fk_TraficManager_idWorker              FOREIGN KEY (idWorker)          REFERENCES Worker(idWorker);
 ALTER TABLE Facility          ADD CONSTRAINT  fk_Facility_idManifest                 FOREIGN KEY (idManifest)        REFERENCES Manifest(idManifest);
+ALTER TABLE ContainerManifest ADD CONSTRAINT  fk_ContainerManifest_idManifest        FOREIGN KEY (idManifest)        REFERENCES Manifest(idManifest);
+ALTER TABLE ContainerManifest ADD CONSTRAINT  fk_ContainerManifest_iso               FOREIGN KEY (iso)               REFERENCES Container(iso);
+ALTER TABLE TripFacility      ADD CONSTRAINT  fk_TripFacility_idTrip                 FOREIGN KEY (idTrip)            REFERENCES Trip(idTrip);
+ALTER TABLE TripFacility      ADD CONSTRAINT  fk_TripFacility_codeFacility           FOREIGN KEY (codeFacility)      REFERENCES Facility(codeFacility);
+ALTER TABLE FacilityManager   ADD CONSTRAINT  fk_FacilityManager_idWorker            FOREIGN KEY (idWorker)          REFERENCES Worker(idWorker);
+ALTER TABLE FacilityStaff     ADD CONSTRAINT  fk_FacilityStaff_idWorker              FOREIGN KEY (idWorker)          REFERENCES Worker(idWorker);
