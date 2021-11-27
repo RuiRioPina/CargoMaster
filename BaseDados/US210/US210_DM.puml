@@ -1,0 +1,40 @@
+@startuml
+hide methods
+left to right direction
+skinparam classAttributeIconSize 0
+
+class FleetManager{
+    -idFleet
+}
+
+class Ship{
+    -mmsi
+    -draft
+    -nameShip
+    -imo
+    -typeShip
+    -capacity
+}
+
+class Position{
+    -COG
+    -latitude
+    -longitude
+    -SOG
+    -heading
+    -position
+    -longitude
+    -transceiver
+}
+
+class Route{
+    -startDate
+    -endDate
+    -mmsi
+}
+
+Ship "1" --> "*" Route : has >
+Ship "1" --> "*" Position : has >
+FleetManager "*" --> "1" Ship : manage >
+
+@enduml
