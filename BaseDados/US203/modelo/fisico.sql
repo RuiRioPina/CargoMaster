@@ -64,7 +64,7 @@ CREATE TABLE Manifest(
     typeManifest   VARCHAR(42)  CONSTRAINT nn_Manifest_typeManifest NOT NULL,
     dateManifest   DATE         CONSTRAINT nn_Manifest_dateManifest NOT NULL, 
     idPosition     REFERENCES Position(idPosition),
-    CONSTRAINT     ck_reg_Manifest_typeManifest CHECK(REGEXP_LIKE(dateManifest, 'LOAD|UNLOAD|load|unload') )
+    CONSTRAINT     ck_reg_Manifest_typeManifest CHECK(REGEXP_LIKE(typeManifest, 'LOAD|UNLOAD|load|unload') )
 );
 
 CREATE TABLE Dimension(
@@ -103,16 +103,16 @@ CREATE TABLE Client(
 );
 
 CREATE TABLE Facility(
-    code            INTEGER     CONSTRAINT  pk_idLocalPort      PRIMARY KEY,
-    country         VARCHAR(42) CONSTRAINT  nn_country          NOT NULL,
-    continent       VARCHAR(42) CONSTRAINT  nn_Continent        NOT NULL,
-    nameFacility    VARCHAR(42) CONSTRAINT  nn_nameFacility     NOT NULL,
-    latitude        NUMBER(5,3) CONSTRAINT  nn_latitudePort     NOT NULL,
-    longitude       NUMBER(6,3) CONSTRAINT  nn_longitudePort    NOT NULL,
+    codeFacility    INTEGER     CONSTRAINT  pk_Facility_codeFacility  PRIMARY KEY,
+    country         VARCHAR(42) CONSTRAINT  nn_Facility_country       NOT NULL,
+    continent       VARCHAR(42) CONSTRAINT  nn_Facility_Continent     NOT NULL,
+    nameFacility    VARCHAR(42) CONSTRAINT  nn_Facility_nameFacility  NOT NULL,
+    latitude        NUMBER(5,3) CONSTRAINT  nn_Facility_latitude      NOT NULL,
+    longitude       NUMBER(6,3) CONSTRAINT  nn_Facility_longitudePort NOT NULL,
     idManifest      INTEGER     REFERENCES  Manifest(idManifest),
     idWorker        INTEGER     REFERENCES  WarehouseStaff(idWorker),
-    CONSTRAINT ck_Port_Latitude   CHECK(latitude<=90 AND latitude>=-90),
-    CONSTRAINT ck_Port_Longitude  CHECK(longitude<=180 AND longitude>=-180)
+    CONSTRAINT ck_Facility_Latitude   CHECK(latitude<=90 AND latitude>=-90),
+    CONSTRAINT ck_Facility_Longitude  CHECK(longitude<=180 AND longitude>=-180)
 );
 
 CREATE TABLE Vehicle(
@@ -126,15 +126,14 @@ CREATE TABLE Truck(
 );
 
 CREATE TABLE Trip(
-    idTrip        INTEGER    CONSTRAINT pk_Trip_idTrip PRIMARY KEY,
-    dateTrip      DATE       CONSTRAINT nn_Trip_dateTrip NOT NULL,
-    endDate       DATE       CONSTRAINT nn_Trip_endDate  NOT NULL,
-    hourTrip      VARCHAR(8) CONSTRAINT nn_Trip_hourTrip NOT NULL,
-    startFacility INTEGER REFERENCES Facility(code),
-    endFacility   INTEGER REFERENCES Facility(code),
+    idTrip        INTEGER    CONSTRAINT pk_Trip_idTrip       PRIMARY KEY,
+    dateTrip      DATE       CONSTRAINT nn_Trip_dateTrip     NOT NULL,
+    endDate       DATE       CONSTRAINT nn_Trip_endDate      NOT NULL,
+    dateFacility  DATE       CONSTRAINT nn_Trip_dateFacility NOT NULL,
+    startFacility INTEGER REFERENCES Facility(codeFacility),
+    endFacility   INTEGER REFERENCES Facility(codeFacility),
     idVehicle     INTEGER REFERENCES Vehicle(idVehicle),
-    code          INTEGER REFERENCES Facility(code),
-    CONSTRAINT    ck_reg_TRIP_hourTrip  CHECK(REGEXP_LIKE(hourTrip, '[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}') ) 
+    code          INTEGER REFERENCES Facility(codeFacility)
 );
 
 CREATE TABLE Energy(
@@ -173,12 +172,13 @@ CREATE TABLE CallShip(
 );
 
 CREATE TABLE PositionShip(
-    idPositionShip INTEGER      CONSTRAINT pk_PositionShip_idPisitionShip PRIMARY KEY,
-    latitude       NUMBER(5,3)  CONSTRAINT nn_PositionShip__latitude      NOT NULL,
-    longitude      NUMBER(6,3)  CONSTRAINT nn_PositionShip__longitude     NOT NULL,
-    cog            INTEGER      CONSTRAINT nn_PositionShip_cog            NOT NULL,
-    sog            NUMBER(6,3)  CONSTRAINT nn_PositionShip_sog            NOT NULL,
-    heading        NUMBER(6,3)  CONSTRAINT nn_headingPositionShip         NOT NULL,
+    idPositionShip INTEGER      CONSTRAINT pk_PositionShip_idPisitionShip       PRIMARY KEY,
+    latitude       NUMBER(5,3)  CONSTRAINT nn_PositionShip__latitude            NOT NULL,
+    longitude      NUMBER(6,3)  CONSTRAINT nn_PositionShip__longitude           NOT NULL,
+    cog            INTEGER      CONSTRAINT nn_PositionShip_cog                  NOT NULL,
+    sog            NUMBER(6,3)  CONSTRAINT nn_PositionShip_sog                  NOT NULL,
+    heading        NUMBER(6,3)  CONSTRAINT nn_PositionShip_headingPositionShip  NOT NULL,
+    baseDateTime   Date         CONSTRAINT nn_PositionShip_baseDateTime         NOT NULL,
     mmsi           REFERENCES   Ship(mmsi),
     CONSTRAINT ck_PositionShip_maxLatitude  CHECK(latitude<=90 OR latitude=91),
     CONSTRAINT ck_PositionShip_minLatitude  CHECK(latitude>=-90),
@@ -189,24 +189,25 @@ CREATE TABLE PositionShip(
 );
 
 CREATE TABLE Transceiver(
-    idTransceiver INTEGER    CONSTRAINT pk_Transceiver_idTransceiver NOT NULL,
-    code          VARCHAR(1) CONSTRAINT nn_Transceiver_code          NOT NULL,
-    CONSTRAINT ck_reg_Transceiver_code  CHECK(REGEXP_LIKE(code,'A|B'))
+    idTransceiver  INTEGER    CONSTRAINT pk_Transceiver_idTransceiver PRIMARY KEY,
+    code           VARCHAR(1) CONSTRAINT nn_Transceiver_code          NOT NULL,
+    idPositionShip REFERENCES PositionShip(idPositionShip),
+    CONSTRAINT     ck_reg_Transceiver_code  CHECK(REGEXP_LIKE(code,'A|B'))
 );
 
 Create TABLE WarehouseManager(
     idWorker INTEGER    CONSTRAINT  pk_WarehouseManager_idWarehouseManager  PRIMARY KEY,
-    code     REFERENCES Facility(code)
+    code     REFERENCES Facility(codeFacility)
 );
 
 Create TABLE PortManager(
     idWorker INTEGER      CONSTRAINT  pk_PortManager_idWorkerPortManager  PRIMARY KEY,
-    code     REFERENCES Facility(code)
+    code     REFERENCES Facility(codeFacility)
 );
 
 CREATE TABLE PortStaff(
     idWorker INTEGER    CONSTRAINT  pk_PortStaff_idWorkerPortStaff  PRIMARY KEY,
-    code     REFERENCES Facility(code)
+    code     REFERENCES Facility(codeFacility)
 );
 
 ALTER TABLE CapacityContainer ADD CONSTRAINT  fk_CapacityContainer_iso               FOREIGN KEY (iso)               REFERENCES Container(iso);
