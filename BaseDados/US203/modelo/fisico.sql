@@ -7,7 +7,7 @@ CREATE TABLE UserApplication(
 
 CREATE TABLE Address(
     codAddress INTEGER     CONSTRAINT pk_Address_codAddress PRIMARY KEY,
-    nrDoor     INTEGER     CONSTRAINT nn_Address_nrdoor NOT NULL,
+    nrDoor     INTEGER     CONSTRAINT nn_Address_nrDoor NOT NULL,
     street     VARCHAR(42) CONSTRAINT nn_Address_street NOT NULL,
     parish     VARCHAR(42) CONSTRAINT nn_Address_parish NOT NULL
 );
@@ -172,7 +172,7 @@ CREATE TABLE CallShip(
 );
 
 CREATE TABLE PositionShip(
-    idPositionShip INTEGER      CONSTRAINT pk_PositionShip_idPisitionShip       PRIMARY KEY,
+    idPositionShip INTEGER      CONSTRAINT pk_PositionShip_idPositionShip       PRIMARY KEY,
     latitude       NUMBER(5,3)  CONSTRAINT nn_PositionShip__latitude            NOT NULL,
     longitude      NUMBER(6,3)  CONSTRAINT nn_PositionShip__longitude           NOT NULL,
     cog            INTEGER      CONSTRAINT nn_PositionShip_cog                  NOT NULL,
