@@ -1,0 +1,64 @@
+@startuml
+autonumber
+actor "PortManager" as REC
+
+participant  ":importPortsTest" as LabCoo
+participant ":importPorts" as UI
+participant ":Company" as CMP
+participant ":Port" as PORT
+
+participant ":Location" as location
+participant ":PortStore" as portStore
+
+
+
+
+activate REC
+REC -> LabCoo : chooses to import ports' informations from a CSV File
+activate LabCoo
+LabCoo --> REC : asks the name of the file it wants to import
+deactivate LabCoo
+REC -> LabCoo : writes the name of the CSV file
+activate LabCoo
+
+LabCoo -> UI : importPorts(fileName)
+activate UI
+
+
+
+UI -> UI : br = new BufferedReader(fileName)
+UI -> UI : String line = br.readLine();
+UI -> UI : String[] header = line.split(";");
+
+
+
+
+UI -> UI: port = null
+
+loop for every line of the file (except the first line)
+
+UI -> UI: String[] elements = line.split(";")
+UI -> UI : continent = text[0]
+
+UI -> UI : country = text[1]
+
+UI -> UI : code= text[2]
+
+UI -> UI : namePort = text[3]
+
+UI -> location**: location = new Location(longitude, latitude)
+
+UI -> PORT**: port = new Port(continent, country, code, namePort, location)
+
+
+UI -> portStore: ports.insert(port, longitude, latitude)
+activate portStore
+deactivate portStore
+
+end
+deactivate portStore
+UI --> LabCoo : informs operation success
+
+deactivate UI
+LabCoo -> REC : informs operation success
+@enduml
