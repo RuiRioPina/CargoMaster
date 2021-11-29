@@ -270,7 +270,7 @@ class ShipValidationTest {
     @Test
     public void validateHeading1() {
 
-        movement.setHeading("359");
+        movement.setHeading("360");
         ShipValidation.validateHeading(movement.getHeading());
         movement.setHeading("0");
         ShipValidation.validateHeading(movement.getHeading());
@@ -309,12 +309,15 @@ class ShipValidationTest {
 
     @Test
     public void testValidateShipSizes1() {
-        characteristics.setDraft(0.1);
-        characteristics.setLength(0.1);
-        characteristics.setWidth(0.1);
-        ShipValidation.validateShipSizes(characteristics.getDraft());
-        ShipValidation.validateShipSizes(characteristics.getLength());
-        ShipValidation.validateShipSizes(characteristics.getWidth());
+        characteristics.setDraft(0.0);
+        characteristics.setLength(0.0);
+        characteristics.setWidth(0.0);
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                ()->{ShipValidation.validateShipSizes(characteristics.getDraft());} );
+        Throwable exception1 = assertThrows(IllegalArgumentException.class,
+                ()->{ShipValidation.validateShipSizes(characteristics.getLength());} );
+        Throwable exception2 = assertThrows(IllegalArgumentException.class,
+                ()->{ShipValidation.validateShipSizes(characteristics.getWidth());} );
     }
 
     @Test
