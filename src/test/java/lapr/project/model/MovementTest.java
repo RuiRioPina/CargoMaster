@@ -18,7 +18,7 @@ class MovementTest {
         location = new Location("30","30");
         route = new Route();
         location = new Location();
-        route.add(new ShipDynamic("31/12/2020 17:33", new Location("43.02665", "-66.97076"), new Movement(12.5, 3.6, "354.0"), "NA", "A"));
+        route.add(new ShipDynamic(idShip.getMmsi(),"31/12/2020 17:33", new Location("43.02665", "-66.97076"), new Movement(12.5, 3.6, "354.0"), "NA", "A"));
         ship = new Ship(idShip,shipCharacteristics,route);
     }
 

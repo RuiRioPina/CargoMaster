@@ -2,6 +2,7 @@ package lapr.project.utils;
 
 import java.awt.geom.Point2D;
 import java.util.Comparator;
+import java.util.List;
 
 public class KDTree<T> {
 
@@ -127,4 +128,15 @@ public class KDTree<T> {
     public int size() {
         return size;
     }
+//    private Point2D.Double median(List<Point2D.Double> coll) {
+//        double result;
+//        int n = coll.size()/2;
+//
+//        if (coll.size() % 2 == 0)  // even number of items; find the middle two and average them
+//            result = (coll.get(coll.size()/2) + (double)numArray[numArray.length/2 - 1])/2;
+//        else                      // odd number of items; return the one in the middle
+//            result = nth(coll, n, comp).doubleValue();
+//
+//        return result;
+//    }
 }

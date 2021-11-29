@@ -12,6 +12,8 @@ public class ShipCharacteristics {
     private Double length;
     private Double width;
     private Double draft;
+    private Integer capacity = 100;
+
     /**
      * The empty public constructor
      */
@@ -84,5 +86,13 @@ public class ShipCharacteristics {
     @Override
     public int hashCode() {
         return Objects.hash(vesselType, length, width, draft);
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 }

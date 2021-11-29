@@ -13,6 +13,8 @@ public class Ship implements Comparable<Ship> {
 
     private ShipCharacteristics characteristics;
 
+    private ShipEnergy shipEnergy;
+
     private Route route;
 
     /**
@@ -26,6 +28,7 @@ public class Ship implements Comparable<Ship> {
         this.shipId = shipId;
         this.characteristics = characteristics;
         this.route = route;
+        this.shipEnergy = new ShipEnergy(10,25);
     }
 
     /**
@@ -126,6 +129,9 @@ public class Ship implements Comparable<Ship> {
         return this.route.getEndDateTimeLDT();
     }
 
+    public ShipEnergy getShipEnergy() {
+        return shipEnergy;
+    }
 
     /**
      * Overriding the compare to method for the ship.

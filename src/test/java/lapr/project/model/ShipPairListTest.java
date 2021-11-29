@@ -1,7 +1,7 @@
 package lapr.project.model;
 
 import lapr.project.controller.App;
-import lapr.project.controller.ImportShips;
+import lapr.project.utils.ImportShips;
 import lapr.project.utils.Pair;
 import lapr.project.utils.PrintToFile;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ShipPairListTest {
 ShipStore shipStore;
+ImportShips importShips;
 ShipPairList shipPairList;
 Ship ship;
 Ship ship2;
@@ -23,18 +24,19 @@ Ship ship4;
     List<Pair<Ship,Ship>> shipPairList2;
     @BeforeEach
     void setUp() {
-        shipStore= new ShipStore();
+        importShips = new ImportShips();
+        shipStore = new ShipStore();
         Identification idShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
         ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
         Identification idShip2 = new Identification("210950001", "VARAMO", "IMO9395044", "C4SQ2");
         Identification idShip3 = new Identification("210950002", "VARAMO", "IMO9395044", "C4SQ2");
         Identification idShip4 = new Identification("210950003", "VARAMO", "IMO9395044", "C4SQ2");
-        ShipDynamic dynamic = (new ShipDynamic("31/12/2020 16:12", new Location("42.73879", "-66.97726"), new Movement(13.4, 3.4, "357.0"), "NA", "A"));
-        ShipDynamic dynamic1 = (new ShipDynamic("31/12/2020 17:03", new Location("42.92236", "-66.97243"), new Movement(12.5, 2.4,"358.0"), "NA", "A"));
-        ShipDynamic dynamic2 = (new ShipDynamic("31/12/2020 17:13", new Location("42.95969", "-66.97106"), new Movement(12.9, 8.1,"358.0"), "NA", "A"));
-        ShipDynamic dynamic3 = (new ShipDynamic("31/12/2020 16:32", new Location("42.81133", "-66.97587"), new Movement(13.4, 10.0, "356.0"), "NA", "A"));
-        ShipDynamic dynamic4 = (new ShipDynamic("31/12/2020 16:52", new Location("42.8839", "-66.97577"), new Movement(12.7, 2.5, "359.0"), "NA", "A"));
-        ShipDynamic dynamic5 = (new ShipDynamic("31/12/2020 17:33", new Location("43.02665", "-66.97076"), new Movement(12.5, 3.6,"354.0"), "NA", "A"));
+        ShipDynamic dynamic = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 16:12", new Location("42.73879", "-66.97726"), new Movement(13.4, 3.4, "357.0"), "NA", "A"));
+        ShipDynamic dynamic1 = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 17:03", new Location("42.92236", "-66.97243"), new Movement(12.5, 2.4,"358.0"), "NA", "A"));
+        ShipDynamic dynamic2 = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 17:13", new Location("42.95969", "-66.97106"), new Movement(12.9, 8.1,"358.0"), "NA", "A"));
+        ShipDynamic dynamic3 = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 16:32", new Location("42.81133", "-66.97587"), new Movement(13.4, 10.0, "356.0"), "NA", "A"));
+        ShipDynamic dynamic4 = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 16:52", new Location("42.8839", "-66.97577"), new Movement(12.7, 2.5, "359.0"), "NA", "A"));
+        ShipDynamic dynamic5 = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 17:33", new Location("43.02665", "-66.97076"), new Movement(12.5, 3.6,"354.0"), "NA", "A"));
         Route route = new Route();
         route.add(dynamic1);
         route.add(dynamic);
@@ -45,10 +47,10 @@ Ship ship4;
        ship = new Ship(idShip, shipCharacteristics, route);
         shipStore.addShipToAVL(ship);
         shipStore.organizeShipMessage();
-        ShipDynamic dynamicEx1 = (new ShipDynamic("31/12/2020 17:03", new Location(
+        ShipDynamic dynamicEx1 = (new ShipDynamic(idShip2.getMmsi(),"31/12/2020 17:03", new Location(
                 "12.81133", "-66.97587"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
-        ShipDynamic dynamicEx3 = (new ShipDynamic("31/12/2020 16:32", new Location("42.72234", "-66.97726"), new Movement(13.4, 10.0, "356.0"), "NA", "A"));
-        ShipDynamic dynamicEx5 = (new ShipDynamic("31/12/2020 17:33", new Location("43.04665", "-66.97075"), new Movement(12.5, 3.6, "354.0"), "NA", "A"));
+        ShipDynamic dynamicEx3 = (new ShipDynamic(idShip2.getMmsi(),"31/12/2020 16:32", new Location("42.72234", "-66.97726"), new Movement(13.4, 10.0, "356.0"), "NA", "A"));
+        ShipDynamic dynamicEx5 = (new ShipDynamic(idShip2.getMmsi(),"31/12/2020 17:33", new Location("43.04665", "-66.97075"), new Movement(12.5, 3.6, "354.0"), "NA", "A"));
         Route route2 = new Route();
         route2.add(dynamicEx1);
         route2.add(dynamicEx3);
@@ -56,9 +58,9 @@ Ship ship4;
 
 
         shipStore.organizeShipMessage();
-        ShipDynamic dynamicEx11 = (new ShipDynamic("31/12/2020 16:32", new Location("42.70233", "-66.97726"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
-        ShipDynamic dynamicEx31 = (new ShipDynamic("31/12/2020 17:03", new Location("32.81133", "-66.97587"), new Movement(13.4, 10.0, "356.0"), "NA", "A"));
-        ShipDynamic dynamicEx51 = (new ShipDynamic("31/12/2020 17:33", new Location("43.02664", "-66.97072"), new Movement(12.5, 3.6, "354.0"), "NA", "A"));
+        ShipDynamic dynamicEx11 = (new ShipDynamic(idShip3.getMmsi(),"31/12/2020 16:32", new Location("42.70233", "-66.97726"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
+        ShipDynamic dynamicEx31 = (new ShipDynamic(idShip3.getMmsi(),"31/12/2020 17:03", new Location("32.81133", "-66.97587"), new Movement(13.4, 10.0, "356.0"), "NA", "A"));
+        ShipDynamic dynamicEx51 = (new ShipDynamic(idShip3.getMmsi(),"31/12/2020 17:33", new Location("43.02664", "-66.97072"), new Movement(12.5, 3.6, "354.0"), "NA", "A"));
         Route route3 = new Route();
         route3.add(dynamicEx11);
         route3.add(dynamicEx31);
@@ -67,9 +69,9 @@ Ship ship4;
          ship3 = new Ship(idShip3, shipCharacteristics, route2);
        shipStore.addShipToAVL(ship3);
        shipStore.organizeShipMessage();
-        ShipDynamic dynamicEx12 = (new ShipDynamic("31/12/2020 17:03", new Location("02.92235", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
-        ShipDynamic dynamicEx32 = (new ShipDynamic("31/12/2020 16:32", new Location("32.81133", "-66.97587"), new Movement(13.4, 10.0, "356.0"), "NA", "A"));
-        ShipDynamic dynamicEx52 = (new ShipDynamic("31/12/2020 17:33", new Location("43.02664", "-66.97072"), new Movement(12.5, 3.6, "354.0"), "NA", "A"));
+        ShipDynamic dynamicEx12 = (new ShipDynamic(idShip4.getMmsi(),"31/12/2020 17:03", new Location("02.92235", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
+        ShipDynamic dynamicEx32 = (new ShipDynamic(idShip4.getMmsi(),"31/12/2020 16:32", new Location("32.81133", "-66.97587"), new Movement(13.4, 10.0, "356.0"), "NA", "A"));
+        ShipDynamic dynamicEx52 = (new ShipDynamic(idShip4.getMmsi(),"31/12/2020 17:33", new Location("43.02664", "-66.97072"), new Movement(12.5, 3.6, "354.0"), "NA", "A"));
         Route route4 = new Route();
         route4.add(dynamicEx12);
         route4.add(dynamicEx32);
@@ -78,7 +80,7 @@ Ship ship4;
         shipStore.addShipToAVL(ship4);
         shipStore.addShipToAVL(ship2);
         shipStore.organizeShipMessage();
-        List<Pair<Ship,Ship>> shipPairList2=shipStore.getCloseShips();
+        List<Pair<Ship,Ship>> shipPairList2= shipStore.getCloseShips();
         shipPairList= new ShipPairList(shipStore);
 
 
@@ -126,7 +128,7 @@ Ship ship4;
         assertEquals(pairList,shipPairList.getShipPairList());
         assertNotEquals(pairList1,pairList);
         assertEquals(pairList0,pairList);
-        ShipStore shipStore1= App.getInstance().getCompany().getShipStore();
+        ShipStore shipStore1 = App.getInstance().getCompany().getShipStore();
 
         shipStore1.organizeShipMessage();
         ShipPairList shipPairList= new ShipPairList(shipStore1);
@@ -155,26 +157,26 @@ Ship ship4;
         assertEquals(doubleList0.get(1),travelledDistanceList.get(1),0.0001);
         assertEquals(doubleList0.get(2),travelledDistanceList.get(2),0.0001);
     }
-//    @Test
-//    public void testForSshipsPairList()throws IOException{
-//        String finalString="";
-//        ShipStore shipStoreFunctional=new ShipStore();
-//        String fileNameString="csvFiles/sships.csv";
-//        List<Ship> shipList=ImportShips.importShips(fileNameString);
-//        for(Ship ships:shipList){
-//        shipStoreFunctional.addShipToAVL(ships);
-//        }
-//        shipStoreFunctional.organizeShipMessage();
-//        String fileToBeWrittenTos="SshipsShipPairList.txt";
-//        ShipPairList shipPairLists=new ShipPairList(shipStoreFunctional);
-//        for(int i=0;i<shipPairLists.getShipPairList().size();i++){
-//        finalString+=shipPairLists.getShipPairList().get(i).getFirst().getShipId().getMmsi()+" "+shipPairLists.getShipPairList().get(i).getSecond().getShipId().getMmsi()+" "+shipPairLists.getTravelledDistanceList().get(i)+" km \n";
-//        }
-//        try{
-//        PrintToFile.print(finalString,fileToBeWrittenTos);
-//        }catch(IllegalArgumentException e){
-//
-//
-//        }
-//        }
+    @Test
+    public void testForSshipsPairList()throws IOException{
+        String finalString="";
+        ShipStore shipStoreFunctional =new ShipStore();
+        String fileNameString="csvFiles/bships.csv";
+        List<Ship> shipList=importShips.importShips(fileNameString);
+        for(Ship ships:shipList){
+        shipStoreFunctional.addShipToAVL(ships);
+        }
+        shipStoreFunctional.organizeShipMessage();
+        String fileToBeWrittenTos="SshipsShipPairList.txt";
+        ShipPairList shipPairLists=new ShipPairList(shipStoreFunctional);
+        for(int i=0;i<shipPairLists.getShipPairList().size();i++){
+        finalString+=shipPairLists.getShipPairList().get(i).getFirst().getShipId().getMmsi()+" "+shipPairLists.getShipPairList().get(i).getSecond().getShipId().getMmsi()+" "+shipPairLists.getTravelledDistanceList().get(i)+" km \n";
+        }
+        try{
+        PrintToFile.print(finalString,fileToBeWrittenTos);
+        }catch(IllegalArgumentException e){
+
+
+        }
+        }
 }

@@ -1,7 +1,5 @@
 package lapr.project.model;
 
-import lapr.project.model.Company;
-import lapr.project.model.ShipStore;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

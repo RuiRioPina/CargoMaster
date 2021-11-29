@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
  * This class will contain the shipDynamics related attributes of a ship
  */
 public class ShipDynamic {
+    private String mmsi;
     private String baseDateTime;
     private Location location;
     private String cargo;
@@ -21,9 +22,10 @@ public class ShipDynamic {
     /**
      * Public constructor with all its attributes being initialized and verified.
      */
-    public ShipDynamic(String baseDateTime, Location location, Movement movement, String cargo, String transceiverClass) {
+    public ShipDynamic(String mmsi,String baseDateTime, Location location, Movement movement, String cargo, String transceiverClass) {
         ShipValidation.validateBaseDateTime(baseDateTime);
         ShipValidation.validateTransceiverClass(transceiverClass);
+        this.mmsi = mmsi;
         this.baseDateTime = baseDateTime;
         this.location = location;
         this.movement = movement;
@@ -108,6 +110,10 @@ public class ShipDynamic {
      */
     public String getLongitude() {
         return this.location.getLongitude();
+    }
+
+    public String getMmsi() {
+        return mmsi;
     }
 
     @Override

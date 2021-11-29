@@ -1,5 +1,6 @@
-package lapr.project.controller;
+package lapr.project.utils;
 
+import lapr.project.controller.App;
 import lapr.project.model.*;
 import lapr.project.utils.PrintToFile;
 

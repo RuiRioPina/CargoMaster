@@ -26,7 +26,7 @@ class ShipControllerTest {
         Route ro = new Route();
         Movement mo = new Movement(0.0,195.0,"174.0");
         Location lo = new Location("22.34538", "47.57392");
-        ShipDynamic s = new ShipDynamic("31/12/2020 13:11",lo,mo,"21","A");
+        ShipDynamic s = new ShipDynamic(id.getMmsi(), "31/12/2020 13:11",lo,mo,"21","A");
         ro.add(s);
         Ship ship = new Ship(id,ch,ro);
         sc.addShip(ship);
@@ -44,7 +44,7 @@ class ShipControllerTest {
         Route ro = new Route();
         Movement mo = new Movement(0.0,195.0,"174.0");
         Location lo = new Location("22.34538", "47.57392");
-        ShipDynamic s = new ShipDynamic("31/12/2020 13:11",lo,mo,"21","A");
+        ShipDynamic s = new ShipDynamic(id.getMmsi(),"31/12/2020 13:11",lo,mo,"21","A");
         ro.add(s);
         Ship ship = new Ship(id,ch,ro);
         sc.addShip(ship);
@@ -61,7 +61,7 @@ class ShipControllerTest {
         Route ro = new Route();
         Movement mo = new Movement(0.0,195.0,"174.0");
         Location lo = new Location("22.34538", "47.57392");
-        ShipDynamic s = new ShipDynamic("31/12/2020 13:11",lo,mo,"21","A");
+        ShipDynamic s = new ShipDynamic(id.getMmsi(),"31/12/2020 13:11",lo,mo,"21","A");
         ro.add(s);
         Ship ship = new Ship(id,ch,ro);
         sc.addShip(ship);

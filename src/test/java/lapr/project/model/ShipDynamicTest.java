@@ -19,7 +19,7 @@ class ShipDynamicTest {
         idShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
         shipCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
 
-        dynamic = (new ShipDynamic("31/12/2020 16:12", new Location("42.73879", "-66.97726"), new Movement(13.4, 3.4, "357.0"), "NA", "A"));
+        dynamic = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 16:12", new Location("42.73879", "-66.97726"), new Movement(13.4, 3.4, "357.0"), "NA", "A"));
         route.add(dynamic);
         ship = new Ship(idShip, shipCharacteristics, route);
     }
@@ -29,7 +29,7 @@ class ShipDynamicTest {
 
         Throwable exception = assertThrows(NullPointerException.class,
                 () -> {
-                    new ShipDynamic("31/12/2020 17:03", new Location("32.0", "32.0"), new Movement(30.0, 30.0, "30.0"), "30", null);
+                    new ShipDynamic(idShip.getMmsi(),"31/12/2020 17:03", new Location("32.0", "32.0"), new Movement(30.0, 30.0, "30.0"), "30", null);
                 });
     }
 
@@ -38,7 +38,7 @@ class ShipDynamicTest {
 
         Throwable exception = assertThrows(NullPointerException.class,
                 () -> {
-                    new ShipDynamic(null, new Location("32.0", "32.0"), new Movement(30.0, 30.0, "30.0"), "30", "A");
+                    new ShipDynamic(idShip.getMmsi(),null, new Location("32.0", "32.0"), new Movement(30.0, 30.0, "30.0"), "30", "A");
                 });
     }
 

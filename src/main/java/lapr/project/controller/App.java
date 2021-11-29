@@ -1,8 +1,11 @@
 package lapr.project.controller;
 
+import lapr.project.data.DatabaseConnection;
 import lapr.project.model.Company;
 
+import lapr.project.model.Ship;
 import lapr.project.model.shared.Constants;
+import lapr.project.utils.ImportShips;
 
 import java.util.*;
 
@@ -10,18 +13,21 @@ import java.util.*;
 /**
  * @author Paulo Maio <pam@isep.ipp.pt>
  */
-public class App  {
+public class App {
 
     private Company company;
     private boolean doBootStrap;
+    DatabaseConnection databaseConnection = null;
+    private List<Ship> ships;
+
 
     private App() {
 
         Properties props = getProperties();
-        
+
         Company cmp = null;
 
-        
+
         this.doBootStrap = false;
         cmp = new Company(props.getProperty(Constants.PARAMS_COMPANY_DESIGNATION));
         this.doBootStrap = true;
@@ -48,13 +54,14 @@ public class App  {
 
 
     private void bootstrap() {
+        ImportShips importShips = new ImportShips();
+        String fileName = "csvFiles/sships.csv";
+        String fileName1 = "csvFiles/bships.csv";
+        importShips.importShips(fileName1);
+//        importShips.importShipEnergyAndSaveToDatabase(fileName);
+//        importShips.importShipsAndSaveToDatabase(fileName);
+//        importShips.importShipPositionsAndSaveToDatabase(fileName);
 
-
-        String fileName = "csvFiles/bships.csv";
-        ImportShips.importShips(fileName);
-
-        fileName = "csvFiles/bports.csv";
-        ImportPorts.importPorts(fileName);
     }
 
 
@@ -65,9 +72,9 @@ public class App  {
         if (singleton == null) {
             synchronized (App.class) {
                 singleton = new App();
-                if(singleton.doBootStrap) {
-                	singleton.bootstrap();
-                	singleton.doBootStrap = false;
+                if (singleton.doBootStrap) {
+                    singleton.bootstrap();
+                    singleton.doBootStrap = false;
                 }
             }
         }
