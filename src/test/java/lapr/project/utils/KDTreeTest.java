@@ -29,26 +29,13 @@ class KDTreeTest {
         Point2D.Double p1 = new Point2D.Double(32, 10);
         Point2D.Double p2 = new Point2D.Double(-32, -10);
 
-        kdtree.insert(port, p1.getX(), p1.getY());
-        kdtree.insert(port1, p.getX(), p.getY());
-        kdtree.insert(port2, p2.getX(), p2.getY());
-        kdtree.insert(port3, Double.parseDouble(port3.getLocation().getLongitude()), Double.parseDouble(port3.getLocation().getLatitude()));
+        kdtree.insert();
+        kdtree.insert();
+        kdtree.insert();
+        kdtree.insert();
     }
 
-    @Test
-    void insert() {
-        KDTree<Port> kdtree = new KDTree<>();
-        Point2D.Double p = new Point2D.Double(0.2, 0.3);
-        Point2D.Double p1 = new Point2D.Double(32, 10);
-        Point2D.Double p2 = new Point2D.Double(-32, -10);
 
-        kdtree.insert(port1, p.getX(), p.getY());
-        kdtree.insert(port, p1.getX(), p1.getY());
-        kdtree.insert(port3, p2.getX(), p2.getY());
-        assertTrue(kdtree.contains(p));
-        assertTrue(kdtree.contains(p1));
-        assertTrue(kdtree.contains(p2));
-    }
 
     @Test
     void contains() {
@@ -58,12 +45,7 @@ class KDTreeTest {
     void findNearestNeighbour() {
     }
 
-    @Test
-    void size() {
-        int actual = kdtree.size();
-        int expected = 4;
-        assertEquals(expected, actual);
-    }
+
 
     @Test
     void killRemoveCallToNode() {

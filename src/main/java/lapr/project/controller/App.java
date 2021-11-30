@@ -5,6 +5,7 @@ import lapr.project.model.Company;
 
 import lapr.project.model.Ship;
 import lapr.project.model.shared.Constants;
+import lapr.project.utils.ImportPorts;
 import lapr.project.utils.ImportShips;
 
 import java.util.*;
@@ -57,7 +58,9 @@ public class App {
         ImportShips importShips = new ImportShips();
         String fileName = "csvFiles/sships.csv";
         String fileName1 = "csvFiles/bships.csv";
+        String fileName2 = "csvFiles/bports.csv";
         importShips.importShips(fileName1);
+        ImportPorts.importPorts(fileName2);
 //        importShips.importShipEnergyAndSaveToDatabase(fileName);
 //        importShips.importShipsAndSaveToDatabase(fileName);
 //        importShips.importShipPositionsAndSaveToDatabase(fileName);

@@ -1,12 +1,24 @@
 package lapr.project.utils;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class KDTree<T> {
 
     private int size = 0;
+    private int k = 2;
+    int depth = 0;
+    protected static final int X_AXIS = 0;
+    protected static final int Y_AXIS = 1;
+    List<Node<T>> nodes = new ArrayList<>();
+
+    public void addToList(T port, double x, double y) {
+        size++;
+        nodes.add(new Node<>(port, x, y, null, null, true));
+    }
 
     public static class Node<T> {
         protected Point2D.Double coords = new Point2D.Double();
@@ -30,6 +42,16 @@ public class KDTree<T> {
             vertical = v;
         }
 
+        public Node(Node<T> node) {
+            this.info = node.info;
+            coords.setLocation(node.getX(), node.getY());
+            size = 0;
+            left = node.left;
+            right = node.right;
+            vertical = node.vertical;
+        }
+
+
         public Double getX() {
             return coords.getX();
         }
@@ -38,52 +60,37 @@ public class KDTree<T> {
             return coords.getY();
         }
 
+        public void setLeft(Node<T> left) {
+            this.left = left;
+
+        }
+
+        public void setRight(Node<T> right) {
+            this.right = right;
+        }
     }
 
     //----------- end of nested Node class -----------
 
-    private final Comparator<Node<T>> cmpX = new Comparator<Node<T>>() {
+    private final Comparator<Point2D.Double> cmpX = new Comparator<Point2D.Double>() {
         @Override
-        public int compare(Node<T> p1, Node<T> p2) {
+        public int compare(Point2D.Double p1, Point2D.Double p2) {
             return Double.compare(p1.getX(), p2.getX());
         }
     };
 
-    private final Comparator<Node<T>> cmpY = new Comparator<Node<T>>() {
+    private final Comparator<Point2D.Double> cmpY = new Comparator<Point2D.Double>() {
         @Override
-        public int compare(Node<T> p1, Node<T> p2) {
+        public int compare(Point2D.Double p1, Point2D.Double p2) {
             return Double.compare(p1.getY(), p2.getY());
         }
     };
 
     private Node<T> root;
 
-    public void insert(T port, Double x, Double y) {
-        root = insert(port, root, new Point2D.Double(x, y), true);
+    public void insert() {
+        root = insert(nodes, 0);
     }
-
-
-    // helper: add point p to subtree rooted at node
-    private Node<T> insert(T info, final Node<T> node, final Point2D p,
-                           final boolean vertical) {
-        // if new node, create it
-        if (node == null) {
-            size++;
-            return new Node<T>(info, p.getX(), p.getY(), null, null, vertical);
-        }
-
-        // if already in, return it
-        if (node.getX() == p.getY() && node.getY() == p.getY()) return node;
-
-        // else, insert it where corresponds (left - right recursive call)
-        if (node.vertical && p.getX() < node.coords.getX() || !node.vertical && p.getY() < node.coords.getY())
-            node.left = insert(info, node.left, p, !node.vertical);
-        else
-            node.right = insert(info, node.right, p, !node.vertical);
-
-        return node;
-    }
-
 
     // does the tree contain the point p?
     public boolean contains(final Point2D p) {
@@ -101,42 +108,67 @@ public class KDTree<T> {
             return contains(node.right, x, y);
     }
 
-
-//    public T findNearestNeighbour(Node<T> node, double x, double y,
-//                                  Node<T> closestNode, boolean divX) {
-//        if (node == null)
-//            return null;
-//        double d = Point2D.distanceSq(node.coords.x, node.coords.y, x, y);
-//        double closestDist = Point2D.distanceSq(closestNode.coords.x,
-//                closestNode.coords.y, x, y);
-//        if (closestDist > d) {
-//            closestNode = node;
-//            double delta = divX ? x - node.coords.x : y - node.coords.y;
-//            double delta2 = delta * delta;
-//            Node<T> node1 = delta < 0 ? node.left : node.right;
-//            Node<T> node2 = delta < 0 ? node.right : node.left;
-//            findNearestNeighbour(node1, x, y, closestNode, !divX);
-//            if (delta2 < closestDist) {
-//                findNearestNeighbour(node2, x, y, closestNode, !divX);
-//                return closestNode.info;
-//            }
-//        }
-//        return closestNode.info;
-//    }
-
     // number of points in the tree
     public int size() {
         return size;
     }
-//    private Point2D.Double median(List<Point2D.Double> coll) {
-//        double result;
-//        int n = coll.size()/2;
-//
-//        if (coll.size() % 2 == 0)  // even number of items; find the middle two and average them
-//            result = (coll.get(coll.size()/2) + (double)numArray[numArray.length/2 - 1])/2;
-//        else                      // odd number of items; return the one in the middle
-//            result = nth(coll, n, comp).doubleValue();
-//
-//        return result;
-//    }
+
+
+    private Node<T> insert(List<Node<T>> list, int depth) {
+        int size = list.size();
+        Node<T> node = null;
+
+        List<Point2D.Double> pointsOfTheNodes = new ArrayList<>();
+        for (Node<T> node1 : list) {
+            pointsOfTheNodes.add(node1.coords);
+        }
+        if (k < 1) {
+            System.err.println("ERROR: KDTree.recursiveBuildFaster(): Number of Dimensions has not been defined.");
+            return null;
+        }
+        if (depth < 0) {
+            System.err.println("ERROR: KDTree.recursiveBuildFaster(): Cannot build tree from a negative depth!");
+            return null;
+        }
+        if (size == 0) {
+            System.err.println("ERROR: KDTree.recursiveBuildfaster(): Cannot build tree from an empty list.");
+            return node;
+        }
+
+        int axis = depth % k;    //the 'axis' is the dimension that the nodes should be compared by.
+        //it is determined by the current depth
+        if (axis == X_AXIS) {
+            Collections.sort(pointsOfTheNodes, cmpX);
+        } else if (axis == Y_AXIS) {
+            Collections.sort(pointsOfTheNodes, cmpY);
+        }
+        //split list by median
+        Node<T> median;
+        int mid = size / 2; //floor of size/2
+        median = list.get(mid); //get median object from desired axis-sorted list in list
+
+        //create node, split list around median and recur
+        //if there is only one node left in the list, it's our median,
+        //so we're done with building the tree and we can return the
+        //last node which we just created from the median.
+        node = new Node<T>(median);
+        if (depth == 0) {
+            root = node; //set node to root if it's the first one
+
+        }
+
+        //create new sets of branches, split around the median object.
+        List<Node<T>> less = new ArrayList<>(); //all object less than or equal to (on current axis)
+        List<Node<T>> more = new ArrayList<>(); //all objects greater than (on current axis)
+        more = nodes.subList(mid, size-1);
+        less = nodes.subList(0,mid);
+
+        if (root != null && !more.isEmpty() && !less.isEmpty()) {
+            node.setLeft(this.insert(less, depth + 1));
+            node.setRight(this.insert(more, depth + 1));
+        }
+        return node;
+    }
+
+
 }

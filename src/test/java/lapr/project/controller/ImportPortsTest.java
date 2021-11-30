@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ImportPortsTest {
     PortStore portStore = App.getInstance().getCompany().getPortStore();
-//    @Test
-//    void importShips3() {
-//        System.out.println(portStore.getSize());
-//    }
+    @Test
+    void importShips3() {
+        System.out.println(portStore.getSize());
+    }
 }

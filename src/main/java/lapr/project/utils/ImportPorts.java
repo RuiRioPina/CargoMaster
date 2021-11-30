@@ -46,7 +46,7 @@ public class ImportPorts {
                         namePort = elements[3];
                         location = createLocation(elements);
                         port = new Port(continent, country, code, namePort, location);
-                        store.insert(port, Double.parseDouble(port.getLocation().getLongitude()), Double.parseDouble(port.getLocation().getLatitude()));
+                        store.addToList(port, Double.parseDouble(port.getLocation().getLongitude()), Double.parseDouble(port.getLocation().getLatitude()));
                     } catch (Exception e) {
                         port = null;
                         sout.append("Failed to import line ").append(size);
@@ -54,8 +54,9 @@ public class ImportPorts {
                     }
                 }
             }
+            store.insert();
         } catch (NullPointerException | IOException | IndexOutOfBoundsException e) {
-            LOGGER.log(Level.INFO, "An unexpected error occured. Please check the name of the csv file to import the data.");
+            e.printStackTrace();
         } finally {
             try {
                 if (br != null) {
