@@ -16,7 +16,6 @@ public class KDTree<T> {
     List<Node<T>> nodes = new ArrayList<>();
 
     public void addToList(T port, double x, double y) {
-        size++;
         nodes.add(new Node<>(port, x, y, null, null, true));
     }
 
@@ -68,6 +67,10 @@ public class KDTree<T> {
         public void setRight(Node<T> right) {
             this.right = right;
         }
+
+        public Point2D.Double getCoordinates() {
+            return coords;
+        }
     }
 
     //----------- end of nested Node class -----------
@@ -115,7 +118,7 @@ public class KDTree<T> {
 
 
     private Node<T> insert(List<Node<T>> list, int depth) {
-        int size = list.size();
+        int sizeOfLists = list.size();
         Node<T> node = null;
 
         List<Point2D.Double> pointsOfTheNodes = new ArrayList<>();
@@ -130,7 +133,7 @@ public class KDTree<T> {
             System.err.println("ERROR: KDTree.recursiveBuildFaster(): Cannot build tree from a negative depth!");
             return null;
         }
-        if (size == 0) {
+        if (sizeOfLists == 0) {
             System.err.println("ERROR: KDTree.recursiveBuildfaster(): Cannot build tree from an empty list.");
             return node;
         }
@@ -144,7 +147,7 @@ public class KDTree<T> {
         }
         //split list by median
         Node<T> median;
-        int mid = size / 2; //floor of size/2
+        int mid = sizeOfLists / 2; //floor of sizeOfLists/2
         median = list.get(mid); //get median object from desired axis-sorted list in list
 
         //create node, split list around median and recur
@@ -160,14 +163,33 @@ public class KDTree<T> {
         //create new sets of branches, split around the median object.
         List<Node<T>> less = new ArrayList<>(); //all object less than or equal to (on current axis)
         List<Node<T>> more = new ArrayList<>(); //all objects greater than (on current axis)
-        more = nodes.subList(mid, size-1);
+        more = nodes.subList(mid, sizeOfLists-1);
         less = nodes.subList(0,mid);
-
-        if (root != null && !more.isEmpty() && !less.isEmpty()) {
-            node.setLeft(this.insert(less, depth + 1));
-            node.setRight(this.insert(more, depth + 1));
+        size++;
+        if (sizeOfLists > 2) {
+            node.setLeft(this.insert(list.subList(0, mid), depth+1)); //Recur on sublist of everything before midpoint
+            node.setRight(this.insert(list.subList(mid+1, sizeOfLists), depth+1)); //recur on sublist of everything after midpoint
+        } else if (sizeOfLists == 2) { //mid must be 1
+            if (compareAxis(list.get(0),list.get(1), axis) >= 0)
+                node.setRight(this.insert(list.subList(0, 1), depth+1)); //the node before mid
+            else
+                node.setLeft(this.insert(list.subList(0, 1), depth+1)); //node before mid
         }
         return node;
+    }
+
+    public int compareAxis(Node<T> kd1,Node<T> kd2, int axis) {
+        if (axis > 1 || axis < 0) {
+            throw new IllegalArgumentException(String.format("Axis %d out of range: must be 1 or 0", axis));
+        }
+        Point2D.Double mine = kd1.getCoordinates();
+        Point2D.Double other = kd2.getCoordinates();
+        if(axis==0) {
+            return Double.compare(mine.getX(), other.getX());
+        }else {
+            return Double.compare(mine.getY(), other.getY());
+
+        }
     }
 
 

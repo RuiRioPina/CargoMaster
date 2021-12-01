@@ -58,7 +58,7 @@ public class App {
         ImportShips importShips = new ImportShips();
         String fileName = "csvFiles/sships.csv";
         String fileName1 = "csvFiles/bships.csv";
-        String fileName2 = "csvFiles/bports.csv";
+        String fileName2 = "csvFiles/sports.csv";
         importShips.importShips(fileName1);
         ImportPorts.importPorts(fileName2);
 //        importShips.importShipEnergyAndSaveToDatabase(fileName);
