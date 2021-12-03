@@ -248,5 +248,7 @@ public class ShipStore {
         }
         return pairList;
     }
-
+    public Ship getShipByMMSI(String mmsi) {
+        return findShipDetails(mmsi);
+    }
 }

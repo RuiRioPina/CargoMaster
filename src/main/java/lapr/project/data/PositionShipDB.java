@@ -1,6 +1,7 @@
 package lapr.project.data;
 
-import lapr.project.model.ShipDynamic;
+import lapr.project.model.*;
+import oracle.jdbc.OracleTypes;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -32,16 +33,16 @@ public class PositionShipDB implements Persistable {
 
                 if (positionShipResultSet.next()) {
                     sqlCommand =
-                            "update positionship set basedatetime = ?, latitude = ?, longitude = ?, cog = ?, sog = ?, heading = ? where MMSI = ?";
+                            "update positionship set basedatetime = ?, latitude = ?, longitude = ?, cog = ?, sog = ?, heading = ?, cargo = ? where MMSI = ?";
                 } else {
                     sqlCommand =
-                            "insert into positionship(basedatetime, latitude, longitude, cog, sog, heading, mmsi) values (?, ?, ?, ?, ?, ?, ?)";
+                            "insert into positionship(basedatetime, latitude, longitude, cog, sog, heading,cargo, mmsi) values (?, ?, ?, ?, ?, ?, ?, ?)";
                 }
 
                 try (PreparedStatement saveShipPositionPreparedStatement = connection.prepareStatement(
                         sqlCommand)) {
-                    String myDate = "2014/10/29 18:10:45";
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                    String myDate = shipDynamic.getBaseDateTime();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                     java.util.Date date = null;
                     try {
                         date = sdf.parse(myDate);
@@ -58,7 +59,8 @@ public class PositionShipDB implements Persistable {
                     saveShipPositionPreparedStatement.setDouble(4, shipDynamic.getCog());
                     saveShipPositionPreparedStatement.setDouble(5, shipDynamic.getSog());
                     saveShipPositionPreparedStatement.setDouble(6, Double.parseDouble(shipDynamic.getMovement().getHeading()));
-                    saveShipPositionPreparedStatement.setInt(7, Integer.parseInt(shipDynamic.getMmsi()));
+                    saveShipPositionPreparedStatement.setString(7, shipDynamic.getCargo());
+                    saveShipPositionPreparedStatement.setInt(8, Integer.parseInt(shipDynamic.getMmsi()));
 
                     saveShipPositionPreparedStatement.executeUpdate();
                     saveShipPositionPreparedStatement.close();

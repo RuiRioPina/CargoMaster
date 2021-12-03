@@ -1,29 +1,28 @@
 package lapr.project.data;
 
-import lapr.project.controller.App;
-import lapr.project.model.*;
-import oracle.jdbc.OracleTypes;
+import lapr.project.model.Port;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PortStoreDB implements Persistable {
-    CountryContinentDB countryContinentDB = new CountryContinentDB();
+public class CountryContinentDB implements Persistable {
+
     @Override
     public boolean save(DatabaseConnection databaseConnection, Object object) {
         Port port = (Port) object;
         boolean returnValue = false;
 
         try {
-            countryContinentDB.save(databaseConnection,port);
             savePortToDatabase(databaseConnection, port);
-
             //Save changes.
             returnValue = true;
 
         } catch (SQLException ex) {
-            Logger.getLogger(PortStoreDB.class.getName())
+            Logger.getLogger(lapr.project.data.PortStoreDB.class.getName())
                     .log(Level.SEVERE, null, ex);
             databaseConnection.registerError(ex);
             returnValue = false;
@@ -40,18 +39,18 @@ public class PortStoreDB implements Persistable {
 
         try {
             String sqlCommand;
-            sqlCommand = "delete from FACILITY where CODEFACILITY = ?";
-            try (PreparedStatement deletePortsPreparedStatement = connection.prepareStatement(
+            sqlCommand = "delete from COUNTRY where COUNTRY = ?";
+            try (PreparedStatement deleteCoutnriesPreparedStatement = connection.prepareStatement(
                     sqlCommand)) {
-                deletePortsPreparedStatement.setInt(1,
-                        port.getCode());
-                deletePortsPreparedStatement.executeUpdate();
+                deleteCoutnriesPreparedStatement.setString(1,
+                        port.getCountry());
+                deleteCoutnriesPreparedStatement.executeUpdate();
             }
 
             returnValue = true;
 
         } catch (SQLException exception) {
-            Logger.getLogger(PortStoreDB.class.getName())
+            Logger.getLogger(lapr.project.data.CountryContinentDB.class.getName())
                     .log(Level.SEVERE, null, exception);
             databaseConnection
                     .registerError(exception);
@@ -71,8 +70,7 @@ public class PortStoreDB implements Persistable {
      */
     private void savePortToDatabase(DatabaseConnection databaseConnection,
                                     Port port) throws SQLException {
-        CountryContinentDB countryContinentDB = new CountryContinentDB();
-        countryContinentDB.save(databaseConnection, port);
+
         if (isPortOnDatabase(databaseConnection, port)) {
             updatePortOnDatabase(databaseConnection, port);
         } else {
@@ -95,12 +93,12 @@ public class PortStoreDB implements Persistable {
 
         boolean isPortOnDatabase = false;
 
-        String sqlCommand = "select * from FACILITY where CODEFACILITY = ?";
+        String sqlCommand = "select * from COUNTRY where COUNTRY = ?";
 
         PreparedStatement getPortsPreparedStatement =
                 connection.prepareStatement(sqlCommand);
 
-        getPortsPreparedStatement.setInt(1, port.getCode());
+        getPortsPreparedStatement.setString(1, port.getCountry());
 
         try (ResultSet portsResultSet = getPortsPreparedStatement.executeQuery()) {
 
@@ -128,7 +126,7 @@ public class PortStoreDB implements Persistable {
                                       Port port) throws SQLException {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand =
-                "insert into facility(nameFacility,latitude, longitude, typeFacility, country, codeFacility) values (?, ?, ?, ?, ?, ?)";
+                "insert into COUNTRY(COUNTRY) values (?)";
 
         executeShipStatementOnDatabase(databaseConnection, port,
                 sqlCommand);
@@ -143,9 +141,8 @@ public class PortStoreDB implements Persistable {
      */
     private void updatePortOnDatabase(DatabaseConnection databaseConnection,
                                       Port port) throws SQLException {
-        Connection connection = databaseConnection.getConnection();
         String sqlCommand =
-                "update facility set nameFacility = ?, latitude = ?, longitude = ?, typeFacility = ?, country= ? where codeFacility = ?";
+                "update country set country = ? where COUNTRY = ?";
 
         executeShipStatementOnDatabase(databaseConnection, port,
                 sqlCommand);
@@ -163,42 +160,15 @@ public class PortStoreDB implements Persistable {
             Port port, String sqlCommand) throws SQLException {
         Connection connection = databaseConnection.getConnection();
 
-        PreparedStatement savePortPreparedStatement =
-                connection.prepareStatement(
-                        sqlCommand);
+        try (PreparedStatement savePortPreparedStatement = connection.prepareStatement(
+                sqlCommand)) {
+            savePortPreparedStatement.setString(1, port.getCountry());
+            //savePortPreparedStatement.setString(2, port.getContinent());
 
-        savePortPreparedStatement.setString(1, port.getNamePort());
-
-        savePortPreparedStatement.setDouble(2, Double.parseDouble(port.getLatitude()));
-
-        savePortPreparedStatement.setDouble(3, Double.parseDouble(port.getLongitude()));
-
-        savePortPreparedStatement.setString(4, "port");
-
-        savePortPreparedStatement.setString(5, port.getCountry());
-
-        savePortPreparedStatement.setInt(6, port.getCode());
-
-        savePortPreparedStatement.executeUpdate();
-        savePortPreparedStatement.close();
-    }
-
-    PortStore portStore = App.getInstance().getCompany().getPortStore();
-
-    public void getPorts(DatabaseConnection connection) {
-        ResultSet rSet;
-        try(CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call fncGetPorts()}");){
-            callStmtAux.registerOutParameter(1, OracleTypes.CURSOR);
-            callStmtAux.execute();
-            rSet = (ResultSet) callStmtAux.getObject(1);
-            while(rSet.next()){
-                Port port = new Port(rSet.getString(7),rSet.getString(rSet.getString(6)),rSet.getInt(1),rSet.getString(2),new Location(rSet.getString(3),rSet.getString(4)));
-                portStore.addToList(port,Double.parseDouble(port.getLocation().getLongitude()),Double.parseDouble(port.getLocation().getLatitude()));
-            }
-            portStore.insert();
-        }catch(SQLException ignored) {
-            ignored.printStackTrace();
+            savePortPreparedStatement.executeUpdate();
+            savePortPreparedStatement.close();
         }
-
     }
 }
+
+

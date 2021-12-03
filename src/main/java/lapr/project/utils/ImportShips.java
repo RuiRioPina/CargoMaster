@@ -154,9 +154,7 @@ public class ImportShips {
             }
 
         }
-        for (Ship ship1 : ships) {
-            store.addShipToAVL(ship1);
-        }
+
         return ships;
     }
 

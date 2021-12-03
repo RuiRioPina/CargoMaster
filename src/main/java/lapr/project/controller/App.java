@@ -1,6 +1,9 @@
 package lapr.project.controller;
 
 import lapr.project.data.DatabaseConnection;
+import lapr.project.data.PortStoreDB;
+import lapr.project.data.PositionShipDB;
+import lapr.project.data.ShipStoreDB;
 import lapr.project.model.Company;
 
 import lapr.project.model.Ship;
@@ -18,7 +21,7 @@ public class App {
 
     private Company company;
     private boolean doBootStrap;
-    DatabaseConnection databaseConnection = null;
+    DatabaseConnection databaseConnection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
     private List<Ship> ships;
 
 
@@ -55,16 +58,20 @@ public class App {
 
 
     private void bootstrap() {
+        ShipStoreDB shipStoreDB = new ShipStoreDB();
+        PortStoreDB portStoreDB = new PortStoreDB();
         ImportShips importShips = new ImportShips();
         String fileName = "csvFiles/sships.csv";
         String fileName1 = "csvFiles/bships.csv";
         String fileName2 = "csvFiles/sports.csv";
-        importShips.importShips(fileName1);
-        ImportPorts.importPorts(fileName2);
-//        importShips.importShipEnergyAndSaveToDatabase(fileName);
-//        importShips.importShipsAndSaveToDatabase(fileName);
-//        importShips.importShipPositionsAndSaveToDatabase(fileName);
-
+//        importShips.importShips(fileName1);
+//        ImportPorts.importPorts(fileName2);
+        ImportPorts.importPortsAndSaveToDatabase(fileName2);
+        importShips.importShipEnergyAndSaveToDatabase(fileName);
+        importShips.importShipsAndSaveToDatabase(fileName);
+        importShips.importShipPositionsAndSaveToDatabase(fileName);
+        shipStoreDB.getShips(databaseConnection);
+        portStoreDB.getPorts(databaseConnection);
     }
 
 
