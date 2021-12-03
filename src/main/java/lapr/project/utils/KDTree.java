@@ -49,6 +49,28 @@ public class KDTree<T> {
             right = node.right;
             vertical = node.vertical;
         }
+        public int compareAxis(Node<T> node, int axis) {
+            if (axis > 1 || axis < 0) {
+                throw new IllegalArgumentException(String.format("Axis %d out of range: must be 1 or 0", axis));
+            }
+            double mine;
+            double other;
+            if (axis == X_AXIS){
+                mine = coords.getX();
+                other = node.getX();
+            }else {
+                mine = coords.getY();
+                other = node.getY();
+            }
+
+            if (mine > other) {
+                return 1;
+            } else if (mine < other) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
 
 
         public Double getX() {
@@ -75,20 +97,22 @@ public class KDTree<T> {
 
     //----------- end of nested Node class -----------
 
-    private final Comparator<Point2D.Double> cmpX = new Comparator<Point2D.Double>() {
-        @Override
-        public int compare(Point2D.Double p1, Point2D.Double p2) {
-            return Double.compare(p1.getX(), p2.getX());
-        }
-    };
 
-    private final Comparator<Point2D.Double> cmpY = new Comparator<Point2D.Double>() {
-        @Override
-        public int compare(Point2D.Double p1, Point2D.Double p2) {
-            return Double.compare(p1.getY(), p2.getY());
-        }
-    };
+    Comparator<Node<T>> cmpY = new
+            Comparator<Node<T>>() {
+                @Override
+                public int compare(Node<T> tNode, Node<T> t1) {
+                    return Double.compare(tNode.getY(), t1.getY());
+                }
+            };
 
+    Comparator<Node<T>> cmpX = new
+            Comparator<Node<T>>() {
+                @Override
+                public int compare(Node<T> tNode, Node<T> t1) {
+                    return Double.compare(tNode.getX(), t1.getX());
+                }
+            };
     private Node<T> root;
 
     public void insert() {
@@ -121,10 +145,6 @@ public class KDTree<T> {
         int sizeOfLists = list.size();
         Node<T> node = null;
 
-        List<Point2D.Double> pointsOfTheNodes = new ArrayList<>();
-        for (Node<T> node1 : list) {
-            pointsOfTheNodes.add(node1.coords);
-        }
         if (k < 1) {
             System.err.println("ERROR: KDTree.recursiveBuildFaster(): Number of Dimensions has not been defined.");
             return null;
@@ -140,10 +160,11 @@ public class KDTree<T> {
 
         int axis = depth % k;    //the 'axis' is the dimension that the nodes should be compared by.
         //it is determined by the current depth
+
         if (axis == X_AXIS) {
-            Collections.sort(pointsOfTheNodes, cmpX);
+            Collections.sort(list, cmpX);
         } else if (axis == Y_AXIS) {
-            Collections.sort(pointsOfTheNodes, cmpY);
+            Collections.sort(list, cmpY);
         }
         //split list by median
         Node<T> median;
@@ -157,47 +178,21 @@ public class KDTree<T> {
         node = new Node<T>(median);
         if (depth == 0) {
             root = node; //set node to root if it's the first one
-
         }
 
-        //create new sets of branches, split around the median object.
-        List<Node<T>> less = new ArrayList<>(); //all object less than or equal to (on current axis)
-        List<Node<T>> more = new ArrayList<>(); //all objects greater than (on current axis)
-        more = nodes.subList(mid, sizeOfLists-1);
-        less = nodes.subList(0,mid);
-        size++;
+
         if (sizeOfLists > 2) {
-            print(pointsOfTheNodes);
             node.setLeft(this.insert(list.subList(0, mid), depth+1)); //Recur on sublist of everything before midpoint
             node.setRight(this.insert(list.subList(mid+1, sizeOfLists), depth+1)); //recur on sublist of everything after midpoint
         } else if (sizeOfLists == 2) { //mid must be 1
-            print(pointsOfTheNodes);
-            if (compareAxis(list.get(0),list.get(1), axis) >= 0)
-
-                node.setRight(this.insert(list.subList(0, 1), depth+1)); //the node before mid
-            else
-                node.setLeft(this.insert(list.subList(0, 1), depth+1)); //node before mid
-        }
-        return node;
-    }
-
-    public int compareAxis(Node<T> kd1,Node<T> kd2, int axis) {
-        if (axis > 1 || axis < 0) {
-            throw new IllegalArgumentException(String.format("Axis %d out of range: must be 1 or 0", axis));
-        }
-        Point2D.Double mine = kd1.getCoordinates();
-        Point2D.Double other = kd2.getCoordinates();
-        if(axis==0) {
-            return Double.compare(mine.getX(), other.getX());
-        }else {
-            return Double.compare(mine.getY(), other.getY());
-
-        }
-    }
-        private void print(List<Point2D.Double> pointsOfTheNodes) {
-            for (Point2D.Double p: pointsOfTheNodes) {
-                System.out.println(pointsOfTheNodes);
+            if (list.get(0).compareAxis(list.get(1), axis) >= 0) {
+                node.setRight(this.insert(list.subList(0, 1), depth + 1)); //the node before mid
+            }else {
+                node.setLeft(this.insert(list.subList(0, 1), depth + 1)); //node before mid
             }
         }
+        size++;
 
+        return node;
+    }
 }
