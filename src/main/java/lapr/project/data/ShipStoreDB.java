@@ -308,7 +308,7 @@ public class ShipStoreDB implements Persistable {
             callStmtAux.execute();
             rSet = (ResultSet) callStmtAux.getObject(1);
             while(rSet.next()){
-                Ship ship = new Ship(new Identification(rSet.getString(1), rSet.getString(3),rSet.getString(4), rSet.getString(5)
+                Ship ship = new Ship(new Identification(rSet.getString(1), rSet.getString(3),rSet.getString(4), rSet.getString(9)
                 ),new ShipCharacteristics(rSet.getInt(5),rSet.getDouble(6),rSet.getDouble(7),rSet.getDouble(2)),null);
                 getShipPositions(connection, ship);
                 shipStore.addShipToAVL(ship);
