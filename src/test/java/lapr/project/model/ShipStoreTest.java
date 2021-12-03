@@ -140,11 +140,12 @@ class ShipStoreTest {
                     store.findShipDetails("CS73642");
                 });
     }
-    @Test
-    public void getCloseShips(){
-    List<Pair<Ship,Ship>> actualList=store.getCloseShips();
-    assertEquals(actualList,store.getCloseShips());
-    }
+//    @Test
+//    public void getCloseShips(){
+//    List<Pair<Ship,Ship>> actualList=store.getCloseShips();
+//        System.out.println(2);
+//    assertEquals(actualList,store.getCloseShips());
+//    }
 
     @Test
     public void getSize () {

@@ -167,10 +167,13 @@ public class KDTree<T> {
         less = nodes.subList(0,mid);
         size++;
         if (sizeOfLists > 2) {
+            print(pointsOfTheNodes);
             node.setLeft(this.insert(list.subList(0, mid), depth+1)); //Recur on sublist of everything before midpoint
             node.setRight(this.insert(list.subList(mid+1, sizeOfLists), depth+1)); //recur on sublist of everything after midpoint
         } else if (sizeOfLists == 2) { //mid must be 1
+            print(pointsOfTheNodes);
             if (compareAxis(list.get(0),list.get(1), axis) >= 0)
+
                 node.setRight(this.insert(list.subList(0, 1), depth+1)); //the node before mid
             else
                 node.setLeft(this.insert(list.subList(0, 1), depth+1)); //node before mid
@@ -191,6 +194,10 @@ public class KDTree<T> {
 
         }
     }
-
+        private void print(List<Point2D.Double> pointsOfTheNodes) {
+            for (Point2D.Double p: pointsOfTheNodes) {
+                System.out.println(pointsOfTheNodes);
+            }
+        }
 
 }

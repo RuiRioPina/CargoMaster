@@ -111,33 +111,33 @@ Ship ship4;
 
 
 
-    @Test
-    public void getShipPairList(){
-        List<Pair<Ship,Ship>> pairList0=new ArrayList<>();
-        Pair<Ship,Ship> shipPair1= new Pair<>(ship,ship2);
-        Pair<Ship,Ship> shipPair2= new Pair<>(ship,ship3);
-        Pair<Ship,Ship> shipPair3= new Pair<>(ship2,ship3);
-
-        pairList0.add(shipPair2);
-        pairList0.add(shipPair1);
-        pairList0.add(shipPair3);
-        List<Pair<Ship,Ship>> pairList1=new ArrayList<>();
-        Pair<Ship,Ship> shipPair4= new Pair<>(ship4,ship);
-        pairList1.add(shipPair4);
-        List<Pair<Ship,Ship>> pairList= shipPairList.getShipPairList();
-        assertEquals(pairList,shipPairList.getShipPairList());
-        assertNotEquals(pairList1,pairList);
-        assertEquals(pairList0,pairList);
-        ShipStore shipStore1 = App.getInstance().getCompany().getShipStore();
-
-        shipStore1.organizeShipMessage();
-        ShipPairList shipPairList= new ShipPairList(shipStore1);
-        List<Pair<Ship,Ship>> shipl= shipPairList.getShipPairList();
-        App.getInstance().getCompany().getShipStore().getCloseShips();
-       //assertNotEquals(shipl,App.getInstance().getCompany().getShipStore().getCloseShips());
-       assertEquals(shipl,shipPairList.getShipPairList());
-
-    }
+//    @Test
+//    public void getShipPairList(){
+//        List<Pair<Ship,Ship>> pairList0=new ArrayList<>();
+//        Pair<Ship,Ship> shipPair1= new Pair<>(ship,ship2);
+//        Pair<Ship,Ship> shipPair2= new Pair<>(ship,ship3);
+//        Pair<Ship,Ship> shipPair3= new Pair<>(ship2,ship3);
+//
+//        pairList0.add(shipPair2);
+//        pairList0.add(shipPair1);
+//        pairList0.add(shipPair3);
+//        List<Pair<Ship,Ship>> pairList1=new ArrayList<>();
+//        Pair<Ship,Ship> shipPair4= new Pair<>(ship4,ship);
+//        pairList1.add(shipPair4);
+//        List<Pair<Ship,Ship>> pairList= shipPairList.getShipPairList();
+//        assertEquals(pairList,shipPairList.getShipPairList());
+//        assertNotEquals(pairList1,pairList);
+//        assertEquals(pairList0,pairList);
+//        ShipStore shipStore1 = App.getInstance().getCompany().getShipStore();
+//
+//        shipStore1.organizeShipMessage();
+//        ShipPairList shipPairList= new ShipPairList(shipStore1);
+//        List<Pair<Ship,Ship>> shipl= shipPairList.getShipPairList();
+//        App.getInstance().getCompany().getShipStore().getCloseShips();
+//       //assertNotEquals(shipl,App.getInstance().getCompany().getShipStore().getCloseShips());
+//       assertEquals(shipl,shipPairList.getShipPairList());
+//
+//    }
     @Test
     public void getTravelledDistanceList(){
 
