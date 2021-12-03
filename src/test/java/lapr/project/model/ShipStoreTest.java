@@ -159,5 +159,36 @@ class ShipStoreTest {
         Map<Integer, List <Ship> > not = new HashMap<>();
         assertNotEquals(res,not);
     }
+    @Test
+    public void findClosestPort(){
+        Identification identificationShip = new Identification("210000000", "VARAMO", "IMO9395044", "C4SQ2");
+        ShipCharacteristics shipCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
+        Identification identificationShip2 = new Identification("210000001", "VARAMA", "IMO9395043", "ABCD1");
+        ShipDynamic dynamic3 = (new ShipDynamic(identificationShip2.getMmsi(),"31/12/2020 17:12", new Location("36.73879", "-24.97726"), new Movement(13.4, 3.4, "357.0"), "NA", "A"));
+        Route route2= new Route();
+        route2.add(dynamic3);
+        Route route = new Route();
+        ShipDynamic dynamic = (new ShipDynamic(identificationShip.getMmsi(),"31/12/2020 16:12", new Location("42.73879", "-66.97726"), new Movement(13.4, 3.4, "357.0"), "NA", "A"));
+        route.add(dynamic);
+        ShipDynamic dynamic2 = (new ShipDynamic(identificationShip.getMmsi(),"10/01/2021 16:15", new Location("50.05", "1"), new Movement(13.4, 3.4, "357.0"), "NA", "A"));
+        route.add(dynamic2);
+        Ship ship = new Ship(identificationShip, shipCharacteristics, route);
+        Ship ship2= new Ship(identificationShip2,shipCharacteristics,route2);
+        ShipStore shipStore= new ShipStore();
+        shipStore.addShipToAVL(ship);
+        shipStore.addShipToAVL(ship2);
+        Location location1= new Location("44.65","-63.56666667");
+        Location location2= new Location("51.05","2.366666667");
+        Location location3= new Location("37.73333333","-25.66666667");
+        Port port1= new Port("America","Canada",22226,"Halifax",location1);
+        Port port2= new Port("Europe","France",18326,"Dunkirk",location2);
+        Port port3 = new Port("Europe","Portugal",18476,"Ponta Delgada",location3);
+        assertEquals(shipStore.findClosestPort("C4SQ2","31/12/2020 16:12"),port1);
+        assertEquals(shipStore.findClosestPort("C4SQ2","10/01/2021 16:15"),port2);
+        assertEquals(shipStore.findClosestPort("ABCD1","31/12/2020 17:12"),port3);
+
+
+
+    }
 
 }

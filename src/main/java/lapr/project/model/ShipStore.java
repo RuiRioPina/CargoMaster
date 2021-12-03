@@ -229,7 +229,21 @@ public class ShipStore {
 
         return map2;
     }
-
+    private ShipDynamic findShipDynamicUsingCallSign(String callSign ,String baseDateTime){
+        for (Ship ship:store.inOrder()){
+            if (ship.getShipId().getCallsign().equals(callSign)){
+                for (ShipDynamic shipDynamic: ship.getRoute().getRoute()){
+                    if (shipDynamic.getBaseDateTime().equals(baseDateTime)){
+                        return shipDynamic;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    public Port findClosestPort(String callSign,String baseDateTime){
+        return findShipDynamicUsingCallSign(callSign, baseDateTime).getClosestPort();
+    }
     /**
      * creates a list of pairs of ships that are close from the store's avl
      * @return List with ship Pairs

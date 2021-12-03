@@ -72,7 +72,9 @@ public class KDTree<T> {
             }
         }
 
-
+        public T getInfo(){
+            return this.info;
+        }
         public Double getX() {
             return coords.getX();
         }
@@ -93,6 +95,15 @@ public class KDTree<T> {
         public Point2D.Double getCoordinates() {
             return coords;
         }
+        private void changecoords(Node node){
+            this.info=(T)node.getInfo();
+            this.coords=node.getCoordinates();
+        }
+        public void setObject(Node node){
+            this.info=(T)node.getInfo();
+
+        }
+
     }
 
     //----------- end of nested Node class -----------
@@ -133,6 +144,36 @@ public class KDTree<T> {
             return contains(node.left, x, y);
         else
             return contains(node.right, x, y);
+    }
+    public T findNearestNeigbour(double x, double y){
+        return  findNearestNeighbour(root,x,y,root,true);
+    }
+
+    private T findNearestNeighbour(Node<T> node, double x, double y,
+                                   Node<T> closestNode, boolean divX) {
+        if (node == null) {
+            return null;
+        }
+        double d = Point2D.distanceSq(node.coords.x, node.coords.y, x, y);
+        double closestDist = Point2D.distanceSq(closestNode.coords.x,
+                closestNode.coords.y, x, y);
+        if (closestDist > d) {
+            closestNode.info=node.getInfo();
+            closestNode.coords.x=node.coords.getX();
+            closestNode.coords.y=node.coords.getY();
+        }
+        double delta = divX ? x - node.coords.x : y - node.coords.y;
+
+        double delta2 = delta * delta;
+        Node<T> node1 = delta < 0 ? node.left : node.right;
+        Node<T> node2 = delta < 0 ? node.right : node.left;
+        findNearestNeighbour(node1, x, y, closestNode, !divX);
+        if (delta2 < closestDist) {
+            findNearestNeighbour(node2, x, y, closestNode, !divX);
+
+        }
+
+        return closestNode.info;
     }
 
     // number of points in the tree

@@ -96,4 +96,22 @@ class ShipDynamicTest {
         Movement expected = movement;
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void getClosestPort(){
+        Location location1 = new Location("10.41666667","-75.53333333");
+        Location location2 = new Location("43.2","10.2");
+        Location location22 = new Location("43.2","10.2");
+
+        Location location3= new Location("44.65","-63.56666667");
+        Location location4= new Location("-20.00","40.00");
+
+        Port port1= new Port("America","Colombia",28313,"Cartagena",location1);
+        Port port2= new Port("Europe","Italy",98732,"port2",location2);
+        Port port22= new Port("Europe","Italy",98732,"port2",location2);
+        Port port3= new Port("America","Canada",22226,"Halifax",location3);
+        Port port4= new Port("Europe","Spain",98734,"port4",location4);
+        assertEquals(dynamic.getClosestPort(),port3);
+        assertNotEquals(dynamic.getClosestPort(),port1);
+    }
 }

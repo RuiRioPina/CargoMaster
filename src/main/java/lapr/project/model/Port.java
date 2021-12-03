@@ -1,5 +1,7 @@
 package lapr.project.model;
 
+import java.util.Objects;
+
 public class Port{
     private String continent;
     private String country;
@@ -62,6 +64,22 @@ public class Port{
     public String getLongitude() {
         return location.getLongitude();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Port port = (Port) o;
+
+        if (code != port.code) return false;
+        if (!Objects.equals(continent, port.continent)) return false;
+        if (!Objects.equals(country, port.country)) return false;
+        if (!Objects.equals(namePort, port.namePort)) return false;
+        return Objects.equals(location, port.location);
+    }
+
+
 
     public void setLocation(Location location) {
         this.location = location;
