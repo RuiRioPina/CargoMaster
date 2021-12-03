@@ -3,22 +3,21 @@ create or replace function fnc_getContainersToLoad (idShipCap integer, codePort 
 RETURN SYS_REFCURSOR IS
 cursor_containers SYS_REFCURSOR;
 nextDate Date;
-
 BEGIN
 
 SELECT MIN(dateManifest) INTO nextDate FROM manifest,TripFacility, Facility, Trip where dateManifest > SYSDATE AND Manifest.typeManifest = 'load' 
 AND Manifest.idTrip = TripFacility.idTrip AND TripFacility.idTrip = Trip.idTrip AND TripFacility.codeFacility = codePort AND Trip.idShipCaptain = idShipCap;
 
 open cursor_containers for 
-select container.numberContainer,container.type,container.load, position.x, position.y,position.z, facility.nameFacility, manifest.datemanifest from Container, ContainerManifest ,Position, Manifest, TripFacility, Facility
+select container.numberContainer,container.type,container.load, position.x, position.y,position.z, facility.nameFacility, manifest.datemanifest from Container, ContainerManifest ,Position, Manifest,Facility, TripFacility
 WHERE Container.numberContainer LIKE ContainerManifest.nrContainer 
-AND ContainerManifest.idManifest = Manifest.idManifest
 AND ContainerManifest.idPosition = Position.idPosition
-AND Manifest.typeManifest LIKE 'load'
-AND nextDate = Manifest.dateManifest
-AND Manifest.idTrip = TripFacility.idTrip
-AND TripFacility.codeFacility = codePort
-AND Facility.codeFacility = codePort;
+AND ContainerManifest.idManifest = Manifest.idManifest
+AND Manifest.dateManifest = nextDate
+AND Manifest.codeFacility = codePort
+AND Manifest.codeFacility = TripFacility.codeFacility
+AND TripFacility.idTrip = Manifest.idTrip
+AND Facility.codeFacility = TripFacility.codeFacility;
 return cursor_containers;
 end;
 /
@@ -43,4 +42,3 @@ exit when l_containers%notfound;
 dbms_output.put_line('CONTAINER NUMBER - ' || v_numberContainer ||'  TYPE - '|| v_type || '  LOAD - ' || v_load ||'  POSITION (X,Y,Z) - '|| v_x  ||','|| v_y ||','|| v_z ||'   NEXT PORT - '|| v_nameFacility || ' DATE - '||v_dateManifest);
 end loop;
 end;
-/
