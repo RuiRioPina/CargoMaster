@@ -117,13 +117,6 @@ public class ShipDynamic {
         return this.location.getLatitude();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ShipDynamic that = (ShipDynamic) o;
-        return Objects.equals(baseDateTime, that.baseDateTime) && Objects.equals(location, that.location) && Objects.equals(cargo, that.cargo) && Objects.equals(movement, that.movement) && Objects.equals(transceiverClass, that.transceiverClass);
-    }
 
     @Override
     public int hashCode() {

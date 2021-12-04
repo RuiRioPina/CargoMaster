@@ -82,16 +82,7 @@ public class Location {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        Location location = (Location) o;
-
-        if (!Objects.equals(latitude, location.latitude)) return false;
-        return Objects.equals(longitude, location.longitude);
-    }
 
     @Override
     public int hashCode() {

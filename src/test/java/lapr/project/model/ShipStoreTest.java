@@ -183,9 +183,9 @@ class ShipStoreTest {
         Port port1= new Port("America","Canada",22226,"Halifax",location1);
         Port port2= new Port("Europe","France",18326,"Dunkirk",location2);
         Port port3 = new Port("Europe","Portugal",18476,"Ponta Delgada",location3);
-        assertEquals(shipStore.findClosestPort("C4SQ2","31/12/2020 16:12"),port1);
-        assertEquals(shipStore.findClosestPort("C4SQ2","10/01/2021 16:15"),port2);
-        assertEquals(shipStore.findClosestPort("ABCD1","31/12/2020 17:12"),port3);
+        assertEquals(shipStore.findClosestPort("C4SQ2","31/12/2020 16:12").toString(),port1.toString());
+        assertEquals(shipStore.findClosestPort("C4SQ2","10/01/2021 16:15").toString(),port2.toString());
+        assertEquals(shipStore.findClosestPort("ABCD1","31/12/2020 17:12").toString(),port3.toString());
 
 
 
