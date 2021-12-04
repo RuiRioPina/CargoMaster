@@ -69,7 +69,7 @@ public class App {
 //        importShips.importShipEnergyAndSaveToDatabase(fileName);
 //        importShips.importShipsAndSaveToDatabase(fileName);
 //        importShips.importShipPositionsAndSaveToDatabase(fileName);
-//        shipStoreDB.getShips(databaseConnection);
+          shipStoreDB.getShips(databaseConnection);
 //        portStoreDB.getPorts(databaseConnection);
     }
 

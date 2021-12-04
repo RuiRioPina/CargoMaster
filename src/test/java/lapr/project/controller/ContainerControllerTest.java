@@ -35,17 +35,20 @@ class ContainerControllerTest {
     @Test
     void getOccupancyRateFromDate() throws SQLException {
         ContainerController cc = new ContainerController();
+        String date = "2021/12/19 22:45";
         DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
-        int res = cc.getOccupancyRateFromDate(connection,"123456780","2021/12/19 22:45");
-            System.out.println(res);
+        int res = cc.getOccupancyRateFromDate(connection,"123456780",date);
+            System.out.println("The occupancy rate on the " + date + " was " + res + "%");
     }
 
     @Test
     void getOccupancyRateFromCertainManifest() throws SQLException {
+        String mmsi = "123456780";
+        int idManifest = 2;
         ContainerController cc = new ContainerController();
         DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
-        int res = cc.getOccupancyRateFromCertainManifest(connection,"123456780",2);
-        System.out.println(res);
+        int res = cc.getOccupancyRateFromCertainManifest(connection,"123456780",idManifest);
+        System.out.println("The occupancy rate of the ship "+ mmsi +" on the manifest " + idManifest + " was " + res + "%");
     }
 
 

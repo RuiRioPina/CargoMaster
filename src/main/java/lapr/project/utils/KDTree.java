@@ -130,21 +130,7 @@ public class KDTree<T> {
         root = insert(nodes, 0);
     }
 
-    // does the tree contain the point p?
-    public boolean contains(final Point2D p) {
-        return contains(root, p.getX(), p.getY());
-    }
 
-    // helper: does the subtree rooted at node contain (x, y)?
-    private boolean contains(Node<T> node, double x, double y) {
-        if (node == null) return false;
-        if (node.coords.getX() == x && node.coords.getY() == y) return true;
-
-        if (node.vertical && x < node.coords.getX() || !node.vertical && y < node.coords.getY())
-            return contains(node.left, x, y);
-        else
-            return contains(node.right, x, y);
-    }
     public T findNearestNeigbour(double x, double y){
         return  findNearestNeighbour(root,x,y,root,true);
     }
@@ -186,16 +172,10 @@ public class KDTree<T> {
         int sizeOfLists = list.size();
         Node<T> node = null;
 
-        if (k < 1) {
-            System.err.println("ERROR: KDTree.recursiveBuildFaster(): Number of Dimensions has not been defined.");
-            return null;
-        }
         if (depth < 0) {
-            System.err.println("ERROR: KDTree.recursiveBuildFaster(): Cannot build tree from a negative depth!");
             return null;
         }
         if (sizeOfLists == 0) {
-            System.err.println("ERROR: KDTree.recursiveBuildfaster(): Cannot build tree from an empty list.");
             return node;
         }
 
