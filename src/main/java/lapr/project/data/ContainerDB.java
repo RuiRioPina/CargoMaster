@@ -8,8 +8,11 @@ import lapr.project.model.TypeContainer;
 import oracle.jdbc.internal.OracleTypes;
 
 import java.sql.CallableStatement;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -67,6 +70,51 @@ public class ContainerDB implements Persistable {
             ignored.printStackTrace();
         }
         return list;
+    }
+
+
+
+    public int getOccupancyRateFromDate(DatabaseConnection connection, String mmsi, String dateToBeIntroduced) throws SQLException {
+        int result = 0;
+        try (CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call func_getContainersFromCertainDate(?,?)}");){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+            java.util.Date date = null;
+            try {
+                date = sdf.parse(dateToBeIntroduced);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            assert date != null;
+            long millis = date.getTime();
+            Date date1 = new Date(millis);
+
+            callStmtAux.registerOutParameter(1, OracleTypes.INTEGER);
+            callStmtAux.setInt(2, Integer.parseInt(mmsi));
+            callStmtAux.setDate(3,date1);
+            callStmtAux.execute();
+            result  = (Integer) callStmtAux.getObject(1);
+        }catch(SQLException ignored) {
+            ignored.printStackTrace();
+        }
+        return result;
+    }
+
+    public int getOccupancyRateFromCertainManifest(DatabaseConnection connection, String mmsi, Integer idManifest) throws SQLException {
+        int res = 0;
+        try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FUNC_GETCONTAINERSFROMCERTAINMANIFEST(?,?) }")) {
+            callStmt.registerOutParameter(1, OracleTypes.INTEGER);
+            callStmt.setInt(2, Integer.parseInt(mmsi));
+            callStmt.setInt(3, idManifest);
+
+            callStmt.execute();
+            res  = (Integer) callStmt.getObject(1);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+
     }
 
     @Override

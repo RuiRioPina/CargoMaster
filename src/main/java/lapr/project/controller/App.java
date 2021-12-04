@@ -5,7 +5,6 @@ import lapr.project.data.PortStoreDB;
 import lapr.project.data.PositionShipDB;
 import lapr.project.data.ShipStoreDB;
 import lapr.project.model.Company;
-
 import lapr.project.model.Ship;
 import lapr.project.model.shared.Constants;
 import lapr.project.utils.ImportPorts;

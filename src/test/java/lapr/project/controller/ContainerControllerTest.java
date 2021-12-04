@@ -31,4 +31,22 @@ class ContainerControllerTest {
             System.out.println(contLoad.get(i));
         }
     }
+
+    @Test
+    void getOccupancyRateFromDate() throws SQLException {
+        ContainerController cc = new ContainerController();
+        DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
+        int res = cc.getOccupancyRateFromDate(connection,"123456780","2021/12/19 22:45");
+            System.out.println(res);
+    }
+
+    @Test
+    void getOccupancyRateFromCertainManifest() throws SQLException {
+        ContainerController cc = new ContainerController();
+        DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
+        int res = cc.getOccupancyRateFromCertainManifest(connection,"123456780",2);
+        System.out.println(res);
+    }
+
+
 }

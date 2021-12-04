@@ -24,4 +24,13 @@ public class ContainerController {
         return cDB.getContainersToLoadInNextPort(connection,idShipCap,portCode);
     }
 
+
+    public int getOccupancyRateFromDate(DatabaseConnection connection, String mmsi, String date) throws SQLException {
+        return cDB.getOccupancyRateFromDate(connection,mmsi, date);
+    }
+
+    public int getOccupancyRateFromCertainManifest(DatabaseConnection connection, String mmsi, int idManifest) throws SQLException {
+        return cDB.getOccupancyRateFromCertainManifest(connection,mmsi, idManifest);
+    }
+
 }
