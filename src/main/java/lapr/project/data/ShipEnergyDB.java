@@ -1,6 +1,5 @@
 package lapr.project.data;
 
-import lapr.project.model.ShipDynamic;
 import lapr.project.model.ShipEnergy;
 
 import java.sql.Connection;
@@ -15,16 +14,16 @@ public class ShipEnergyDB implements Persistable {
     public boolean save(DatabaseConnection databaseConnection,
                         Object object) {
         Connection connection = databaseConnection.getConnection();
-        ShipEnergy shipDynamic = (ShipEnergy) object;
+        ShipEnergy shipEnergy = (ShipEnergy) object;
 
         String sqlCommand = "select * from energy where IDENERGY = ?";
         boolean returnValue = false;
-        try (PreparedStatement getPositionShipPreparedStatement = connection.prepareStatement(
+        try (PreparedStatement getEnergyShipPreparedStatement = connection.prepareStatement(
                 sqlCommand)) {
-            getPositionShipPreparedStatement.setInt(1, shipDynamic.getIdEnergy());
-            try (ResultSet positionShipResultSet = getPositionShipPreparedStatement.executeQuery()) {
+            getEnergyShipPreparedStatement.setInt(1, shipEnergy.getIdEnergy());
+            try (ResultSet shipEnergyResultSet = getEnergyShipPreparedStatement.executeQuery()) {
 
-                if (positionShipResultSet.next()) {
+                if (shipEnergyResultSet.next()) {
                     sqlCommand =
                             "update energy set NRGENERATORS = ?, POWER = ? where IDENERGY = ?";
                 } else {
@@ -32,14 +31,14 @@ public class ShipEnergyDB implements Persistable {
                             "insert into energy(NRGENERATORS, POWER) values (?, ?)";
                 }
 
-                try (PreparedStatement saveShipPositionPreparedStatement = connection.prepareStatement(
+                try (PreparedStatement saveShipEnergyPreparedStatement = connection.prepareStatement(
                         sqlCommand)) {
 
-                    saveShipPositionPreparedStatement.setInt(1, shipDynamic.getNrGenerators());
-                    saveShipPositionPreparedStatement.setDouble(2, shipDynamic.getPower());
+                    saveShipEnergyPreparedStatement.setInt(1, shipEnergy.getNrGenerators());
+                    saveShipEnergyPreparedStatement.setDouble(2, shipEnergy.getPower());
 
-                    saveShipPositionPreparedStatement.executeUpdate();
-                    saveShipPositionPreparedStatement.close();
+                    saveShipEnergyPreparedStatement.executeUpdate();
+                    saveShipEnergyPreparedStatement.close();
                     returnValue = true;
                 }
             }
@@ -58,17 +57,17 @@ public class ShipEnergyDB implements Persistable {
                           Object object) {
 
         Connection conn = databaseConnection.getConnection();
-        ShipEnergy shipDynamic = (ShipEnergy) object;
+        ShipEnergy shipEnergy = (ShipEnergy) object;
 
         boolean returnValue = false;
         try {
             String sqlCommand;
             sqlCommand = "delete from energy where idenergy = ?";
-            try (PreparedStatement deleteShipPositionPreparedStatement = conn.prepareStatement(
+            try (PreparedStatement deleteShipEnergyPreparedStatement = conn.prepareStatement(
                     sqlCommand)) {
-                deleteShipPositionPreparedStatement.setInt(1, shipDynamic.getIdEnergy());
-                deleteShipPositionPreparedStatement.executeUpdate();
-                deleteShipPositionPreparedStatement.close();
+                deleteShipEnergyPreparedStatement.setInt(1, shipEnergy.getIdEnergy());
+                deleteShipEnergyPreparedStatement.executeUpdate();
+                deleteShipEnergyPreparedStatement.close();
                 returnValue = true;
             }
         } catch (SQLException ex) {

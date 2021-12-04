@@ -13,11 +13,11 @@ public class CountryContinentDB implements Persistable {
 
     @Override
     public boolean save(DatabaseConnection databaseConnection, Object object) {
-        Port port = (Port) object;
+        Port country = (Port) object;
         boolean returnValue = false;
 
         try {
-            savePortToDatabase(databaseConnection, port);
+            saveCountryToDatabase(databaseConnection, country);
             //Save changes.
             returnValue = true;
 
@@ -35,16 +35,16 @@ public class CountryContinentDB implements Persistable {
                           Object object) {
         boolean returnValue = false;
         Connection connection = databaseConnection.getConnection();
-        Port port = (Port) object;
+        Port country = (Port) object;
 
         try {
             String sqlCommand;
             sqlCommand = "delete from COUNTRY where COUNTRY = ?";
-            try (PreparedStatement deleteCoutnriesPreparedStatement = connection.prepareStatement(
+            try (PreparedStatement deleteCountriesPreparedStatement = connection.prepareStatement(
                     sqlCommand)) {
-                deleteCoutnriesPreparedStatement.setString(1,
-                        port.getCountry());
-                deleteCoutnriesPreparedStatement.executeUpdate();
+                deleteCountriesPreparedStatement.setString(1,
+                        country.getCountry());
+                deleteCountriesPreparedStatement.executeUpdate();
             }
 
             returnValue = true;
@@ -61,74 +61,73 @@ public class CountryContinentDB implements Persistable {
     }
 
     /**
-     * Checks is a cliente is already registered on the datase. If the client
+     * Checks is a Country is already registered on the datase. If the client
      * is registered, it updates it. If it is not, it inserts a new one.
      *
      * @param databaseConnection
      * @param port
      * @throws SQLException
      */
-    private void savePortToDatabase(DatabaseConnection databaseConnection,
-                                    Port port) throws SQLException {
+    private void saveCountryToDatabase(DatabaseConnection databaseConnection,
+                                       Port port) throws SQLException {
 
-        if (isPortOnDatabase(databaseConnection, port)) {
-            updatePortOnDatabase(databaseConnection, port);
+        if (isCountryOnDatabase(databaseConnection, port)) {
+            updateCountryOnDatabase(databaseConnection, port);
         } else {
-            insertPortOnDatabase(databaseConnection, port);
+            insertCountryOnDatabase(databaseConnection, port);
         }
 
     }
 
     /**
-     * Checks if a client is registered on the Database by its ID.
+     * Checks if a country is registered on the Database by its ID.
      *
      * @param databaseConnection
-     * @param port
-     * @return True if the cliente is registered, False if otherwise.
+     * @param country
+     * @return True if the country is registered, False if otherwise.
      * @throws SQLException
      */
-    private boolean isPortOnDatabase(DatabaseConnection databaseConnection,
-                                     Port port) throws SQLException {
+    private boolean isCountryOnDatabase(DatabaseConnection databaseConnection,
+                                        Port country) throws SQLException {
         Connection connection = databaseConnection.getConnection();
 
-        boolean isPortOnDatabase = false;
+        boolean isCountryOnDatabase = false;
 
         String sqlCommand = "select * from COUNTRY where COUNTRY = ?";
 
-        PreparedStatement getPortsPreparedStatement =
+        PreparedStatement getCountriesPreparedStatement =
                 connection.prepareStatement(sqlCommand);
 
-        getPortsPreparedStatement.setString(1, port.getCountry());
+        getCountriesPreparedStatement.setString(1, country.getCountry());
 
-        try (ResultSet portsResultSet = getPortsPreparedStatement.executeQuery()) {
+        try (ResultSet portsResultSet = getCountriesPreparedStatement.executeQuery()) {
 
             if (portsResultSet.next()) {
-                // if client already exists in the database
-                isPortOnDatabase = true;
+                // if country already exists in the database
+                isCountryOnDatabase = true;
             } else {
 
-                // if client does not exist in the database
-                isPortOnDatabase = false;
+                // if country does not exist in the database
+                isCountryOnDatabase = false;
             }
         }
-        getPortsPreparedStatement.close();
-        return isPortOnDatabase;
+        getCountriesPreparedStatement.close();
+        return isCountryOnDatabase;
     }
 
     /**
-     * Adds a new client record to the database.
+     * Adds a new Country record to the database.
      *
      * @param databaseConnection
-     * @param port
+     * @param country
      * @throws SQLException
      */
-    private void insertPortOnDatabase(DatabaseConnection databaseConnection,
-                                      Port port) throws SQLException {
-        Connection connection = databaseConnection.getConnection();
+    private void insertCountryOnDatabase(DatabaseConnection databaseConnection,
+                                      Port country) throws SQLException {
         String sqlCommand =
                 "insert into COUNTRY(COUNTRY) values (?)";
 
-        executeShipStatementOnDatabase(databaseConnection, port,
+        executeShipStatementOnDatabase(databaseConnection, country,
                 sqlCommand);
     }
 
@@ -136,37 +135,37 @@ public class CountryContinentDB implements Persistable {
      * Updates an existing client record on the database.
      *
      * @param databaseConnection
-     * @param port
+     * @param country
      * @throws SQLException
      */
-    private void updatePortOnDatabase(DatabaseConnection databaseConnection,
-                                      Port port) throws SQLException {
+    private void updateCountryOnDatabase(DatabaseConnection databaseConnection,
+                                         Port country) throws SQLException {
         String sqlCommand =
                 "update country set country = ? where COUNTRY = ?";
 
-        executeShipStatementOnDatabase(databaseConnection, port,
+        executeShipStatementOnDatabase(databaseConnection, country,
                 sqlCommand);
     }
 
     /**
-     * Executes the save Client Statement.
+     * Executes the save Country Statement.
      *
      * @param databaseConnection
-     * @param port
+     * @param country
      * @throws SQLException
      */
     private void executeShipStatementOnDatabase(
             DatabaseConnection databaseConnection,
-            Port port, String sqlCommand) throws SQLException {
+            Port country, String sqlCommand) throws SQLException {
         Connection connection = databaseConnection.getConnection();
 
-        try (PreparedStatement savePortPreparedStatement = connection.prepareStatement(
+        try (PreparedStatement saveCountryPreparedStatement = connection.prepareStatement(
                 sqlCommand)) {
-            savePortPreparedStatement.setString(1, port.getCountry());
-            //savePortPreparedStatement.setString(2, port.getContinent());
+            saveCountryPreparedStatement.setString(1, country.getCountry());
+            //savePortPreparedStatement.setString(2, country.getContinent());
 
-            savePortPreparedStatement.executeUpdate();
-            savePortPreparedStatement.close();
+            saveCountryPreparedStatement.executeUpdate();
+            saveCountryPreparedStatement.close();
         }
     }
 }

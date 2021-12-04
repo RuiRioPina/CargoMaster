@@ -216,13 +216,14 @@ public class KDTree<T> {
         //if there is only one node left in the list, it's our median,
         //so we're done with building the tree and we can return the
         //last node which we just created from the median.
-        node = new Node<T>(median);
+        node = new Node<>(median);
         if (depth == 0) {
             root = node; //set node to root if it's the first one
         }
 
 
         if (sizeOfLists > 2) {
+
             node.setLeft(this.insert(list.subList(0, mid), depth+1)); //Recur on sublist of everything before midpoint
             node.setRight(this.insert(list.subList(mid+1, sizeOfLists), depth+1)); //recur on sublist of everything after midpoint
         } else if (sizeOfLists == 2) { //mid must be 1
@@ -236,4 +237,6 @@ public class KDTree<T> {
 
         return node;
     }
+
+
 }
