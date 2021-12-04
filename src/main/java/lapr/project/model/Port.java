@@ -20,6 +20,10 @@ public class Port{
         this.namePort = namePort;
         this.location = location;
     }
+    //Used to know the name of next Port to load/offload containers.
+    public Port(String namePort) {
+        this.namePort = namePort;
+    }
 
     public String getContinent() {
         return continent;
@@ -79,7 +83,10 @@ public class Port{
         return Objects.equals(location, port.location);
     }
 
-
+    @Override
+    public String toString() {
+        return "Port = " + namePort;
+    }
 
     public void setLocation(Location location) {
         this.location = location;
