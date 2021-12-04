@@ -36,6 +36,7 @@ This report is divided into the differents User Stories developed during Sprint 
 
 * US110 Jorge Ferreira
 
+
 ## Use Case Diagram
 
 ![US101_SSD](/docs/UCD.svg)
