@@ -111,7 +111,7 @@ class ShipDynamicTest {
         Port port22= new Port("Europe","Italy",98732,"port2",location2);
         Port port3= new Port("America","Canada",22226,"Halifax",location3);
         Port port4= new Port("Europe","Spain",98734,"port4",location4);
-        assertEquals(dynamic.getClosestPort(),port3);
-        assertNotEquals(dynamic.getClosestPort(),port1);
+        assertEquals(dynamic.getClosestPort().toString(),port3.toString());
+        assertNotEquals(dynamic.getClosestPort().toString(),port1.toString());
     }
 }

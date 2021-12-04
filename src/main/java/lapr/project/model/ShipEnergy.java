@@ -24,4 +24,8 @@ public class ShipEnergy {
     public int getIdEnergy() {
         return idEnergy;
     }
+
+    public void setIdEnergy(int idEnergy) {
+        this.idEnergy = idEnergy;
+    }
 }
