@@ -9,12 +9,12 @@ create FUNCTION func_getContainersFromCertainDate(p_mmsi ship.mmsi%type, p_depar
     capacity number;
     res number :=0;
 begin
+
     open manifest for
         SELECT c.IDMANIFEST
         FROM CONTAINERMANIFEST c WHERE
-                c.IDMANIFEST IN ( SELECT m.IDMANIFEST FROM MANIFEST m WHERE m.idManifest = p_manifest AND m.IDTRIP IN (SELECT  t.IDTRIP
-                                                                                                                       FROM TRIP t INNER JOIN VEHICLE v ON t.IDVEHICLE LIKE v.IDVEHICLE
-                                                                                                                       WHERE v.IDVEHICLE IN (SELECT IdVehicle FROM SHIP WHERE MMSI = p_mmsi)));
+                c.IDMANIFEST IN ( SELECT m.IDMANIFEST FROM MANIFEST m WHERE m.IDTRIP IN (SELECT  t.IDTRIP
+                                                                                         FROM TRIPFACILITY t WHERE t.DEPARTUREDATE < p_departureDate));
 
     capacity := func_getCapacityFromGivenShip(p_mmsi);
     open unload for
@@ -38,6 +38,7 @@ begin
 
         exit when manifest%notfound;
         IF(c LIKE u)
+
         THEN
             res:= res - func_getcontainersfromcertainmanifest(p_mmsi, c);
         END IF;

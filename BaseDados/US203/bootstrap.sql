@@ -1,4 +1,4 @@
---eliminar tabelas (eventualmente) existentes
+
 DROP TABLE UserApplication   CASCADE CONSTRAINTS PURGE;
 DROP TABLE Address           CASCADE CONSTRAINTS PURGE;
 DROP TABLE Worker            CASCADE CONSTRAINTS PURGE;
@@ -300,13 +300,13 @@ INSERT INTO UserApplication(email, password) VALUES('Rogerio@gmail.com','1465');
 INSERT INTO UserApplication(email, password) VALUES('Alberto@gmail.com','416489');
 
 --Client
-INSERT INTO Client (nameClient, nrIdentificationClient, idUser) VALUES ('Sérgio Conceição',1,5);
+INSERT INTO Client (nameClient, nrIdentificationClient, idUser) VALUES ('SÃ©rgio ConceiÃ§Ã£o',1,5);
 
 --Address
 INSERT INTO Address(codAddress,nrDoor,street,parish) VALUES(1090,459,'Vilarinha','Aldoar');
 INSERT INTO Address(codAddress,nrDoor,street,parish) VALUES(4100,92,'Igreja de Ramalde','Ramalde');
 INSERT INTO Address(codAddress,nrDoor,street,parish) VALUES(4300,5,'Campo 24 de Agosto','Bonfim');
-INSERT INTO Address(codAddress,nrDoor,street,parish) VALUES (1,47,'Saint Tomé Street','Paranhos');
+INSERT INTO Address(codAddress,nrDoor,street,parish) VALUES (1,47,'Saint TomÃ© Street','Paranhos');
 
 --Worker
 INSERT INTO Worker(idUser, codAddress, nameWorker, nrIdentification) VALUES(1, 1090, 'Joao',459);
@@ -344,30 +344,32 @@ INSERT INTO Continent(continent) VALUES ('Europe');
 
 --Country
 INSERT INTO Country(country, continent) VALUES('Portugal','Europe');
-INSERT INTO Country(country, continent) VALUES('França','Europe');
+INSERT INTO Country(country, continent) VALUES('FranÃ§a','Europe');
 INSERT INTO Country(country, continent) VALUES('Espanha','Europe');
 
 
 --Falility
-INSERT INTO Facility(codeFacility, nameFacility, latitude, longitude, country, typeFacility) VALUES(1,'Portonave',90,180,'França','warehouse');
-INSERT INTO Facility(codeFacility, nameFacility, latitude, longitude, country, typeFacility) VALUES(2,'Porto de Leixões',80,90,'Portugal','port');
+INSERT INTO Facility(codeFacility, nameFacility, latitude, longitude, country, typeFacility) VALUES(1,'Portonave',90,180,'FranÃ§a','warehouse');
+INSERT INTO Facility(codeFacility, nameFacility, latitude, longitude, country, typeFacility) VALUES(2,'Porto de LeixÃµes',80,90,'Portugal','port');
 INSERT INTO Facility(codeFacility, nameFacility, latitude, longitude, country, typeFacility) VALUES(3,'Porto de Aveiro',15,70,'Espanha','port');
 INSERT INTO Facility(codeFacility, nameFacility, latitude, longitude, country, typeFacility) VALUES (4,'Berlengas Port', 12, 12, 'Portugal','port');
 INSERT INTO Facility(codeFacility, nameFacility, latitude, longitude, country, typeFacility) VALUES (5,'Fisgao Port', 25, 41, 'Portugal','port');
 INSERT INTO Facility(codeFacility, nameFacility, latitude, longitude, country, typeFacility) VALUES (6,'Alvalade Port', 75, 22, 'Portugal','port');
 
 --Trip
-INSERT INTO Trip(idVehicle, startFacility, endFacility, startDateTrip, endDateTrip,idShipCaptain,idFleet,idChiefEletrical) VALUES(1,1,3,TO_DATE('2003/05/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2003/05/06 8:15:30', 'yyyy/mm/dd hh24:mi:ss'),2,1,1);
-INSERT INTO Trip(idVehicle, startFacility, endFacility, startDateTrip, endDateTrip,idShipCaptain,idFleet,idChiefEletrical) VALUES(1,1,3,TO_DATE('2003/05/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2003/05/06 8:15:30', 'yyyy/mm/dd hh24:mi:ss'),2,1,1);
-INSERT INTO Trip(idVehicle, startFacility, endFacility, startDateTrip, endDateTrip,idShipCaptain,idFleet,idChiefEletrical) VALUES(1,1,3,TO_DATE('2003/05/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2003/05/06 8:15:30', 'yyyy/mm/dd hh24:mi:ss'),2,1,1);
-INSERT INTO Trip(idVehicle, startFacility, endFacility, startDateTrip, endDateTrip,idShipCaptain,idFleet,idChiefEletrical) VALUES(2,2,3,TO_DATE('2003/05/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2021/12/06 8:15:30', 'yyyy/mm/dd hh24:mi:ss'),2,1,1);
+INSERT INTO Trip(idVehicle, startFacility, endFacility, startDateTrip, endDateTrip,idShipCaptain,idFleet,idChiefEletrical) VALUES(1,1,3,TO_DATE('2003/05/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2003/05/06 08:15:30', 'yyyy/mm/dd hh24:mi:ss'),2,1,1);
+INSERT INTO Trip(idVehicle, startFacility, endFacility, startDateTrip, endDateTrip,idShipCaptain,idFleet,idChiefEletrical) VALUES(1,1,3,TO_DATE('2003/05/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2003/05/06 08:15:30', 'yyyy/mm/dd hh24:mi:ss'),2,1,1);
+INSERT INTO Trip(idVehicle, startFacility, endFacility, startDateTrip, endDateTrip,idShipCaptain,idFleet,idChiefEletrical) VALUES(1,1,3,TO_DATE('2003/05/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2003/05/06 08:15:30', 'yyyy/mm/dd hh24:mi:ss'),2,1,1);
+INSERT INTO Trip(idVehicle, startFacility, endFacility, startDateTrip, endDateTrip,idShipCaptain,idFleet,idChiefEletrical) VALUES(2,2,3,TO_DATE('2021/12/02 10:02:44', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2021/12/21 17:35:30', 'yyyy/mm/dd hh24:mi:ss'),2,1,1);
+INSERT INTO TRIP(idVehicle, startFacility, endFacility, startDateTrip, endDateTrip,idShipCaptain,idFleet,idChiefEletrical) VALUES(3,3,5,TO_DATE('2022/03/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2022/06/05 8:15:30', 'yyyy/mm/dd hh24:mi:ss'),4,1,1);
+
 
 --Energy
 INSERT INTO Energy(nrGenerators,power) VALUES(2,1200);
 
 --Ship
 INSERT INTO Ship(mmsi, idVehicle, draft, nameShip, imo, typeShip, capacity, length, width, callsign) VALUES(123456789,1,4,'Vasco Da Gama','IMO1234567',4,400,30,18,'LAT07');
-INSERT INTO Ship(mmsi, idVehicle, draft, nameShip, imo, typeShip, capacity, length, width, callsign) VALUES(987654321,2,4,'Magalhães','IMO7654321',2,200,20,15,'R1U2F');
+INSERT INTO Ship(mmsi, idVehicle, draft, nameShip, imo, typeShip, capacity, length, width, callsign) VALUES(987654321,2,4,'MagalhÃ£es','IMO7654321',2,200,20,15,'R1U2F');
 INSERT INTO Ship(mmsi, idVehicle, draft, nameShip, imo, typeShip, capacity, length, width, callsign) VALUES(987654322,3,4,'Oceano','IMO7654322',2,350,25,19,'LE4576');
 INSERT INTO Ship(mmsi, idVehicle, draft, nameShip, imo, typeShip, capacity, length, width, callsign) VALUES (123456788,4,1,'VARAMO','IMO1234568',9,100,1,1,'E4576');
 INSERT INTO Ship(mmsi, idVehicle, draft, nameShip, imo, typeShip, capacity, length, width, callsign, idEnergy) VALUES(123456780,5,77,'DORNAS COSTA','IMO1234577',77,100,25,25,'77DC',1);
@@ -386,6 +388,10 @@ INSERT INTO Position (x,y,z) VALUES (3,3,1);
 INSERT INTO Position (x,y,z) VALUES (8,5,8);
 INSERT INTO Position (x,y,z) VALUES (7,5,1);
 INSERT INTO Position (x,y,z) VALUES (6,5,6);
+INSERT INTO POSITION (x,y,z) VALUES (0,0,0);
+INSERT INTO POSITION (x,y,z) VALUES (1,0,0);
+INSERT INTO POSITION (x,y,z) VALUES (2,0,0);
+INSERT INTO POSITION (x,y,z) VALUES (3,0,0);
 
 --Dimension
 INSERT INTO Dimension (length, height) VALUES (12,12);
@@ -403,6 +409,13 @@ INSERT INTO Container (iso,certificate,numberContainer,load,idDimension,idClient
 INSERT INTO Container (iso,certificate,numberContainer,load,idDimension,idClient,type) VALUES ('20EE','CER212','JORU1234563','Kiwi',1,1,'MAXMINUS5');
 INSERT INTO Container (iso,certificate,numberContainer,load,idDimension,idClient,type) VALUES ('20FF','CER212','JORU1234553','Cherries',1,1,'MAXMINUS5');
 INSERT INTO Container (iso,certificate,numberContainer,load,idDimension,idClient,type) VALUES ('20GG','CER212','JORU1234513','Figs',1,1,'Refrigerated');
+INSERT INTO  Container(iso,certificate,numbercontainer,load,idclient,iddimension,type) VALUES ('ABCD','CERT1N','ABCU1113456','Bottled Wine',1,1,'Refrigerated');
+INSERT INTO  Container(iso,certificate,numbercontainer,load,idclient,iddimension,type) VALUES ('CDCD','CERT2P','TVCU2124466','Medicine',1,1,'Refrigerated');
+INSERT INTO  Container(iso,certificate,numbercontainer,load,idclient,iddimension,type) VALUES ('ACDS','CERT3G','XGCU2123466','Motorbike',1,1,'Refrigerated');
+INSERT INTO  Container(iso,certificate,numbercontainer,load,idclient,iddimension,type) VALUES ('TTVB','CERT4F','SSDU2124366','Cash',1,1,'Refrigerated');
+INSERT INTO  Container(iso,certificate,numbercontainer,load,idclient,iddimension,type) VALUES ('SSET','CERT5P','FFAU2124566','Rations',1,1,'Refrigerated');
+INSERT INTO  Container(iso,certificate,numbercontainer,load,idclient,iddimension,type) VALUES ('DFRE','CERT6V','LLCU2124766','Seeds',1,1,'Refrigerated');
+
 
 --CapacityConatiner
 
@@ -410,33 +423,60 @@ INSERT INTO CapacityContainer(numberContainer,maxWeight,weightEmpty,maxWeightPac
 INSERT INTO CapacityContainer(numberContainer,maxWeight,weightEmpty,maxWeightPacked,maxVolume) VALUES('JORU1234513',4000,800,3200,5000);
 
 --TripFacility
-INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(4,3,TO_DATE('2021/12/05 21:02:44', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2021-12-30 23:45:00', 'yyyy/mm/dd hh24:mi:ss'));
-INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(4,2,TO_DATE('2021/12/03 20:00:44', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2021-12-15 9:45:00', 'yyyy/mm/dd hh24:mi:ss'));
-INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(4,1,TO_DATE('2021/12/14 10:00:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2021-12-20 10:55:00', 'yyyy/mm/dd hh24:mi:ss'));
-INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(4,4,TO_DATE('2021/12/02 09:30:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2021/12/02 09:45:00', 'yyyy/mm/dd hh24:mi:ss'));
-INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(4,5,TO_DATE('2021/12/19 18:30:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2021/12/19 22:45:00', 'yyyy/mm/dd hh24:mi:ss'));
-INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(4,6,TO_DATE('2021/12/21 07:30:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2021/12/21 22:45:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(4,6,TO_DATE('2021/12/05 17:02:44', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2021/12/05 23:45', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(4,1,TO_DATE('2021/12/03 20:00:44', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2021/12/03 21:45', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(4,4,TO_DATE('2021/12/14 10:00:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2021/12/14 10:55', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(4,2,TO_DATE('2021/12/02 09:30:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2021/12/02 09:45', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(4,5,TO_DATE('2021/12/19 18:30:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2021/12/19 22:45', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(4,3,TO_DATE('2021/12/21 07:30:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2021/12/21 22:45', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(5,3,TO_DATE('2022/03/01 07:30:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/03/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(5,4,TO_DATE('2022/04/02 08:30:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/04/05 10:02:44', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO TripFacility(idTrip,codeFacility,arrivalDate,departureDate) VALUES(5,5,TO_DATE('2022/06/05 08:15:30', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/06/07 11:32:42', 'yyyy/mm/dd hh24:mi:ss'));
 
 --Manifest
-INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codeFacility) VALUES (50,'load',TO_DATE('2021/12/05 21:02:44', 'yyyy/mm/dd hh24:mi:ss'),4,3);
-INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codeFacility) VALUES (40,'cargo',TO_DATE('2021/12/03 20:00:44', 'yyyy/mm/dd hh24:mi:ss'),4,2);
-INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codeFacility) VALUES (50,'offload',TO_DATE('2021/12/14 10:00:00', 'yyyy/mm/dd hh24:mi:ss'),4,1);
-INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility) VALUES (50,'load',TO_DATE('2021/12/02 09:35:00', 'yyyy/mm/dd hh24:mi:ss'), 4,4);
+
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility) VALUES (50,'load',TO_DATE('2021/12/02 09:35:00', 'yyyy/mm/dd hh24:mi:ss'), 4,2);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codeFacility) VALUES (40,'load',TO_DATE('2021/12/03 20:00:44', 'yyyy/mm/dd hh24:mi:ss'),4,1);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codeFacility) VALUES (50,'offload',TO_DATE('2021/12/05 17:02:44', 'yyyy/mm/dd hh24:mi:ss'),4,6);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codeFacility) VALUES (50,'load',TO_DATE('2021/12/14 10:00:00', 'yyyy/mm/dd hh24:mi:ss'),4,4);
 INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility) VALUES (50,'load',TO_DATE('2021/12/19 18:35:00', 'yyyy/mm/dd hh24:mi:ss'), 4,5);
-INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility) VALUES (50,'offload',TO_DATE('2021/12/21 17:30:00', 'yyyy/mm/dd hh24:mi:ss'),4,6);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility) VALUES (50,'offload',TO_DATE('2021/12/21 17:30:00', 'yyyy/mm/dd hh24:mi:ss'),4,3);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility) VALUES (50,'load',TO_DATE('2022/03/01 17:30:00', 'yyyy/mm/dd hh24:mi:ss'),5,3);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility) VALUES (50,'offload',TO_DATE('2022/04/03 14:30:00', 'yyyy/mm/dd hh24:mi:ss'),5,4);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility) VALUES (50,'load',TO_DATE('2022/04/04 12:30:00', 'yyyy/mm/dd hh24:mi:ss'),5,4);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility) VALUES (50,'offload',TO_DATE('2022/06/05 11:30:00', 'yyyy/mm/dd hh24:mi:ss'),5,5);
 
 --ContainerManifest
-INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (2,'ABCU1827364',2);
-INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (2,'ABDU1827364',3);
-INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (1,'JORU1234568',1);
-INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (1,'JORU1234569',2);
-INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (2,'JORU1234563',4);
-INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (2,'JORU1234513',6);
-INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (2,'JORU1234553',5);
-INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (2,'JORU1234564',3);
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (1,'ABCU1827364',2);
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (1,'ABDU1827364',3);
+
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (2,'JORU1234568',1);
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (2,'JORU1234569',6);
+
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (3,'ABCU1827364',2);
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (3,'ABDU1827364',3);
 INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (3,'JORU1234568',1);
-INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (3,'JORU1234569',2);
-INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (3,'JORU1234563',4);
-INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (3,'JORU1234513',6);
-INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (3,'JORU1234553',5);
-INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (3,'JORU1234564',3);
+
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (4,'JORU1234563',4);
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (4,'JORU1234513',6);
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (5,'JORU1234553',5);
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (5,'JORU1234564',3);
+
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (6,'JORU1234569',1);
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (6,'JORU1234563',4);
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (6,'JORU1234513',6);
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (6,'JORU1234553',5);
+INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (6,'JORU1234564',3);
+
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(7,'ABCU1113456',8);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(7,'TVCU2124466',9);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(7,'XGCU2123466',10);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(7,'SSDU2124366',11);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(8,'TVCU2124466',9);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(8,'SSDU2124366',11);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(9,'FFAU2124566',9);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(9,'LLCU2124766',11);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(10,'FFAU2124566',9);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(10,'LLCU2124766',11);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(10,'ABCU1113456',8);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(10,'XGCU2123466',10);
