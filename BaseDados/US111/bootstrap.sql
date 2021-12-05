@@ -294,7 +294,7 @@ INSERT INTO UserApplication(email, password) VALUES('JoaoAlmeida@gmail.com','Fle
 INSERT INTO UserApplication(email, password) VALUES('BrunoRibeiro@gmail.com','ChipCaptainBruno');
 INSERT INTO UserApplication(email, password) VALUES('OscarManuel@gmail.com','ChiefEletricalOscar');
 INSERT INTO UserApplication(email, password) VALUES('jorge@shipcaptain.com','12345');
-INSERT INTO UserApplication(email, password) VALUES('Rui Silva@gmail.com','12345');
+INSERT INTO UserApplication(email, password) VALUES('RuiSilva@gmail.com','12345');
 INSERT INTO UserApplication(email, password) VALUES('Fernado@gmail.com','96457');
 INSERT INTO UserApplication(email, password) VALUES('Rogerio@gmail.com','1465');
 INSERT INTO UserApplication(email, password) VALUES('Alberto@gmail.com','416489');
@@ -480,3 +480,33 @@ INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(10,'FFAU
 INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(10,'LLCU2124766',11);
 INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(10,'ABCU1113456',8);
 INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(10,'XGCU2123466',10);
+
+SELECT COUNT(*)as "userapplication" FROM USERAPPLICATION;
+SELECT COUNT(*)as "address" FROM ADDRESS;
+SELECT COUNT(*)as "worker" FROM WORKER;
+SELECT COUNT(*)as "fleetmanager" FROM FLEETMANAGER;
+SELECT COUNT(*)as "shipcaptain" FROM SHIPCAPTAIN;
+SELECT COUNT(*)as "chiefeletrical" FROM CHIEFELETRICAL;
+SELECT COUNT(*)as "trafficmanager" FROM TRAFICMANAGER;
+SELECT COUNT(*)as "truckdriver" FROM TRUCKDRIVER;
+SELECT COUNT(*)as "position" FROM POSITION;
+SELECT COUNT(*)as "manifest" FROM MANIFEST;
+SELECT COUNT(*)as "dimension" FROM DIMENSION;
+SELECT COUNT(*)as "container" FROM CONTAINER;
+SELECT COUNT(*)as "capacitycontainer" FROM CAPACITYCONTAINER;
+SELECT COUNT(*)as "client" FROM CLIENT;
+SELECT COUNT(*)as "facility" FROM FACILITY;
+SELECT COUNT(*)as "vehicle" FROM VEHICLE;
+SELECT COUNT(*)as "trip" FROM TRIP;
+SELECT COUNT(*)as "energy" FROM ENERGY;
+SELECT COUNT(*)as "ship" FROM SHIP;
+SELECT COUNT(*)as "postionship" FROM POSITIONSHIP;
+SELECT COUNT(*)as "transceiver" FROM TRANSCEIVER;
+SELECT COUNT(*)as "containermanifest" FROM CONTAINERMANIFEST;
+SELECT COUNT(*)as "tripfacility" FROM TRIPFACILITY;
+SELECT COUNT(*)as "facilitymanager" FROM FACILITYMANAGER;
+SELECT COUNT(*)as "facilitystaff" FROM FACILITYSTAFF;
+SELECT COUNT(*)as "country" FROM COUNTRY;
+SELECT COUNT(*)as "typecontainer" FROM TYPECONTAINER;
+SELECT COUNT(*)as "continent" FROM CONTINENT;
+
