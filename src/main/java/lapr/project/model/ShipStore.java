@@ -229,6 +229,13 @@ public class ShipStore {
 
         return map2;
     }
+
+    /**
+     * Finds a ship message using callSign and a certain date.
+     * @param callSign- call sign of the ship
+     * @param baseDateTime - date of the message.
+     * @return the ship message found
+     */
     private ShipDynamic findShipDynamicUsingCallSign(String callSign ,String baseDateTime){
         for (Ship ship:store.inOrder()){
             if (ship.getShipId().getCallsign().equals(callSign)){
@@ -241,6 +248,13 @@ public class ShipStore {
         }
         return null;
     }
+
+    /**
+     * Finds a port from the ship message found using the call sign and the time of the message
+     * @param callSign- call sign of the ship
+     * @param baseDateTime - date of the message.
+     * @return the port found
+     */
     public Port findClosestPort(String callSign,String baseDateTime){
         return findShipDynamicUsingCallSign(callSign, baseDateTime).getClosestPort();
     }

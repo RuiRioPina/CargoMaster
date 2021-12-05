@@ -188,7 +188,14 @@ class ShipStoreTest {
         assertEquals(shipStore.findClosestPort("ABCD1","31/12/2020 17:12").toString(),port3.toString());
 
 
-
     }
+//    @Test
+//    public void IntegratedTest(){
+//        for (Ship ship: store.getStore().inOrder() ){
+//            for (ShipDynamic shipDynamic:ship.getRoute().getRoute()){
+//                System.out.println(shipDynamic.getClosestPort());
+//            }
+//        }
+//    }
 
 }
