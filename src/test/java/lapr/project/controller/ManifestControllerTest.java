@@ -12,7 +12,7 @@ public class ManifestControllerTest {
     void getContainerManifestsYear() throws SQLException {
         ManifestController mc = new ManifestController();
         DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
-        int res= mc.getContainerManifestsYear(connection,2,2021);
+        int res= mc.getContainerManifestsYear(connection,4,2022);
             System.out.println(res);
 
     }
@@ -20,7 +20,7 @@ public class ManifestControllerTest {
     void getAverageContainersForManifestYear(){
         ManifestController mc = new ManifestController();
         DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
-        Double res= mc.getAverageContainersForManifestYear(connection,2,2021);
+        Double res= mc.getAverageContainersForManifestYear(connection,4,2022);
         System.out.println(res);
     }
 }
