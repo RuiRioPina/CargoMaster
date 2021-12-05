@@ -19,6 +19,7 @@ import java.util.List;
 public class ContainerDB implements Persistable {
 
     DatabaseConnection databaseConnection;
+
     /**
      * Construtor that will not be used since this class is not to be instantiated
      */
@@ -27,51 +28,67 @@ public class ContainerDB implements Persistable {
         databaseConnection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
     }
 
-    public List<Container> getContainersToLoadInNextPort (DatabaseConnection connection, int idShipCap, String portCode) throws SQLException {
+    public List<Container> getContainersToLoadInNextPort(DatabaseConnection connection, int idShipCap, String portCode) throws SQLException {
         List<Container> l = new LinkedList<>();
 
         ResultSet rSet;
 
-        try (CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call fnc_getContainersToLoad(?,?)}");){
+        try (CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call fnc_getContainersToLoad(?,?)}");) {
             callStmtAux.registerOutParameter(1, OracleTypes.CURSOR);
-            callStmtAux.setInt(2,idShipCap);
-            callStmtAux.setString(3,portCode);
+            callStmtAux.setInt(2, idShipCap);
+            callStmtAux.setString(3, portCode);
             callStmtAux.execute();
             rSet = (ResultSet) callStmtAux.getObject(1);
-            while(rSet.next()){
+            while (rSet.next()) {
                 l.add(new Container(rSet.getString(1), new TypeContainer(rSet.getString(2)),
                         rSet.getString(3), new Position(rSet.getInt(4), rSet.getInt(5),
-                        rSet.getInt(6)), new Port(rSet.getString(7)),rSet.getString(8)));
+                        rSet.getInt(6)), new Port(rSet.getString(7)), rSet.getString(8)));
 
             }
-        }catch(SQLException ignored) {
-        ignored.printStackTrace();
-      }
-      return l;
-      }
+        } catch (SQLException ignored) {
+            ignored.printStackTrace();
+        }
+        return l;
+    }
 
-    public List<Container> getContainersToOffloadInNextPort (DatabaseConnection connection, int idShipCap, String portCode) throws SQLException {
+    public List<Container> getContainersToOffloadInNextPort(DatabaseConnection connection, int idShipCap, String portCode) throws SQLException {
         List<Container> list = new LinkedList<>();
 
         ResultSet rSet;
 
-        try (CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call fnc_getContainersToOffload(?,?)}");){
+        try (CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call fnc_getContainersToOffload(?,?)}");) {
             callStmtAux.registerOutParameter(1, OracleTypes.CURSOR);
-            callStmtAux.setInt(2,idShipCap);
-            callStmtAux.setString(3,portCode);
+            callStmtAux.setInt(2, idShipCap);
+            callStmtAux.setString(3, portCode);
             callStmtAux.execute();
             rSet = (ResultSet) callStmtAux.getObject(1);
-            while(rSet.next()){
+            while (rSet.next()) {
                 list.add(new Container(rSet.getString(1), new TypeContainer(rSet.getString(2)),
                         rSet.getString(3), new Position(rSet.getInt(4), rSet.getInt(5),
-                        rSet.getInt(6)), new Port(rSet.getString(7)),rSet.getString(8)));
+                        rSet.getInt(6)), new Port(rSet.getString(7)), rSet.getString(8)));
             }
-        }catch(SQLException ignored) {
+        } catch (SQLException ignored) {
             ignored.printStackTrace();
         }
         return list;
     }
 
+    public String getContainerStatus(DatabaseConnection connection, Integer numberContainer) throws SQLException {
+        String res = "";
+        try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FUNC_GETSTATUSCONTAINER(?) }")) {
+            callStmt.registerOutParameter(1, OracleTypes.VARCHAR);
+            callStmt.setInt(2, numberContainer);
+
+            callStmt.execute();
+            res  = (String)callStmt.getObject(1);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+
+    }
 
 
     public int getOccupancyRateFromDate(DatabaseConnection connection, String mmsi, String dateToBeIntroduced) throws SQLException {
@@ -117,14 +134,18 @@ public class ContainerDB implements Persistable {
 
     }
 
-    @Override
-    public boolean save(DatabaseConnection databaseConnection, Object object) {
-        return false;
-    }
 
-    @Override
-    public boolean delete(DatabaseConnection databaseConnection, Object object) {
-        return false;
-    }
+
+
+
+        @Override
+        public boolean save(DatabaseConnection databaseConnection, Object object) {
+            return false;
+        }
+
+        @Override
+        public boolean delete(DatabaseConnection databaseConnection, Object object) {
+            return false;
+        }
 }
 

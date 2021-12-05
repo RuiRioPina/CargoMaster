@@ -1,4 +1,4 @@
-CREATE OR REPLACE function ver_estado_containers(numberContainerVariable Container.numberContainer%type) return varchar 
+CREATE OR REPLACE function func_getstatuscontainer(numberContainerVariable Container.numberContainer%type) return varchar 
 is
 messageoutput varchar(100);
 typeOfManifest manifest.typemanifest%type;
