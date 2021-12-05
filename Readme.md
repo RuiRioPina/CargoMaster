@@ -1058,9 +1058,9 @@ We have used a ContainerController to connect the "UI" layer which in this case 
 The connection with the PLSQL function is done in the ContainerDB class.
 
 ### Sequence Diagram
-![US204_SD](/docs/Sprint 2/US207_V2/US_207_SD1.svg)
+![US204_SD](/docs/Sprint 2/US207_V2/US_207_SSD1.svg)
 
-![US204_SD](/docs/Sprint 2/US207_V2/US_207_SD2.svg)
+![US204_SD](/docs/Sprint 2/US207_V2/US_207_SSD2.svg)
 
 The system will receive the container number and the find its whereabouts
 
