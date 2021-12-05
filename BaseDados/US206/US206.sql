@@ -37,7 +37,7 @@ v_z                   INTEGER;
 v_nameFacility        Facility.nameFacility%TYPE;
 v_dateManifest        date;
 begin
-l_containers := fnc_getContainersToLoad(1,3);
+l_containers := fnc_getContainersToLoad(2,4);
 loop
 fetch l_containers into v_numberContainer, v_type, v_load, v_x, v_y, v_z, v_nameFacility, v_dateManifest;
 exit when l_containers%notfound;
