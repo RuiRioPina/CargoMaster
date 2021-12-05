@@ -116,15 +116,15 @@ public class ContainerDB implements Persistable {
         return result;
     }
 
-    public int getOccupancyRateFromCertainManifest(DatabaseConnection connection, String mmsi, Integer idManifest) throws SQLException {
-        int res = 0;
+    public double getOccupancyRateFromCertainManifest(DatabaseConnection connection, String mmsi, Integer idManifest) throws SQLException {
+        Double res = 0.0;
         try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FUNC_GETCONTAINERSFROMCERTAINMANIFEST(?,?) }")) {
-            callStmt.registerOutParameter(1, OracleTypes.INTEGER);
+            callStmt.registerOutParameter(1, OracleTypes.DOUBLE);
             callStmt.setInt(2, Integer.parseInt(mmsi));
             callStmt.setInt(3, idManifest);
 
             callStmt.execute();
-            res  = (Integer) callStmt.getObject(1);
+            res  = (Double) callStmt.getObject(1);
 
 
         } catch (SQLException e) {

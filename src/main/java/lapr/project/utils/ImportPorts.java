@@ -19,10 +19,6 @@ public class ImportPorts {
     private static final Logger LOGGER = Logger.getLogger("MainLog");
 
     public static void importPorts(String fileName) {
-        final String fileToBeWrittenTo = "linesNotImported.txt";
-
-        StringBuilder sout = new StringBuilder("");
-
         PortStore store = App.getInstance().getCompany().getPortStore();
         String continent;
         String country;
@@ -51,21 +47,19 @@ public class ImportPorts {
                         store.addToList(port, Double.parseDouble(port.getLocation().getLongitude()), Double.parseDouble(port.getLocation().getLatitude()));
                     } catch (Exception e) {
                         port = null;
-                        sout.append("Failed to import line ").append(size);
-                        sout.append('\n');
                     }
                 }
             }
             store.insert();
         } catch (NullPointerException | IOException | IndexOutOfBoundsException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.INFO, "It was not possible to import this Port, due to domain restrictions.");
         } finally {
             try {
                 if (br != null) {
                     br.close();
                 }
             } catch (IOException | IllegalArgumentException e) {
-                LOGGER.log(Level.INFO, "-");
+                LOGGER.log(Level.INFO, "It was not possible to import this Port, due to domain restrictions.");
             }
 
         }
@@ -79,9 +73,6 @@ public class ImportPorts {
     }
 
     public static void importPortsAndSaveToDatabase(String fileName) {
-        final String fileToBeWrittenTo = "linesNotImported.txt";
-
-        StringBuilder sout = new StringBuilder("");
         DatabaseConnection databaseConnection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
 
         PortStore store = App.getInstance().getCompany().getPortStore();
@@ -95,7 +86,7 @@ public class ImportPorts {
         BufferedReader br = null;
         Port port = null;
         int size = 0;
-        PortStoreDB portStoreDB = new PortStoreDB();
+        PortStoreDB  portStoreDB = new PortStoreDB();
         try {
             br = new BufferedReader(new FileReader(fileName));
             br.readLine();
@@ -113,20 +104,18 @@ public class ImportPorts {
                         portStoreDB.save(databaseConnection,port);
                     } catch (Exception e) {
                         port = null;
-                        sout.append("Failed to import line ").append(size);
-                        sout.append('\n');
                     }
                 }
             }
         } catch (NullPointerException | IOException | IndexOutOfBoundsException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.INFO, "It was not possible to import this Port, due to domain restrictions.");
         } finally {
             try {
                 if (br != null) {
                     br.close();
                 }
             } catch (IOException | IllegalArgumentException e) {
-                LOGGER.log(Level.INFO, "-");
+                LOGGER.log(Level.INFO, "It was not possible to import this Port, due to domain restrictions.");
             }
 
         }

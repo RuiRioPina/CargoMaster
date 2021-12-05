@@ -15,6 +15,13 @@ public class KDTree<T> {
     protected static final int Y_AXIS = 1;
     List<Node<T>> nodes = new ArrayList<>();
 
+    /** US201 - Adds the ports from the CSV to a List for further manipulation on the insert method
+     *
+     * @param port the port to be added
+     * @param x the x of the port
+     * @param y the y of the port
+     */
+
     public void addToList(T port, double x, double y) {
         nodes.add(new Node<>(port, x, y, null, null, true));
     }
@@ -126,10 +133,6 @@ public class KDTree<T> {
             };
     private Node<T> root;
 
-    public void insert() {
-        root = insert(nodes, 0);
-    }
-
 
     public T findNearestNeigbour(double x, double y){
         return  findNearestNeighbour(root,x,y,root,true);
@@ -167,6 +170,20 @@ public class KDTree<T> {
         return size;
     }
 
+    /**
+     * US201 - Public method of the insertion of ports
+     */
+
+    public void insert() {
+        root = insert(nodes, 0);
+    }
+
+    /**
+     * US201 - Private method of the insertion of ports
+     * @param list list containing all the ports added
+     * @param depth the depth where the node of the port will be added
+     * @return the last node added
+     */
 
     private Node<T> insert(List<Node<T>> list, int depth) {
         int sizeOfLists = list.size();
@@ -179,38 +196,34 @@ public class KDTree<T> {
             return node;
         }
 
-        int axis = depth % k;    //the 'axis' is the dimension that the nodes should be compared by.
-        //it is determined by the current depth
+        int axis = depth % k;
+
 
         if (axis == X_AXIS) {
             Collections.sort(list, cmpX);
         } else if (axis == Y_AXIS) {
             Collections.sort(list, cmpY);
         }
-        //split list by median
         Node<T> median;
-        int mid = sizeOfLists / 2; //floor of sizeOfLists/2
-        median = list.get(mid); //get median object from desired axis-sorted list in list
+        int mid = sizeOfLists / 2;
+        median = list.get(mid);
 
-        //create node, split list around median and recur
-        //if there is only one node left in the list, it's our median,
-        //so we're done with building the tree and we can return the
-        //last node which we just created from the median.
+
         node = new Node<>(median);
         if (depth == 0) {
-            root = node; //set node to root if it's the first one
+            root = node;
         }
 
 
         if (sizeOfLists > 2) {
 
-            node.setLeft(this.insert(list.subList(0, mid), depth+1)); //Recur on sublist of everything before midpoint
-            node.setRight(this.insert(list.subList(mid+1, sizeOfLists), depth+1)); //recur on sublist of everything after midpoint
+            node.setLeft(this.insert(list.subList(0, mid), depth+1));
+            node.setRight(this.insert(list.subList(mid+1, sizeOfLists), depth+1));
         } else if (sizeOfLists == 2) { //mid must be 1
             if (list.get(0).compareAxis(list.get(1), axis) >= 0) {
-                node.setRight(this.insert(list.subList(0, 1), depth + 1)); //the node before mid
+                node.setRight(this.insert(list.subList(0, 1), depth + 1));
             }else {
-                node.setLeft(this.insert(list.subList(0, 1), depth + 1)); //node before mid
+                node.setLeft(this.insert(list.subList(0, 1), depth + 1));
             }
         }
         size++;
