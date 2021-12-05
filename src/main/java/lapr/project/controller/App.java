@@ -63,13 +63,13 @@ public class App {
         String fileName = "csvFiles/sships.csv";
         String fileName1 = "csvFiles/bships.csv";
         String fileName2 = "csvFiles/sports.csv";
-//        importShips.importShips(fileName1);
+        importShips.importShips(fileName1);
         ImportPorts.importPorts(fileName2);
 //        ImportPorts.importPortsAndSaveToDatabase(fileName2);
 //        importShips.importShipEnergyAndSaveToDatabase(fileName);
 //        importShips.importShipsAndSaveToDatabase(fileName);
 //        importShips.importShipPositionsAndSaveToDatabase(fileName);
-          shipStoreDB.getShips(databaseConnection);
+//          shipStoreDB.getShips(databaseConnection);
 //        portStoreDB.getPorts(databaseConnection);
     }
 
