@@ -788,22 +788,255 @@ When all the Ports have been created, the system will add it to the 2DTree in th
 The way I import the Ports to a list first, for it to balance it out and then do the insertions in the KDTree is the way
 to go. But I wonder if I could have optimized it as much as I could by approaching the problem differently.
 
+## US202
+
+###  As a Traffic manager, I which to find the closest port of a ship given its CallSign, on a certain DateTime.
+
+### Analysis
+### System Sequence Diagram
+
+![US202_SSD](/docs/Sprint 2/US202/US_202_SSD.svg)
+
+The traffic manager chooses a date and a call sign to find the closest port of.
+
+### Domain Model Diagram
+![US201_SSD](/docs/Sprint 2/US202/US_202_DM.svg)
+
+### Design
+### Class Diagram
+![US202_CD](/docs/Sprint 2/US202/US_202_CD.svg)
+
+The ship's message is obtained from the ships in the shipStore and then the kdTree's nearestneighbour search is used to find the closest port.
+
+### System Diagram
+![US202_SD](/docs/Sprint 2/US202/US_202_SD.svg)
+
+The system searches for the ship message and then finds the closest Port
+
+## Implementation
+
+### finding the ship messsage
+
+     private ShipDynamic findShipDynamicUsingCallSign(String callSign ,String baseDateTime){
+        for (Ship ship:store.inOrder()){
+            if (ship.getShipId().getCallsign().equals(callSign)){
+                for (ShipDynamic shipDynamic: ship.getRoute().getRoute()){
+                    if (shipDynamic.getBaseDateTime().equals(baseDateTime)){
+                        return shipDynamic;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+### nearestneighboursearch
+    private T findNearestNeighbour(Node<T> node, double x, double y,
+                                   Node<T> closestNode, boolean divX) {
+        if (node == null) {
+            return null;
+        }
+        double d = Point2D.distanceSq(node.coords.x, node.coords.y, x, y);
+        double closestDist = Point2D.distanceSq(closestNode.coords.x,
+                closestNode.coords.y, x, y);
+        if (closestDist > d) {
+            closestNode.info=node.getInfo();
+            closestNode.coords.x=node.coords.getX();
+            closestNode.coords.y=node.coords.getY();
+        }
+        double delta = divX ? x - node.coords.x : y - node.coords.y;
+
+        double delta2 = delta * delta;
+        Node<T> node1 = delta < 0 ? node.left : node.right;
+        Node<T> node2 = delta < 0 ? node.right : node.left;
+        findNearestNeighbour(node1, x, y, closestNode, !divX);
+        if (delta2 < closestDist) {
+            findNearestNeighbour(node2, x, y, closestNode, !divX);
+
+        }
+
+        return closestNode.info;
+    }
+
+## Testing
+
+## Test 1: if the correct port is returned
+
+    @Test
+    public void getClosestPort(){
+        Location location1 = new Location("10.41666667","-75.53333333");
+        Location location2 = new Location("43.2","10.2");
+        Location location22 = new Location("43.2","10.2");
+
+        Location location3= new Location("44.65","-63.56666667");
+        Location location4= new Location("-20.00","40.00");
+
+        Port port1= new Port("America","Colombia",28313,"Cartagena",location1);
+        Port port2= new Port("Europe","Italy",98732,"port2",location2);
+        Port port22= new Port("Europe","Italy",98732,"port2",location2);
+        Port port3= new Port("America","Canada",22226,"Halifax",location3);
+        Port port4= new Port("Europe","Spain",98734,"port4",location4);
+        assertEquals(dynamic.getClosestPort().toString(),port3.toString());
+        assertNotEquals(dynamic.getClosestPort().toString(),port1.toString());
+    }
 
 
+## Review
+
+Still haven't changed the AVL search.
+
+  
+## US204
+
+### As a Client, I want to know the current situation of a specific container being used to transport my goods.
+
+### Analysis:
+
+### System Sequence Diagram
+![US204_SSD](/docs/Sprint 2/US204/US_204_SSD.svg)
+
+The Client will introduce the container number and receive the data
+
+### Domain Model Diagram
+![US_204_DM](/docs/Sprint 2/US204/US_204_DM.svg)
+
+### Design
+
+### Class Diagram
+![US204_CD](/docs/Sprint 2/US204/US_204_CD.svg)
+
+We have used a ContainerController to connect the "UI" layer which in this case is the Test Class ContainerControllerTest
+The connection with the PLSQL function is done in the ContainerDB class.
+
+### Sequence Diagram
+![US204_SD](/docs/Sprint 2/US204/US_204_SD.svg)
+
+The system will receive the container number and the find its whereabouts
+
+## Implementation
+### Call the PLSQL Function
+
+    public String getContainerStatus(DatabaseConnection connection,String numberContainer) throws SQLException {
+        String res = "";
+        try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FUNC_GETSTATUSCONTAINER(?) }")) {
+            callStmt.registerOutParameter(1, OracleTypes.VARCHAR);
+            callStmt.setString(2, numberContainer);
+
+            callStmt.execute();
+            res  = (String)callStmt.getObject(1);
 
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+
+    }
+
+## Review
+
+## US207
+
+### As Ship Captain, I want to know how many cargo manifests I have transported during a given year and the average number of containers per manifest.
+
+### Analysis:
+
+### System Sequence Diagram
+![US207_SSD](/docs/Sprint 2/US207_V2/US_207_SSD.svg)
+
+The Client will introduce the container number and receive the data
+
+### Domain Model Diagram
+![US_207_DM](/docs/Sprint 2/US207_V2/US_207_DM.svg)
+
+### Design
+
+### Class Diagram
+![US207_CD](/docs/Sprint 2/US207_V2/US_207_CD.svg)
+
+We have used a ContainerController to connect the "UI" layer which in this case is the Test Class ContainerControllerTest
+The connection with the PLSQL function is done in the ContainerDB class.
+
+### Sequence Diagram
+![US204_SD](/docs/Sprint 2/US207_V2/US_207_SD1.svg)
+
+![US204_SD](/docs/Sprint 2/US207_V2/US_207_SD2.svg)
+
+The system will receive the container number and the find its whereabouts
+
+## Implementation
+### Call the PLSQL Function
+
+    public int getContainerManifestsYear(DatabaseConnection connection,int shipCaptainID, int year){
+        int res = 0;
+        try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FUNC_SHIPCAPTAINMANIFESTYEAR(?,?,?) }")) {
+            callStmt.registerOutParameter(1, OracleTypes.INTEGER);
+            callStmt.setInt(2, shipCaptainID);
+            String stringDate1=year+"/01/01 00:01";
+            String stringDate2=year+"/12/31 23:59";
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+            java.util.Date date1 = null;
+            java.util.Date date2 = null;
+            try {
+                date1 = sdf.parse(stringDate1);
+                date2= sdf.parse(stringDate2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            assert date1!= null;
+            assert date2!= null;
+            long millis1 = date1.getTime();
+            long millis2 = date2.getTime();
+            Date startDate = new Date(millis1);
+            Date endDate= new Date(millis2);
+            callStmt.setDate(3,startDate);
+            callStmt.setDate(4,endDate);
+
+            callStmt.execute();
+            res  = (Integer) callStmt.getObject(1);
 
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+    public double getAverageContainersForManifestYear(DatabaseConnection connection,int shipCaptainID, int year){
+        double res = 0;
+        try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FUNC_GETAVERAGECONTAINERSHIPCAPTAINYEAR(?,?,?) }")) {
+            callStmt.registerOutParameter(1, OracleTypes.DOUBLE);
+            callStmt.setInt(2, shipCaptainID);
+            String stringDate1=year+"/01/01 00:01";
+            String stringDate2=year+"/12/31 23:59";
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+            java.util.Date date1 = null;
+            java.util.Date date2 = null;
+            try {
+                date1 = sdf.parse(stringDate1);
+                date2= sdf.parse(stringDate2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            assert date1!= null;
+            assert date2!= null;
+            long millis1 = date1.getTime();
+            long millis2 = date2.getTime();
+            Date startDate = new Date(millis1);
+            Date endDate= new Date(millis2);
+            callStmt.setDate(3,startDate);
+            callStmt.setDate(4,endDate);
+
+            callStmt.execute();
+            res  = (Double) callStmt.getObject(1);
 
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
 
-
-
-
-
-
-
-
+## Review
 
 
 ## US208

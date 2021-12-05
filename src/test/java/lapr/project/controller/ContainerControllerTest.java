@@ -51,6 +51,13 @@ class ContainerControllerTest {
         double res = cc.getOccupancyRateFromCertainManifest(connection,mmsi,idManifest);
         System.out.println("The occupancy rate of the ship with the mmsi "+ mmsi +" on the manifest " + idManifest + " was " + res + "%");
     }
-
+    @Test
+    void getContainerStatus() throws SQLException {
+        String numberContainer = "XGCU2123466";
+        ContainerController cc = new ContainerController();
+        DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
+        String res = cc.getContainerStatus(connection,numberContainer);
+        System.out.println(res);
+    }
 
 }

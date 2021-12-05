@@ -141,27 +141,13 @@ public class ShipDynamic {
         return String.format("%nDate Time: %s, %s, Cargo: %s, %s, Transceiver class: %s", baseDateTime, location, cargo, movement, transceiverClass);
     }
 
+    /**
+     * finds the closest port in the application's database closest to the location of this message
+     * @return closest port
+     */
     public Port getClosestPort() {
         return App.getInstance().getCompany().getPortStore().store.findNearestNeigbour(Double.parseDouble(this.location.getLongitude()), Double.parseDouble(this.location.getLatitude()));
     }
 }
 
-//    public static Port getClosestPortTrial() {
-//        //Europe,Portugal,18433,Horta,38.53333333,-28.61666667
-//        Location location = new Location("38.40000000", "-28.6166667");
-//        Port port = App.getInstance().getCompany().getPortStore().getStore().findNearestNeigbour(-63, 43);
-//        return port;
-//    }
-//
-//    public static void main(String[] args) {
-//        Point2D p = new Point2D.Double(-74.16666667
-//                , 40.66666667);
-//        System.out.println(App.getInstance().getCompany().getPortStore().getStore().contains(p));
-//        System.out.println(ShipDynamic.getClosestPortTrial().getContinent());
-//        System.out.println(ShipDynamic.getClosestPortTrial().getCountry());
-//        System.out.println(ShipDynamic.getClosestPortTrial().getNamePort());
-//        System.out.println(ShipDynamic.getClosestPortTrial().getLocation());
-//
-//
-//    }
-//}
+

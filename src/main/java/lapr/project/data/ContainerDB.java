@@ -73,11 +73,11 @@ public class ContainerDB implements Persistable {
         return list;
     }
 
-    public String getContainerStatus(DatabaseConnection connection, Integer numberContainer) throws SQLException {
+    public String getContainerStatus(DatabaseConnection connection,String numberContainer) throws SQLException {
         String res = "";
         try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FUNC_GETSTATUSCONTAINER(?) }")) {
             callStmt.registerOutParameter(1, OracleTypes.VARCHAR);
-            callStmt.setInt(2, numberContainer);
+            callStmt.setString(2, numberContainer);
 
             callStmt.execute();
             res  = (String)callStmt.getObject(1);
