@@ -16,7 +16,9 @@ We also applied analysis and design engineering and object oriented programming 
 The aim of this project is to create a software which allows a cargo shipping company to handle their logistics. This company 
 operates through land and sea, across different countries and has several warehouses spread along the world.
 
-This report is divided into the differents User Stories developed during Sprint 1:
+This report is divided into the different User Stories developed across all Sprints:
+
+### Sprint 1 
 
 * US101 Rui Pina
 
@@ -35,6 +37,30 @@ This report is divided into the differents User Stories developed during Sprint 
 * US109 Rui Pina
 
 * US110 Jorge Ferreira
+
+### Sprint 2
+
+* US201 Rui Pina
+
+* US202 Rafael Leite
+
+* US203 Tiago Ribeiro
+
+* US204 Rafael Leite
+
+* US205 Jorge Ferreira
+
+* US206 Jorge Ferreira
+
+* US207 Rafael Leite
+
+* US208 Rui Pina
+
+* US209 Rui Pina
+
+* US210 Tiago Ribeiro
+
+# Sprint 1
 
 ## Use Case Diagram
 
@@ -645,6 +671,253 @@ You can find the file sql script in the BaseDados folder.
 ### Naming Conventions
 
 You can find the file with the naming conventions in the BaseDados folder.
+
+# Sprint 2
+
+## US201
+
+### As a Port manager, I which to import ports from a text file and create a 2D-tree with port locations.
+
+### Analysis
+### System Sequence Diagram
+
+![US201_SSD](/docs/Sprint 2/US201/US201_SSD.svg)
+
+The Port manager will need to select the csv to import the ports from by typing it. With that the system will do its operations and will present the user the result.
+
+### Domain Model Diagram
+![US101_SSD](/docs/Sprint 2/US201/US201_DM.svg)
+
+### Design
+### Class Diagram
+![US101_CD](/docs/Sprint 2/US201/US201_CD.svg)
+
+We will use the Store pattern to store the "Ports" on the class PortStore, which will contain an 2DTree tree containing the instances
+of Ports imported from the csv. The class Port has been decomposed into smaller classes that only have one function, in compliance
+with the GRASP pattern.
+
+### System Diagram
+![US101_SD](/docs/Sprint 2/US201/US201_SD.svg)
+
+The system will receive the file to be imported and will scan through its lines, one by one, on the elements to be added to the ports instances.
+When all the Ports have been created, the system will add it to the 2DTree in the PortStore.
+
+## Implementation
+
+### Go through the lines and create the Port Object
+
+     while ((line = br.readLine()) != null) {
+                size++;
+                String[] elements = line.split(splitBy);
+                if (port == null || port.getCode() != Integer.parseInt(elements[2])) {
+                    try {
+                        continent = elements[0];
+                        country = elements[1];
+                        code = Integer.parseInt(elements[2]);
+                        namePort = elements[3];
+                        location = createLocation(elements);
+                        port = new Port(continent, country, code, namePort, location);
+                        store.addToList(port, Double.parseDouble(port.getLocation().getLongitude()), Double.parseDouble(port.getLocation().getLatitude()));
+                    } catch (Exception e) {
+                        port = null;
+                    }
+                }
+            }
+     store.insert();
+
+### Create the Location of a port
+    private static Location createLocation(String[] elements) {
+        String lat = elements[4];
+        String lon = elements[5];
+        return new Location(lat, lon);
+    }
+### Add the ports to the KDTree
+
+         store.addToList(port, Double.parseDouble(port.getLocation().getLongitude()), Double.parseDouble(port.getLocation().getLatitude()));
+         (...)
+         store.insert();
+
+
+## Testing
+
+## Test 1: Check whether It is comparing the y correctly when adding to the KDTree
+
+    @Test
+    void killComparator3Y() {
+        KDTree<Port> kdTree = new KDTree();
+        KDTree.Node<Port> node = new KDTree.Node<Port>(port, Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude()), new KDTree.Node<Port>(Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude())), new KDTree.Node<Port>(Double.parseDouble(port2.getLocation().getLongitude()), Double.parseDouble(port2.getLocation().getLatitude())), false);
+        int actual = kdTree.cmpY.compare(node, node1);
+        int expected = 0;
+        assertEquals(expected, actual);
+    }
+
+
+## Test 2: Check whether It is comparing the x correctly when adding to the KDTree
+
+    @Test
+    void killComparatorX() {
+        KDTree<Port> kdTree = new KDTree();
+        KDTree.Node<Port> node = new KDTree.Node<Port>(port, Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude()), new KDTree.Node<Port>(Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude())), new KDTree.Node<Port>(Double.parseDouble(port2.getLocation().getLongitude()), Double.parseDouble(port2.getLocation().getLatitude())), false);
+        int actual = kdTree.cmpX.compare(node1, node2);
+        int expected = -1;
+        assertEquals(expected, actual);
+    }
+
+## Test 3: See whether the compareAxis is being done as intended
+
+    @Test
+    void killCompareAxisMutants1() {
+
+        node1.compareAxis(node2, 0);
+        node1.compareAxis(node3, 1);
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> {
+                    node1.compareAxis(node2, -1);
+                });
+        Throwable exception1 = assertThrows(IllegalArgumentException.class,
+                () -> {
+                    node1.compareAxis(node2, 2);
+                });
+    }
+
+
+
+
+## Review
+
+The way I import the Ports to a list first, for it to balance it out and then do the insertions in the KDTree is the way
+to go. But I wonder if I could have optimized it as much as I could by approaching the problem differently.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## US208
+
+### As Ship Captain, I want to know the occupancy rate (percentage) of a given ship for a given cargo manifest. Occupancy rate is the ratio between total number of containers in the ship coming from a given manifest and the total capacity of the ship, i.e., the maximum number of containers the ship can load.
+
+### Analysis:
+
+### System Sequence Diagram
+![US208_SSD](/docs/Sprint 2/US208/US208_SSD.svg)
+
+The Ship Captain will introduce the mmsi of the ship and the manifest, where the occupancy rate will be seen.
+
+### Domain Model Diagram
+![US208_DM](/docs/Sprint 2/US208/US208_DM.svg)
+
+### Design
+
+### Class Diagram
+![US208_CD](/docs/Sprint 2/US208/US208_CD.svg)
+
+We have used a ContainerController to connect the "UI" layer which in this case is the Test Class ContainerControllerTest
+The connection with the PLSQL function is done in the ContainerDB class.
+
+### Sequence Diagram
+![US208_SD](/docs/Sprint 2/US208/US208_SD.svg)
+
+The system will receive the mmsi for the ship to be searched, and the manifest to be searched. Then it will call the PLSQL function and
+present the result to the User
+
+## Implementation
+### Call the PLSQL Function
+
+    public int getOccupancyRateFromCertainManifest(DatabaseConnection connection, String mmsi, Integer idManifest) throws SQLException {
+        int res = 0;
+        try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FUNC_GETCONTAINERSFROMCERTAINMANIFEST(?,?) }")) {
+            callStmt.registerOutParameter(1, OracleTypes.INTEGER);
+            callStmt.setInt(2, Integer.parseInt(mmsi));
+            callStmt.setInt(3, idManifest);
+
+            callStmt.execute();
+            res  = (Integer) callStmt.getObject(1);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+
+    }
+
+## Review
+
+
+
+## US209
+
+### As Ship Captain, I want to know the occupancy rate of a given ship at a given moment.
+
+### Analysis:
+
+### System Sequence Diagram
+![US209_SSD](/docs/Sprint 2/US209/US209_SSD.svg)
+
+The Ship Captain will introduce the mmsi of the ship and the time, where the occupancy rate will be seen. 
+
+### Domain Model Diagram
+![US209_DM](/docs/Sprint 2/US209/US209_DM.svg)
+
+### Design
+
+### Class Diagram
+![US209_CD](/docs/Sprint 2/US209/US209_CD.svg)
+
+We have used a ContainerController to connect the "UI" layer which in this case is the Test Class ContainerControllerTest
+The connection with the PLSQL function is done in the ContainerDB class.
+
+### Sequence Diagram
+![US209_SD](/docs/Sprint 2/US209/US209_SD.svg)
+
+The system will receive the mmsi for the ship to be searched, and the date to be searched. Then it will call the PLSQL function and
+present the result to the User
+
+## Implementation
+### Call the PLSQL Function
+
+    public int getOccupancyRateFromDate(DatabaseConnection connection, String mmsi, String dateToBeIntroduced) throws SQLException {
+    int result = 0;
+    try (CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call func_getContainersFromCertainDate(?,?)}");){
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+    java.util.Date date = null;
+    try {
+    date = sdf.parse(dateToBeIntroduced);
+    } catch (ParseException e) {
+    e.printStackTrace();
+    }
+    assert date != null;
+    long millis = date.getTime();
+    Date date1 = new Date(millis);
+
+            callStmtAux.registerOutParameter(1, OracleTypes.INTEGER);
+            callStmtAux.setInt(2, Integer.parseInt(mmsi));
+            callStmtAux.setDate(3,date1);
+            callStmtAux.execute();
+            result  = (Integer) callStmtAux.getObject(1);
+        }catch(SQLException ignored) {
+            ignored.printStackTrace();
+        }
+        return result;
+    }
+
+## Review
+
+
 
 
 

@@ -51,12 +51,17 @@ UI -> location**: location = new Location(longitude, latitude)
 UI -> PORT**: port = new Port(continent, country, code, namePort, location)
 
 
-UI -> portStore: ports.insert(port, longitude, latitude)
+UI -> portStore: ports.addToList(port, longitude, latitude)
 activate portStore
 deactivate portStore
 
 end
 deactivate portStore
+
+UI -> portStore: ports.insert()
+activate portStore
+deactivate portStore
+
 UI --> LabCoo : informs operation success
 
 deactivate UI
