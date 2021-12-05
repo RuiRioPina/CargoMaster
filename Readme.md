@@ -935,6 +935,106 @@ The system will receive the container number and the find its whereabouts
 
 ## Review
 
+## US205
+
+### As Ship Captain, I want the list of containers to be offloaded in the next port, including container identifier, type, position, and load.
+
+### Analysis:
+
+### System Sequence Diagram
+![US205_SSD](/docs/Sprint 2/US205/US205_SSD.svg)
+
+### Domain Model Diagram
+![US_205_DM](/docs/Sprint 2/US205/US205_DM.svg)
+
+### Design
+
+### Class Diagram
+![US205_CD](/docs/Sprint 2/US205/US205_CD.svg)
+
+### Sequence Diagram
+![US205_SD](/docs/Sprint 2/US205/US205_SD.svg)
+
+
+## Implementation
+### Call the PLSQL Function
+
+
+     public List<Container> getContainersToOffloadInNextPort(DatabaseConnection connection, int idShipCap, String portCode) throws SQLException {
+        List<Container> list = new LinkedList<>();
+
+        ResultSet rSet;
+
+        try (CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call fnc_getContainersToOffload(?,?)}");) {
+            callStmtAux.registerOutParameter(1, OracleTypes.CURSOR);
+            callStmtAux.setInt(2, idShipCap);
+            callStmtAux.setString(3, portCode);
+            callStmtAux.execute();
+            rSet = (ResultSet) callStmtAux.getObject(1);
+            while (rSet.next()) {
+                list.add(new Container(rSet.getString(1), new TypeContainer(rSet.getString(2)),
+                        rSet.getString(3), new Position(rSet.getInt(4), rSet.getInt(5),
+                        rSet.getInt(6)), new Port(rSet.getString(7)), rSet.getString(8)));
+            }
+        } catch (SQLException ignored) {
+            ignored.printStackTrace();
+        }
+        return list;
+    }
+
+## Review
+
+
+## US206
+
+### As Ship Captain, I want the list of containers to be offloaded in the next port, including container identifier, type, position, and load.
+
+### Analysis:
+
+### System Sequence Diagram
+![US206_SSD](/docs/Sprint 2/US206/US206_SSD.svg)
+
+### Domain Model Diagram
+![US206_DM](/docs/Sprint 2/US206/US206_DM.svg)
+
+### Design
+
+### Class Diagram
+![US206_CD](/docs/Sprint 2/US206/US206_CD.svg)
+
+### Sequence Diagram
+![US206_SD](/docs/Sprint 2/US206/US206_SD.svg)
+
+## Implementation
+### Call the PLSQL Function
+
+
+      public List<Container> getContainersToLoadInNextPort(DatabaseConnection connection, int idShipCap, String portCode) throws SQLException {
+        List<Container> l = new LinkedList<>();
+
+        ResultSet rSet;
+
+        try (CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call fnc_getContainersToLoad(?,?)}");) {
+            callStmtAux.registerOutParameter(1, OracleTypes.CURSOR);
+            callStmtAux.setInt(2, idShipCap);
+            callStmtAux.setString(3, portCode);
+            callStmtAux.execute();
+            rSet = (ResultSet) callStmtAux.getObject(1);
+            while (rSet.next()) {
+                l.add(new Container(rSet.getString(1), new TypeContainer(rSet.getString(2)),
+                        rSet.getString(3), new Position(rSet.getInt(4), rSet.getInt(5),
+                        rSet.getInt(6)), new Port(rSet.getString(7)), rSet.getString(8)));
+
+            }
+        } catch (SQLException ignored) {
+            ignored.printStackTrace();
+        }
+        return l;
+    }
+
+## Review
+
+
 ## US207
 
 ### As Ship Captain, I want to know how many cargo manifests I have transported during a given year and the average number of containers per manifest.
