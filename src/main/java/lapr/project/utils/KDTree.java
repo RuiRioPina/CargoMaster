@@ -189,9 +189,6 @@ public class KDTree<T> {
         int sizeOfLists = list.size();
         Node<T> node = null;
 
-        if (depth < 0) {
-            return null;
-        }
         if (sizeOfLists == 0) {
             return node;
         }
@@ -230,6 +227,8 @@ public class KDTree<T> {
 
         return node;
     }
+
+
 
 
 }

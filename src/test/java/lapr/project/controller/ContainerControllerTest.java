@@ -36,7 +36,7 @@ class ContainerControllerTest {
     void getOccupancyRateFromDate() throws SQLException {
         ContainerController cc = new ContainerController();
         String mmsi = "987654321";
-        String date = "2021/12/30 23:45";
+        String date = "2021/12/14 10:00";
         DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
         int res = cc.getOccupancyRateFromDate(connection,mmsi,date);
             System.out.println("The occupancy rate on the " + date + " was " + res + "%");

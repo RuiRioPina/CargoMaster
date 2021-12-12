@@ -63,4 +63,12 @@ class ImportShipsTest {
 
 
     }
+
+    @Test
+    void importShips4() {
+        String fileName = "csvFiles/shipID.csv";
+        importShips.importShipsAndSaveToDatabase(fileName);
+
+
+    }
 }

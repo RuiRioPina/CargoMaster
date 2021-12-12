@@ -1,20 +1,32 @@
 package lapr.project.controller;
 
+import lapr.project.data.ConnectionFactory;
+import lapr.project.data.DatabaseConnection;
+import lapr.project.model.Port;
 import lapr.project.model.PortStore;
 import lapr.project.model.Ship;
 import lapr.project.model.ShipStore;
+import lapr.project.utils.ImportPorts;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ImportPortsTest {
     PortStore portStore = App.getInstance().getCompany().getPortStore();
     ShipStore shipStore = App.getInstance().getCompany().getShipStore();
 
     @Test
-    void importShips3() {
-        System.out.println(portStore.getSize());
+    void importPorts() {
+
+        String fileName = "csvFiles/sports.csv";
+        ImportPorts.importPorts(fileName);
     }
+
+    @Test
+    void importPorts1() {
+
+        String fileName = "csvFiles/sports.csv";
+        ImportPorts.importPortsAndSaveToDatabase(fileName);
+
+    }
+
+
 }

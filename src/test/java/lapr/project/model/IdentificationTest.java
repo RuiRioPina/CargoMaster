@@ -197,7 +197,7 @@ class IdentificationTest {
         //Act
 
         String actual = ship.getShipId().toString();
-        String expected = ship.getShipId().toString();
+        String expected = "mmsi='210950000', shipName='VARAMO', imoID='IMO9395044', callsign='C4SQ2";
         //Assert
         assertEquals(expected, actual);
     }

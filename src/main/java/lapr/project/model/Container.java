@@ -15,9 +15,9 @@ public class Container {
     private final Port nextPort;
     private final String date;
 
-    public Container(String numberContainer, Dimension idDimension, Client idClient, TypeContainer type, String iso, String certificate, String load) {
+    public Container(String numberContainer, Client idClient, TypeContainer type, String iso, String certificate, String load) {
         this.numberContainer = numberContainer;
-        this.dimension = idDimension;
+        this.dimension = new Dimension(iso);
         this.client = idClient;
         this.type = type;
         this.iso = iso;
@@ -39,6 +39,10 @@ public class Container {
         this.position = position;
         this.nextPort = nextPort;
         this.date = date;
+    }
+
+    public String getIso() {
+        return iso;
     }
 
     @Override

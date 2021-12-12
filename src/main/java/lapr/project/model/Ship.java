@@ -13,7 +13,7 @@ public class Ship implements Comparable<Ship> {
 
     private ShipCharacteristics characteristics;
 
-    private ShipEnergy shipEnergy;
+    private final ShipEnergy shipEnergy;
 
     private Route route;
 
@@ -193,10 +193,7 @@ public class Ship implements Comparable<Ship> {
         if (Route.distance(this.route.getArrivalLat(), this.route.getArrivalLong(), ship.getRoute().getArrivalLat(), ship.getRoute().getArrivalLong()) > 5) {
             return false;
         }
-        if (Route.distance(this.route.getArrivalLat(), this.route.getArrivalLong(), ship.getRoute().getArrivalLat(), ship.getRoute().getArrivalLong()) == 0) {
-            return false;
-        }
-        return true;
+        return Route.distance(this.route.getArrivalLat(), this.route.getArrivalLong(), ship.getRoute().getArrivalLat(), ship.getRoute().getArrivalLong()) != 0;
     }
 
 }

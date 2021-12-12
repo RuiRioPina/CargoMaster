@@ -6,9 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -176,7 +173,13 @@ class KDTreeTest {
 
     @Test
     void killMutantWrongDepth() {
-        ImportPorts ports = new ImportPorts();
         ImportPorts.importPorts("csvFiles/sports.csv");
+    }
+    @Test
+    void getSize() {
+        KDTree<Port> kdTree = new KDTree();
+        int actual = kdTree.size();
+        int expected = 0;
+        assertEquals(expected, actual);
     }
 }
