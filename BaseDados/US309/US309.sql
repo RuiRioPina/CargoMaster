@@ -36,5 +36,4 @@ ex_erro then
 raise_application_error (-20009, 'The ship is not available so it is not possible to register a trip and consenquently a cargo manifest');
 
 end ;
-
 /
