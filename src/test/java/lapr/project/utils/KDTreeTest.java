@@ -1,5 +1,7 @@
 package lapr.project.utils;
 
+import java.util.List;
+
 import lapr.project.model.Location;
 import lapr.project.model.Port;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +10,10 @@ import org.junit.jupiter.api.Test;
 import java.awt.geom.Point2D;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class KDTreeTest {
     Port port = new Port("Europe", "Italy", 11174, "Genoa", new Location("44.4", "8.933333333"));
@@ -17,6 +23,68 @@ class KDTreeTest {
 
     Port port3;
     KDTree<Port> kdtree;
+
+    @Test
+    void testAddToList() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", 2.0, 3.0);
+        List<KDTree.Node<Object>> nodeList = kdTree.nodes;
+        assertEquals(1, nodeList.size());
+        KDTree.Node<Object> getResult = nodeList.get(0);
+        assertTrue(getResult.vertical);
+        assertEquals("Port", getResult.getInfo());
+        assertEquals(3.0, getResult.getY().doubleValue());
+        assertNull(getResult.left);
+        assertEquals(0, getResult.size);
+        assertNull(getResult.right);
+    }
+
+    @Test
+    void testFindNearestNeigbour() {
+        assertNull((new KDTree<>()).findNearestNeigbour(2.0, 3.0));
+    }
+
+    @Test
+    void testFindNearestNeigbour2() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.insert();
+        assertEquals("Port", kdTree.findNearestNeigbour(2.0, 3.0));
+    }
+
+    @Test
+    void testFindNearestNeigbour3() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.insert();
+        assertEquals("Port", kdTree.findNearestNeigbour(2.0, 3.0));
+    }
+
+    @Test
+    void testFindNearestNeigbour4() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", 10.0, 3.0);
+        kdTree.insert();
+        assertEquals("Port", kdTree.findNearestNeigbour(2.0, 3.0));
+    }
+
+    @Test
+    void testFindNearestNeigbour5() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", 2.0, 0.0);
+        kdTree.insert();
+        assertEquals("Port", kdTree.findNearestNeigbour(2.0, 3.0));
+    }
+
+    @Test
+    void testFindNearestNeigbour6() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", 10.0, 3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.insert();
+        assertEquals("Port", kdTree.findNearestNeigbour(2.0, 3.0));
+    }
 
     @BeforeEach
     public void setUp() {
@@ -121,6 +189,7 @@ class KDTreeTest {
         int expected = -1;
         assertEquals(expected, actual);
     }
+
     @Test
     void killComparator2X() {
         KDTree<Port> kdTree = new KDTree();
@@ -147,6 +216,7 @@ class KDTreeTest {
         int expected = 1;
         assertEquals(expected, actual);
     }
+
     @Test
     void killComparator2Y() {
         KDTree<Port> kdTree = new KDTree();
@@ -171,15 +241,128 @@ class KDTreeTest {
         kdTree.insert();
     }
 
-    @Test
-    void killMutantWrongDepth() {
-        ImportPorts.importPorts("csvFiles/sports.csv");
-    }
+
     @Test
     void getSize() {
         KDTree<Port> kdTree = new KDTree();
         int actual = kdTree.size();
         int expected = 0;
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testInsert() {
+        // TODO: This test is incomplete.
+        //   Reason: R004 No meaningful assertions found.
+        //   Diffblue Cover was unable to create an assertion.
+        //   Make sure that fields modified by insert()
+        //   have package-private, protected, or public getters.
+        //   See https://diff.blue/R004 to resolve this issue.
+
+        (new KDTree<>()).insert();
+    }
+
+    @Test
+    void testInsert2() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.insert();
+        assertEquals(1, kdTree.size());
+        assertEquals(1, kdTree.nodes.size());
+    }
+
+    @Test
+    void testInsert3() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.insert();
+        assertEquals(2, kdTree.size());
+        assertEquals(2, kdTree.nodes.size());
+    }
+
+    @Test
+    void testInsert4() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.insert();
+        assertEquals(3, kdTree.size());
+        assertEquals(3, kdTree.nodes.size());
+    }
+
+    @Test
+    void testInsert5() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", 10.0, 3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.insert();
+        assertEquals(2, kdTree.size());
+        assertEquals(2, kdTree.nodes.size());
+    }
+
+    @Test
+    void testInsert6() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.insert();
+        assertEquals(4, kdTree.size());
+        assertEquals(4, kdTree.nodes.size());
+    }
+
+    @Test
+    void testInsert7() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.insert();
+        assertEquals(6, kdTree.size());
+        assertEquals(6, kdTree.nodes.size());
+    }
+
+    @Test
+    void testConstructor() {
+        KDTree<Object> actualKdTree = new KDTree<>();
+        assertEquals(0, actualKdTree.size());
+        assertTrue(actualKdTree.nodes.isEmpty());
+    }
+
+    @Test
+    void testNodeConstructor() {
+        KDTree.Node<Object> actualNode = new KDTree.Node<>(2.0, 3.0);
+        KDTree.Node<Object> node = new KDTree.Node<>(2.0, 3.0);
+
+        actualNode.setLeft(node);
+        KDTree.Node<Object> node1 = new KDTree.Node<>(2.0, 3.0);
+
+        actualNode.setRight(node1);
+        Point2D.Double expectedCoordinates = actualNode.coords;
+        assertSame(expectedCoordinates, actualNode.getCoordinates());
+        Point2D.Double expectedCoordinates1 = node1.coords;
+        KDTree.Node<Object> node2 = actualNode.right;
+        assertSame(expectedCoordinates1, node2.getCoordinates());
+        Point2D.Double expectedCoordinates2 = node.coords;
+        KDTree.Node<Object> node3 = actualNode.left;
+        assertSame(expectedCoordinates2, node3.getCoordinates());
+        assertNull(actualNode.getInfo());
+        assertNull(node2.getInfo());
+        assertNull(node3.getInfo());
+        assertEquals(3.0, node3.getY().doubleValue());
+        assertEquals(2.0, node3.getX().doubleValue());
+        assertEquals(3.0, node2.getY().doubleValue());
+        assertEquals(2.0, node2.getX().doubleValue());
+    }
+
+    @Test
+    void testNodeConstructor2() {
+        assertEquals(3.0, (new KDTree.Node<>(2.0, 3.0)).getY().doubleValue());
     }
 }
