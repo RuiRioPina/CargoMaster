@@ -16,7 +16,7 @@ class ContainerControllerTest {
     void getContainersToOffloadInNextPort() throws SQLException {
         ContainerController cc = new ContainerController();
         DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
-        List<Container> contOffload = cc.getContainersToOffloadInNextPort(connection,2,"3");
+        List<Container> contOffload = cc.getContainersToOffloadInNextPort(connection,345,"3");
         for (int i = 0; i < contOffload.size(); i++) {
             System.out.println(contOffload.get(i));
         }
@@ -26,7 +26,7 @@ class ContainerControllerTest {
     void getContainersToLoadInNextPort() throws SQLException {
         ContainerController cc = new ContainerController();
         DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
-        List<Container> contLoad = cc.getContainersToLoadInNextPort(connection,2,"4");
+        List<Container> contLoad = cc.getContainersToLoadInNextPort(connection,345,"4");
         for (int i = 0; i < contLoad.size(); i++) {
             System.out.println(contLoad.get(i));
         }
@@ -60,4 +60,46 @@ class ContainerControllerTest {
         System.out.println(res);
     }
 
+
+    @Test
+    public void testGetContainersToOffloadInNextPort_Fail_NoShipCapacity()throws SQLException {
+        DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
+        ContainerController underTest = new ContainerController();
+        List<Container> result = underTest.getContainersToOffloadInNextPort(connection, 0, "");
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testGetContainersToOffloadInNextPort_Fail_NoPortCode()throws SQLException {
+        DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
+
+        int idShipCap = 1;
+        String portCode = null;
+        ContainerController underTest = new ContainerController();
+        List<Container> result = underTest.getContainersToOffloadInNextPort(connection,idShipCap,portCode);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testGetContainersToLoadInNextPort_Fail_NoShipCapacity()throws SQLException {
+        DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
+        ContainerController underTest = new ContainerController();
+        List<Container> result = underTest.getContainersToLoadInNextPort(connection, 0, "");
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testGetContainersToLoadInNextPort_Fail_NoPortCode()throws SQLException {
+        DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
+
+        int idShipCap = 1;
+        String portCode = null;
+        ContainerController underTest = new ContainerController();
+        List<Container> result = underTest.getContainersToLoadInNextPort(connection,idShipCap,portCode);
+
+        assertTrue(result.isEmpty());
+    }
 }

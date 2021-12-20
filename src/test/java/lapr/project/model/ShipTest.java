@@ -1,9 +1,15 @@
 package lapr.project.model;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 
 class ShipTest {
     Ship ship;
@@ -12,12 +18,29 @@ class ShipTest {
     Identification idShip;
     ShipDynamic dynamic;
 
+    @Test
+    void testConstructor() {
+        Identification shipId = new Identification();
+        ShipCharacteristics characteristics = new ShipCharacteristics();
+        Ship actualShip = new Ship(shipId, characteristics, new Route());
+
+        assertEquals("Ship -mmsi='null', shipName='null', imoID='null', callsign='null\r\n"
+                + "VesselType: 0,Length: null,Width: null,Draft: null[]:\n", actualShip.toString());
+        assertEquals(Double.NaN, actualShip.getMeanSOG().doubleValue());
+        assertEquals(0, actualShip.getVesselType());
+        ShipEnergy shipEnergy = actualShip.getShipEnergy();
+        assertEquals(25.0, shipEnergy.getPower());
+        assertEquals(10, shipEnergy.getNrGenerators());
+        assertEquals(0, shipEnergy.getIdEnergy());
+        assertEquals(1, shipEnergy.i);
+    }
+
     @BeforeEach
     void setUp() {
         idShip = new Identification("210950000", "VARAMO", "IMO9395044", "C4SQ2");
         shipCharacteristics = new ShipCharacteristics(70, 166.0, 25.0, 9.5);
 
-        dynamic = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 16:12", new Location("42.73879", "-66.97726"), new Movement(13.4, 3.4, "357.0"), "NA", "A"));
+        dynamic = (new ShipDynamic(idShip.getMmsi(), "31/12/2020 16:12", new Location("42.73879", "-66.97726"), new Movement(13.4, 3.4, "357.0"), "NA", "A"));
         route.add(dynamic);
         ship = new Ship(idShip, shipCharacteristics, route);
     }
@@ -120,28 +143,69 @@ class ShipTest {
 
         assertEquals(expected, actual);
     }
-@Test
+
+    @Test
     public void getTravelledDistance() {
-       double expected = route.getTravelledDistance();
-       double actual = ship.getTravelledDistance();
-       assertEquals(expected,actual);
+        double expected = route.getTravelledDistance();
+        double actual = ship.getTravelledDistance();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetTravelledDistance() {
+        Identification shipId = new Identification();
+        ShipCharacteristics characteristics = new ShipCharacteristics();
+        assertEquals(0.0, (new Ship(shipId, characteristics, new Route())).getTravelledDistance().doubleValue());
     }
 
     @Test
     public void getVesselType2() {
         int expected = shipCharacteristics.getVesselType();
         int actual = ship.getVesselType();
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
- @Test
-    public void getMeanSOG () {
+    @Test
+    void testGetVesselType() {
+        Identification shipId = new Identification();
+        ShipCharacteristics characteristics = new ShipCharacteristics();
+        assertEquals(0, (new Ship(shipId, characteristics, new Route())).getVesselType());
+    }
+
+    @Test
+    public void getMeanSOG() {
         double expected = route.getMeanSog();
 
         double actual = ship.getMeanSOG();
 
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
+
+    @Test
+    void testGetMeanSOG() {
+        Identification shipId = new Identification();
+        ShipCharacteristics characteristics = new ShipCharacteristics();
+        assertEquals(Double.NaN, (new Ship(shipId, characteristics, new Route())).getMeanSOG().doubleValue());
+    }
+
+    @Test
+    void testGetMeanSOG2() {
+        ShipDynamic shipDynamic = new ShipDynamic();
+        shipDynamic.setMovement(new Movement());
+
+        Route route = new Route();
+        route.add(shipDynamic);
+        Identification shipId = new Identification();
+        assertEquals(0.0, (new Ship(shipId, new ShipCharacteristics(), route)).getMeanSOG().doubleValue());
+    }
+
+    @Test
+    void testGetRouteTravelledDistance() {
+        Identification shipId = new Identification();
+        ShipCharacteristics characteristics = new ShipCharacteristics();
+        assertEquals(0.0, (new Ship(shipId, characteristics, new Route())).getRouteTravelledDistance());
+    }
+
     @Test
     public void getCharacteristics() {
         ShipCharacteristics expected = shipCharacteristics;
@@ -175,7 +239,7 @@ class ShipTest {
 
     @Test
     public void setRoute() {
-        ShipDynamic dynamic = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 16:12", new Location("42.73879", "-66.97726"), new Movement(13.4, 3.4, "357.0"), "NA", "A"));
+        ShipDynamic dynamic = (new ShipDynamic(idShip.getMmsi(), "31/12/2020 16:12", new Location("42.73879", "-66.97726"), new Movement(13.4, 3.4, "357.0"), "NA", "A"));
         Route expected = new Route();
         expected.add(dynamic);
         ship.setRoute(expected);
@@ -184,6 +248,22 @@ class ShipTest {
         Route actual = ship.getRoute();
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetStartBaseDateTime() {
+        Route route = new Route();
+        route.add(new ShipDynamic());
+        Identification shipId = new Identification();
+        assertNull((new Ship(shipId, new ShipCharacteristics(), route)).getStartBaseDateTime());
+    }
+
+    @Test
+    void testGetEndBaseDateTime() {
+        Route route = new Route();
+        route.add(new ShipDynamic());
+        Identification shipId = new Identification();
+        assertNull((new Ship(shipId, new ShipCharacteristics(), route)).getEndBaseDateTime());
     }
 
     @Test
@@ -295,7 +375,7 @@ class ShipTest {
         assertFalse(route1.equals(o1));
         assertTrue(route1.equals(o));
         assertFalse(route1.equals(null));
-        assertNotEquals(ship.getRouteTravelledDistance(),78);
+        assertNotEquals(ship.getRouteTravelledDistance(), 78);
     }
 
     @Test
@@ -330,22 +410,23 @@ class ShipTest {
         String actual = ship.toString();
         assertEquals(expected, actual);
     }
+
     @Test
-    public void isClose(){
+    public void isClose() {
         Identification idShip2 = new Identification("210950001", "VARAMO", "IMO9395044", "C4SQ2");
         ShipCharacteristics shipCharacteristics2 = new ShipCharacteristics(71, 166.0, 25.0, 9.5);
         Route route2 = new Route();
-        ShipDynamic dynamic1 = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 17:03", new Location("42.93879", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
-        ShipDynamic dynamic2 = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 17:13", new Location("42.95969", "-66.97243"), new Movement(12.9, 8.1, "358.0"), "NA", "A"));
-        ShipDynamic dynamic3 = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 17:03", new Location("42.70879", "-66.97726"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
-        ShipDynamic dynamic4 = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 17:03", new Location("42.93879", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
-        ShipDynamic dynamic5 = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 17:03", new Location("42.93879", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
-        ShipDynamic dynamic6 = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 17:03", new Location("41.93879", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
-        ShipDynamic dynamic7 = (new ShipDynamic(idShip.getMmsi(),"31/12/2020 17:03", new Location("42.93879", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
-       route.add(dynamic1);
-       route.add(dynamic2);
-       route2.add(dynamic3);
-       route2.add(dynamic4);
+        ShipDynamic dynamic1 = (new ShipDynamic(idShip.getMmsi(), "31/12/2020 17:03", new Location("42.93879", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
+        ShipDynamic dynamic2 = (new ShipDynamic(idShip.getMmsi(), "31/12/2020 17:13", new Location("42.95969", "-66.97243"), new Movement(12.9, 8.1, "358.0"), "NA", "A"));
+        ShipDynamic dynamic3 = (new ShipDynamic(idShip.getMmsi(), "31/12/2020 17:03", new Location("42.70879", "-66.97726"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
+        ShipDynamic dynamic4 = (new ShipDynamic(idShip.getMmsi(), "31/12/2020 17:03", new Location("42.93879", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
+        ShipDynamic dynamic5 = (new ShipDynamic(idShip.getMmsi(), "31/12/2020 17:03", new Location("42.93879", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
+        ShipDynamic dynamic6 = (new ShipDynamic(idShip.getMmsi(), "31/12/2020 17:03", new Location("41.93879", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
+        ShipDynamic dynamic7 = (new ShipDynamic(idShip.getMmsi(), "31/12/2020 17:03", new Location("42.93879", "-66.97243"), new Movement(12.5, 2.4, "358.0"), "NA", "A"));
+        route.add(dynamic1);
+        route.add(dynamic2);
+        route2.add(dynamic3);
+        route2.add(dynamic4);
         route2.add(dynamic5);
         Route route3 = new Route();
         Route route4 = new Route();
@@ -356,10 +437,10 @@ class ShipTest {
         route4.add(dynamic1);
         route4.add(dynamic2);
         ship = new Ship(idShip, shipCharacteristics, route);
-        Ship ship1 = new Ship(idShip,shipCharacteristics,route);
-        Ship ship2 = new Ship(idShip2,shipCharacteristics2,route2);
-        Ship ship3 = new Ship(idShip2,shipCharacteristics2,route3);
-        Ship ship4 = new Ship(idShip2,shipCharacteristics2,route4);
+        Ship ship1 = new Ship(idShip, shipCharacteristics, route);
+        Ship ship2 = new Ship(idShip2, shipCharacteristics2, route2);
+        Ship ship3 = new Ship(idShip2, shipCharacteristics2, route3);
+        Ship ship4 = new Ship(idShip2, shipCharacteristics2, route4);
         assertFalse(ship.isClose(ship1));
         assertTrue(ship.isClose(ship2));
         assertFalse(ship.isClose(ship3));
