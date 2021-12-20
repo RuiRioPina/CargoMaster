@@ -1,11 +1,18 @@
-/		
-
-create or replace FUNCTION func_getRouteFromClientContainer(p_nameClient Client.nameClient%type, p_numberContainer Container.numberContainer%type) RETURN SYS_REFCURSOR IS
+create or replace FUNCTION func_getRouteFromClientContainer(p_nameClient Client.idClient%type, p_numberContainer Container.numberContainer%type) RETURN SYS_REFCURSOR IS
     cursor_route SYS_REFCURSOR;
+    numberContainer container.numberContainer%TYPE;
+    typeContainer container.type%TYPE;
+    loadContainer container.load%TYPE;
+    xContainer position.x%TYPE;
+    yContainer position.y%TYPE;
+    zContainer position.z%TYPE;
+    nameFacility facility.nameFacility%TYPE;
+    arrival_date tripfacility.arrivalDate%TYPE;
+    departure_Date tripfacility.departureDate%TYPE;
 begin
 
     open cursor_route for
-        select container.numberContainer,container.type,container.load, position.x, position.y,position.z, facility.nameFacility, tripfacility.arrivalDate, tripfacility.departureDate  from Container, ContainerManifest ,Position, Manifest,Facility, TripFacility,Trip
+        select container.numberContainer,container.type,container.load,manifest.typemanifest ,position.x, position.y,position.z, trip.IDVEHICLE, facility.nameFacility, tripfacility.arrivalDate, tripfacility.departureDate  from Container, ContainerManifest ,Position, Manifest,Facility, TripFacility,Trip
         WHERE Container.numberContainer LIKE p_numberContainer AND Container.idClient LIKE p_nameClient
           AND ContainerManifest.idPosition = Position.idPosition
           AND Container.numberContainer = ContainerManifest.nrContainer
@@ -14,29 +21,16 @@ begin
           AND TripFacility.idTrip = Manifest.idTrip
           AND Facility.codeFacility = TripFacility.codeFacility
           AND TripFacility.idTrip = Trip.idTrip;
-    return cursor_route;
+
+    FETCH cursor_route INTO numberContainer, typeContainer, loadContainer, xContainer, yContainer, zContainer, nameFacility, arrival_date, departure_date;
+    LOOP
+
+        if cursor_route%notfound then
+            raise_application_error(-20005,'O contentor/cliente nao existe ou o cliente nao possui esse contentor');
+        else
+            return cursor_route;
+        end if;
+    END LOOP;
 end;
 /
-
---EXECUTION 
-SET SERVEROUTPUT ON;
-DECLARE
-    l_containers sys_refcursor;
-    v_numberContainer Container.numberContainer%TYPE;
-    v_type Container.type%TYPE;
-    v_load Container.load%TYPE;
-    v_x INTEGER;
-    v_y INTEGER ;
-    v_z INTEGER;
-    v_nameFacility Facility.nameFacility%TYPE;
-    v_arrivalDate date;
-    v_departureDate  date;
-begin
-    l_containers := func_getRouteFromClientContainer(1,'ABCU1113456');
-    loop
-        fetch l_containers into v_numberContainer, v_type, v_load, v_x, v_y, v_z, v_nameFacility, v_arrivalDate, v_departureDate;
-        exit when l_containers%notfound;
-        dbms_output.put_line('CONTAINER NUMBER - ' || v_numberContainer ||'  TYPE - '|| v_type || '  LOAD - ' || v_load ||'  POSITION (X,Y,Z) - '|| v_x  ||','|| v_y ||','|| v_z ||'   NEXT PORT - '|| v_nameFacility || ' ARRIVAL DATE - '||v_arrivalDate || ' DEPARTURE DATE - '||v_departureDate);
-    end loop;
-end;
 
