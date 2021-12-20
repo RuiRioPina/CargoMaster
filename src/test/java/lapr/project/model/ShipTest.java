@@ -18,22 +18,6 @@ class ShipTest {
     Identification idShip;
     ShipDynamic dynamic;
 
-    @Test
-    void testConstructor() {
-        Identification shipId = new Identification();
-        ShipCharacteristics characteristics = new ShipCharacteristics();
-        Ship actualShip = new Ship(shipId, characteristics, new Route());
-
-        assertEquals("Ship -mmsi='null', shipName='null', imoID='null', callsign='null\r\n"
-                + "VesselType: 0,Length: null,Width: null,Draft: null[]:\n", actualShip.toString());
-        assertEquals(Double.NaN, actualShip.getMeanSOG().doubleValue());
-        assertEquals(0, actualShip.getVesselType());
-        ShipEnergy shipEnergy = actualShip.getShipEnergy();
-        assertEquals(25.0, shipEnergy.getPower());
-        assertEquals(10, shipEnergy.getNrGenerators());
-        assertEquals(0, shipEnergy.getIdEnergy());
-        assertEquals(1, shipEnergy.i);
-    }
 
     @BeforeEach
     void setUp() {
