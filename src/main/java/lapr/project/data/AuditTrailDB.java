@@ -33,8 +33,8 @@ public class AuditTrailDB {
             c.execute();
             rSet = (ResultSet) c.getObject(1);
             while (rSet.next()) {
-                audit.add(new AuditTrail(rSet.getString(3),rSet.getString(2),rSet.getString(6),
-                rSet.getString(3),rSet.getString(4),rSet.getString(5)));
+                audit.add(new AuditTrail(rSet.getString(3),rSet.getString(2),rSet.getString(7),
+                rSet.getString(4),rSet.getString(5),rSet.getString(6)));
 
             }
         } catch (SQLException ignored) {

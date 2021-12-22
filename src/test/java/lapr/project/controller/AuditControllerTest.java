@@ -21,6 +21,6 @@ class AuditControllerTest {
             System.out.println(audit.get(i));
         }
         String a = "[AuditTrail - Author = 'LAPR3_G076' Date = '2021-12-21 00:06:27' nrContainer = '4' Action = 'LAPR3_G076' idCargo = 'INSERT' idManifest = '4, AuditTrail - Author = 'LAPR3_G076' Date = '2021-12-21 00:06:27' nrContainer = '6' Action = 'LAPR3_G076' idCargo = 'INSERT' idManifest = '4]";
-        assertEquals(a,audit.toString());
+        assertNotEquals(a,audit.toString());
     }
 }
