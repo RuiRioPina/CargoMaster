@@ -33,11 +33,7 @@ public class CountryStoreDB {
         return countryList;
     }
 
-    public static void main(String[] args) {
-        CountryStoreDB countryStoreDB= new CountryStoreDB();
-        System.out.println(countryStoreDB.getAllCountries(new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword")));
-        System.out.println("p");
-    }
+
 
 
 }

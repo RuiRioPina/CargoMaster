@@ -207,9 +207,6 @@ public class PortStoreDB implements Persistable {
 return portList;
     }
 
-    public static void main(String[] args) {
-        PortStoreDB portStoreDB= new PortStoreDB();
-        System.out.println(portStoreDB.getPorts(new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword")));
-    }
+
 
 }

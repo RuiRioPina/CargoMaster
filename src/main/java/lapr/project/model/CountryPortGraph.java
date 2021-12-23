@@ -17,14 +17,14 @@ import java.util.List;
 
 
 public class CountryPortGraph {
-    private PortStore portStore;
-    private CountryStore countryStore;
+    private final PortStore portStore;
+    private final CountryStore countryStore;
     public CountryPortGraph(){
         portStore= App.getInstance().getCompany().getPortStore();
         countryStore= App.getInstance().getCompany().getCountryStore();
     }
     public MatrixGraph<GraphLocation,Double> createGraphWithPortsAndCountries(int n){
-        MatrixGraph<GraphLocation,Double> graph= new MatrixGraph<GraphLocation,Double>(false);
+        MatrixGraph<GraphLocation,Double> graph= new MatrixGraph<>(false);
         countryStore.getCountriesFromDatabase();
         for (Country country: countryStore.getCountryStore()){
             graph.addVertex(country);
@@ -58,7 +58,7 @@ public class CountryPortGraph {
     private void makeBorderEdges(MatrixGraph<GraphLocation,Double> graph){
         DatabaseConnection databaseConnection= new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
         ResultSet rSet;
-        try(CallableStatement callStmtAux = databaseConnection.getConnection().prepareCall("{ ? = call fnc_getAllBorders()}");){
+        try(CallableStatement callStmtAux = databaseConnection.getConnection().prepareCall("{ ? = call fnc_getAllBorders()}")){
             callStmtAux.registerOutParameter(1, OracleTypes.CURSOR);
             callStmtAux.execute();
             rSet = (ResultSet) callStmtAux.getObject(1);
@@ -74,7 +74,7 @@ public class CountryPortGraph {
     private void makeSameCountryPortDistance(MatrixGraph<GraphLocation,Double> graph){
         DatabaseConnection databaseConnection= new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
         ResultSet rSet;
-        try(CallableStatement callStmtAux = databaseConnection.getConnection().prepareCall("{ ? = call fnc_getAllPortDistance()}");){
+        try(CallableStatement callStmtAux = databaseConnection.getConnection().prepareCall("{ ? = call fnc_getAllPortDistance()}")){
             callStmtAux.registerOutParameter(1, OracleTypes.CURSOR);
             callStmtAux.execute();
             rSet = (ResultSet) callStmtAux.getObject(1);
@@ -96,7 +96,7 @@ public class CountryPortGraph {
             int cont =0;
             DatabaseConnection databaseConnection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
             ResultSet rSet;
-            try (CallableStatement callStmtAux = databaseConnection.getConnection().prepareCall("{ ? = call fnc_getAllPortDistanceSorted()}");) {
+            try (CallableStatement callStmtAux = databaseConnection.getConnection().prepareCall("{ ? = call fnc_getAllPortDistanceSorted()}")) {
                 callStmtAux.registerOutParameter(1, OracleTypes.CURSOR);
                 callStmtAux.execute();
                 rSet = (ResultSet) callStmtAux.getObject(1);
@@ -117,10 +117,5 @@ public class CountryPortGraph {
         }
     }
 
-    public static void main(String[] args) {
-        CountryPortGraph countryPortGraph= new CountryPortGraph();
-        MatrixGraph<GraphLocation,Double> graph = countryPortGraph.createGraphWithPortsAndCountries(3);
-        System.out.println("xd");
-        System.out.println("lao");
-    }
+
 }
