@@ -38,9 +38,9 @@ end;
     yearEnd Date;
     averagecontainer number;
 Begin
-    shipcaptainid:=2;
-    yearStart:='2020-01-01';
-    yearEnd:='2020-12-31';
+    shipcaptainid:=4;
+    yearStart:='2022-01-01';
+    yearEnd:='2022-12-31';
     averagecontainer:=func_getAverageContainerShipCaptainYear(shipcaptainid,yearStart,yearEnd);
     dbms_output.put_line(averagecontainer);
    
