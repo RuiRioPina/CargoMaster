@@ -13,11 +13,13 @@ public class Company implements Serializable {
     private final String designation;
     private final ShipStore shipStore;
     private final PortStore portStore;
+    private final lapr.project.data.CountryStore countryStore;
 
 
     public Company(String designation) {
         this.shipStore = new ShipStore();
         this.portStore = new PortStore();
+        this.countryStore= new lapr.project.data.CountryStore();
         if (StringUtils.isBlank(designation))
             throw new IllegalArgumentException("Designation cannot be blank.");
 
@@ -55,4 +57,6 @@ public class Company implements Serializable {
     public PortStore getPortStore() {
         return portStore;
     }
+
+    public lapr.project.data.CountryStore getCountryStore(){return countryStore; }
 }

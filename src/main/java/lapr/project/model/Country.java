@@ -1,6 +1,6 @@
 package lapr.project.model;
 
-public class Country {
+public class Country implements  GraphLocation{
     private Continent continent;
     private Location capitalLocation;
     private String name;
@@ -32,5 +32,14 @@ public class Country {
                 ", population=" + population +
                 ", capital='" + capital + '\'' + "\n" +
                 '}';
+    }
+    public Location getLocation(){
+        return this.capitalLocation;
+    }
+    public String getName(){
+        return this.name;
+    }
+    public Continent getContinent(){
+        return this.continent;
     }
 }

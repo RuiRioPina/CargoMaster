@@ -189,9 +189,15 @@ class ShipStoreTest {
 
 
     }
-//    @Test
-//    public void IntegratedTest(){
-//        System.out.println(store.findClosestPort("A8ND5","31/12/2020 18:26"));
-//    }
+    @Test
+    public void IntegratedTest(){
+        for (Ship ship: store.getStore().inOrder() ){
+            for (ShipDynamic shipDynamic:ship.getRoute().getRoute()){
+                System.out.println(shipDynamic.getClosestPort());
+            }
+        }
+        System.out.println("/////////////////");
+        System.out.println(store.findClosestPort("D5VK6","31/12/2020 14:32"));
+    }
 
 }

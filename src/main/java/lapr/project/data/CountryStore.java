@@ -27,6 +27,14 @@ public class CountryStore {
         return countryStore;
     }
 
+    public String getContinentByCountry(String countryName){
+        for (Country country:countryStore){
+            if (country.getName().equals(countryName)){
+                return country.getContinent().getName();
+            }
+        }
+        return null;
+    }
     public List <Country> importCountriesCSV () {
         List<Country> countries = new LinkedList<>();
         String path2 = "csvFiles\\countries.csv";
@@ -47,5 +55,17 @@ public class CountryStore {
             countries.add(new Country(new Continent(text[0]),location, text[3], text[1], text[2], Double.parseDouble(text[4]), text[5]));
         }
         return countries;
+    }
+    public void getCountriesFromDatabase(){
+        CountryStoreDB countryStoreDB= new CountryStoreDB();
+        this.countryStore= countryStoreDB.getAllCountries( new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword"));
+    }
+    public Country getCountryByName(String name){
+        for (Country country:this.countryStore){
+            if (country.getName().equals(name)){
+                return country;
+            }
+        }
+        return null;
     }
 }

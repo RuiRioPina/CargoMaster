@@ -63,8 +63,10 @@ public class App {
         String fileName = "csvFiles/sships.csv";
         String fileName1 = "csvFiles/bships.csv";
         String fileName2 = "csvFiles/sports.csv";
-        importShips.importShips(fileName1);
+        String fileName3 = "csvFiles/countries.csv";
+     importShips.importShips(fileName);
         ImportPorts.importPorts(fileName2);
+//        IpomrtCountries.importCountries(fileName3);
 //        ImportPorts.importPortsAndSaveToDatabase(fileName2);
 //        importShips.importShipEnergyAndSaveToDatabase(fileName);
 //        importShips.importShipsAndSaveToDatabase(fileName);

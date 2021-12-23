@@ -50,6 +50,11 @@ class PortTest {
         Port port = new Port("Europa","Portugal",1,"Leixões",new Location("1","1"));
         assertEquals(port.getNamePort(),"Leixões");
     }
+    @Test
+    void getName() {
+        Port port = new Port("Europa","Portugal",1,"Leixões",new Location("1","1"));
+        assertEquals(port.getName(),"Leixões");
+    }
 
     @Test
     void setNamePort() {

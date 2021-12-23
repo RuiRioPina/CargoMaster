@@ -1,8 +1,8 @@
 package lapr.project.model;
 
-import java.util.Objects;
 
-public class Port{
+
+public class Port implements GraphLocation{
     private String continent;
     private String country;
     private int code;
@@ -50,6 +50,10 @@ public class Port{
     }
 
     public String getNamePort() {
+        return namePort;
+    }
+
+    public String getName() {
         return namePort;
     }
 

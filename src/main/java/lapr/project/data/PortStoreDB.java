@@ -5,6 +5,8 @@ import lapr.project.model.*;
 import oracle.jdbc.OracleTypes;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -185,20 +187,29 @@ public class PortStoreDB implements Persistable {
 
     PortStore portStore = App.getInstance().getCompany().getPortStore();
 
-    public void getPorts(DatabaseConnection connection) {
+    public List<Port> getPorts(DatabaseConnection connection) {
+        CountryStore countryStore= App.getInstance().getCompany().getCountryStore();
+        List<Port> portList = new ArrayList<>();
         ResultSet rSet;
-        try(CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call fncGetPorts()}");){
+        try(CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call fnc_getAllFacilities()}");){
             callStmtAux.registerOutParameter(1, OracleTypes.CURSOR);
             callStmtAux.execute();
             rSet = (ResultSet) callStmtAux.getObject(1);
             while(rSet.next()){
-                Port port = new Port(rSet.getString(7),rSet.getString(rSet.getString(6)),rSet.getInt(1),rSet.getString(2),new Location(rSet.getString(3),rSet.getString(4)));
-                portStore.addToList(port,Double.parseDouble(port.getLocation().getLongitude()),Double.parseDouble(port.getLocation().getLatitude()));
-            }
-            portStore.insert();
+                if (Integer.parseInt(rSet.getString(1))>1000&& rSet.getString(5).equals("port")) {
+                    Port port = new Port(countryStore.getContinentByCountry(rSet.getString(7)),rSet.getString(7),Integer.parseInt(rSet.getString(1)),rSet.getString(2),new Location(rSet.getString(3),rSet.getString(4)));
+                    portList.add(port);
+                }
+                }
         }catch(SQLException ignored) {
             ignored.printStackTrace();
         }
-
+return portList;
     }
+
+    public static void main(String[] args) {
+        PortStoreDB portStoreDB= new PortStoreDB();
+        System.out.println(portStoreDB.getPorts(new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword")));
+    }
+
 }
