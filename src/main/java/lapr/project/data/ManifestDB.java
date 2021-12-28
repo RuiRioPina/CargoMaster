@@ -101,6 +101,23 @@ public class ManifestDB implements Persistable {
 
     }
 
+    public Integer getOffcontainer(DatabaseConnection connection, Integer codFacility)  {
+        Integer res = 0;
+        try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call fnc_offcontainer(?)}")) {
+            callStmt.registerOutParameter(1, OracleTypes.INTEGER);
+            callStmt.setInt(2, codFacility);
+
+            callStmt.execute();
+            res  = (Integer) callStmt.getObject(1);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+
+    }
+
     @Override
     public boolean save(DatabaseConnection databaseConnection, Object object) {
         return false;
