@@ -83,6 +83,24 @@ public class ManifestDB implements Persistable {
         }
         return res;
     }
+
+    public double getoccupancyRate(DatabaseConnection connection, Integer codFacility)  {
+        Double res = 0.0;
+        try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call fnc_occupancyRate(?)}")) {
+            callStmt.registerOutParameter(1, OracleTypes.DOUBLE);
+            callStmt.setInt(2, codFacility);
+
+            callStmt.execute();
+            res  = (Double) callStmt.getObject(1);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+
+    }
+
     @Override
     public boolean save(DatabaseConnection databaseConnection, Object object) {
         return false;
@@ -92,5 +110,7 @@ public class ManifestDB implements Persistable {
     public boolean delete(DatabaseConnection databaseConnection, Object object) {
         return false;
     }
+
+
 }
 

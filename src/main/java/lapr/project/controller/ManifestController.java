@@ -12,4 +12,7 @@ public class ManifestController {
     public double getAverageContainersForManifestYear(DatabaseConnection connection,int shipCaptainID, int year){
         return manifestDB.getAverageContainersForManifestYear(connection,shipCaptainID,year);
     }
+    public double getoccupancyRate(DatabaseConnection connection, Integer codFacility)  {
+        return manifestDB.getoccupancyRate(connection,codFacility);
+    }
 }

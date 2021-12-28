@@ -23,4 +23,14 @@ public class ManifestControllerTest {
         Double res= mc.getAverageContainersForManifestYear(connection,4,2022);
         System.out.println(res);
     }
+
+    @Test
+
+    void getoccupancyRate(){
+        ManifestController mc = new ManifestController();
+        DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
+        Double res= mc.getoccupancyRate(connection,3);
+        System.out.println(res);
+    }
+
 }
