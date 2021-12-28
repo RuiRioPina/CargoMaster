@@ -15,11 +15,12 @@ public class KDTree<T> {
     protected static final int Y_AXIS = 1;
     List<Node<T>> nodes = new ArrayList<>();
 
-    /** US201 - Adds the ports from the CSV to a List for further manipulation on the insert method
+    /**
+     * US201 - Adds the ports from the CSV to a List for further manipulation on the insert method
      *
      * @param port the port to be added
-     * @param x the x of the port
-     * @param y the y of the port
+     * @param x    the x of the port
+     * @param y    the y of the port
      */
 
     public void addToList(T port, double x, double y) {
@@ -56,16 +57,17 @@ public class KDTree<T> {
             right = node.right;
             vertical = node.vertical;
         }
+
         public int compareAxis(Node<T> node, int axis) {
             if (axis > 1 || axis < 0) {
                 throw new IllegalArgumentException(String.format("Axis %d out of range: must be 1 or 0", axis));
             }
             double mine;
             double other;
-            if (axis == X_AXIS){
+            if (axis == X_AXIS) {
                 mine = coords.getX();
                 other = node.getX();
-            }else {
+            } else {
                 mine = coords.getY();
                 other = node.getY();
             }
@@ -79,9 +81,10 @@ public class KDTree<T> {
             }
         }
 
-        public T getInfo(){
+        public T getInfo() {
             return this.info;
         }
+
         public Double getX() {
             return coords.getX();
         }
@@ -102,12 +105,14 @@ public class KDTree<T> {
         public Point2D.Double getCoordinates() {
             return coords;
         }
-        private void changecoords(Node node){
-            this.info=(T)node.getInfo();
-            this.coords=node.getCoordinates();
+
+        private void changecoords(Node node) {
+            this.info = (T) node.getInfo();
+            this.coords = node.getCoordinates();
         }
-        public void setObject(Node node){
-            this.info=(T)node.getInfo();
+
+        public void setObject(Node node) {
+            this.info = (T) node.getInfo();
 
         }
 
@@ -134,8 +139,8 @@ public class KDTree<T> {
     private Node<T> root;
 
 
-    public T findNearestNeigbour(double x, double y){
-        return  findNearestNeighbour(root,x,y,root,true);
+    public T findNearestNeigbour(double x, double y) {
+        return findNearestNeighbour(root, x, y, root, true);
     }
 
     private T findNearestNeighbour(Node<T> node, double x, double y,
@@ -147,9 +152,9 @@ public class KDTree<T> {
         double closestDist = Point2D.distanceSq(closestNode.coords.x,
                 closestNode.coords.y, x, y);
         if (closestDist > d) {
-            closestNode.info=node.getInfo();
-            closestNode.coords.x=node.coords.getX();
-            closestNode.coords.y=node.coords.getY();
+            closestNode.info = node.getInfo();
+            closestNode.coords.x = node.coords.getX();
+            closestNode.coords.y = node.coords.getY();
         }
         double delta = divX ? x - node.coords.x : y - node.coords.y;
 
@@ -180,7 +185,8 @@ public class KDTree<T> {
 
     /**
      * US201 - Private method of the insertion of ports
-     * @param list list containing all the ports added
+     *
+     * @param list  list containing all the ports added
      * @param depth the depth where the node of the port will be added
      * @return the last node added
      */
@@ -213,13 +219,12 @@ public class KDTree<T> {
 
 
         if (sizeOfLists > 2) {
-
-            node.setLeft(this.insert(list.subList(0, mid), depth+1));
-            node.setRight(this.insert(list.subList(mid+1, sizeOfLists), depth+1));
+            node.setLeft(this.insert(list.subList(0, mid), depth + 1));
+            node.setRight(this.insert(list.subList(mid + 1, sizeOfLists), depth + 1));
         } else if (sizeOfLists == 2) { //mid must be 1
             if (list.get(0).compareAxis(list.get(1), axis) >= 0) {
                 node.setRight(this.insert(list.subList(0, 1), depth + 1));
-            }else {
+            } else {
                 node.setLeft(this.insert(list.subList(0, 1), depth + 1));
             }
         }
@@ -227,8 +232,6 @@ public class KDTree<T> {
 
         return node;
     }
-
-
 
 
 }

@@ -1,11 +1,7 @@
 package lapr.project.controller;
 
-import lapr.project.data.DatabaseConnection;
-import lapr.project.data.PortStoreDB;
-import lapr.project.data.PositionShipDB;
-import lapr.project.data.ShipStoreDB;
+import lapr.project.data.*;
 import lapr.project.model.Company;
-import lapr.project.model.Ship;
 import lapr.project.model.shared.Constants;
 import lapr.project.utils.ImportPorts;
 import lapr.project.utils.ImportShips;
@@ -18,17 +14,16 @@ import java.util.*;
  */
 public class App {
 
-    private Company company;
+    private final Company company;
     private boolean doBootStrap;
     DatabaseConnection databaseConnection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
-    private List<Ship> ships;
 
 
     private App() {
 
         Properties props = getProperties();
 
-        Company cmp = null;
+        Company cmp;
 
 
         this.doBootStrap = false;
@@ -59,13 +54,14 @@ public class App {
     private void bootstrap() {
         ShipStoreDB shipStoreDB = new ShipStoreDB();
         PortStoreDB portStoreDB = new PortStoreDB();
+        CountryStore countryStore = new CountryStore();
         ImportShips importShips = new ImportShips();
         String fileName = "csvFiles/sships.csv";
         String fileName1 = "csvFiles/bships.csv";
         String fileName2 = "csvFiles/sports.csv";
         String fileName3 = "csvFiles/countries.csv";
      importShips.importShips(fileName);
-        ImportPorts.importPorts(fileName2);
+       ImportPorts.importPorts(fileName2);
 //        IpomrtCountries.importCountries(fileName3);
 //        ImportPorts.importPortsAndSaveToDatabase(fileName2);
 //        importShips.importShipEnergyAndSaveToDatabase(fileName);
@@ -73,6 +69,8 @@ public class App {
 //        importShips.importShipPositionsAndSaveToDatabase(fileName);
 //          shipStoreDB.getShips(databaseConnection);
 //        portStoreDB.getPorts(databaseConnection);
+        countryStore.getCountriesFromDatabase();
+
     }
 
 

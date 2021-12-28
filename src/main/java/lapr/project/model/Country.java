@@ -1,13 +1,14 @@
 package lapr.project.model;
 
 public class Country implements  GraphLocation{
-    private Continent continent;
-    private Location capitalLocation;
-    private String name;
-    private String alpha2code;
-    private String alpha3code;
-    private double population;
-    private String capital;
+    private final Continent continent;
+    private final Location capitalLocation;
+    private final String name;
+    private final String alpha2code;
+    private final String alpha3code;
+    private final double population;
+    private final String capital;
+    private double averageCloseness;
 
 
     public Country(Continent continent, Location capitalLocation, String name, String alpha2code, String alpha3code,
@@ -24,22 +25,35 @@ public class Country implements  GraphLocation{
 
     @Override
     public String toString() {
-        return "Country{" + continent + '\'' +
+        return "Country{" +
+                "continent=" + continent +
                 ", capitalLocation=" + capitalLocation +
                 ", name='" + name + '\'' +
                 ", alpha2code='" + alpha2code + '\'' +
                 ", alpha3code='" + alpha3code + '\'' +
                 ", population=" + population +
-                ", capital='" + capital + '\'' + "\n" +
+                ", capital='" + capital + '\'' +
+                ", averageCloseness=" + averageCloseness +
                 '}';
     }
+
     public Location getLocation(){
         return this.capitalLocation;
     }
     public String getName(){
         return this.name;
     }
+
+    @Override
+    public Double getCloseness() {
+        return averageCloseness;
+    }
+
     public Continent getContinent(){
         return this.continent;
+    }
+
+    public void setAverageCloseness(double averageCloseness) {
+        this.averageCloseness = averageCloseness;
     }
 }

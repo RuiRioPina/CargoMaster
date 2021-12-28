@@ -10,7 +10,7 @@ class ContainerTest {
 
     @Test
     void testToString() {
-       String exp = "Container - nrContainer = JORU1234553, Type = MAXMINUS5', Load = Cherries, Position [X = 7, Y = 5, Z = 1], Port = Fisgao Port, Date = 2021-12-21 17:30:00";
+       String exp = "Container{numberContainer='JORU1234553', dimension=null, client=null, type= Type = MAXMINUS5', iso='null', certificate='null', load='Cherries', position=[X = 7, Y = 5, Z = 1], nextPort=Port{continent=null, country='null', code=0, namePort='Fisgao Port', location=null, averageCloseness=0.0}, date='2021-12-21 17:30:00', arrivalDate='null', departureDate='null'}";
        TypeContainer tc = new TypeContainer("Leixões","1");
        Client c = new Client("Sérgio","12");
        Container C = new Container("JORU1234553",c,tc,"42PC","certificate","load");

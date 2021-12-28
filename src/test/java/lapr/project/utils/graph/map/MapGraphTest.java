@@ -148,7 +148,7 @@ class MapGraphTest {
 
     @Test
     void testAdjVertices2() {
-        assertThrows(UnsupportedOperationException.class, () -> (new MapGraph<>(true)).adjVertices("Vert"));
+        assertThrows(NullPointerException.class, () -> (new MapGraph<>(true)).adjVertices("Vert"));
     }
 
     @Test
@@ -240,13 +240,6 @@ class MapGraphTest {
 
     @Test
     void testEdge8() {
-        // TODO: This test is incomplete.
-        //   Reason: R004 No meaningful assertions found.
-        //   Diffblue Cover was unable to create an assertion.
-        //   Make sure that fields modified by edge(Object, Object)
-        //   have package-private, protected, or public getters.
-        //   See https://diff.blue/R004 to resolve this issue.
-
         MapGraph<Object, Object> mapGraph = new MapGraph<>(true);
         mapGraph.addEdge("V Orig", "V Dest", "Weight");
         mapGraph.edge("V Orig", "V Dest");

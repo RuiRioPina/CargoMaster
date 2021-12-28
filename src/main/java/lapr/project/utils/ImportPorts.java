@@ -4,13 +4,10 @@ import lapr.project.controller.App;
 import lapr.project.data.DatabaseConnection;
 import lapr.project.data.PortStoreDB;
 import lapr.project.model.*;
-import lapr.project.utils.PrintToFile;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

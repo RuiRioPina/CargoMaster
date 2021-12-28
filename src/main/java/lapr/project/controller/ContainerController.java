@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ContainerController {
 
-    private ContainerDB cDB;
+    private final ContainerDB cDB;
 
     public ContainerController () {
     cDB = new ContainerDB();
@@ -19,11 +19,14 @@ public class ContainerController {
         return cDB.getContainersToOffloadInNextPort(connection,idShipCap,portCode);
     }
 
+
     public List<Container> getContainersToLoadInNextPort (DatabaseConnection connection, int idShipCap, String portCode) throws SQLException {
         return cDB.getContainersToLoadInNextPort(connection,idShipCap,portCode);
     }
 
-
+    public List<Container> getRoute (DatabaseConnection connection, int idClient, String numberContainer) throws SQLException {
+        return cDB.getRoute(connection,idClient,numberContainer);
+    }
     public int getOccupancyRateFromDate(DatabaseConnection connection, String mmsi, String date) throws SQLException {
         return cDB.getOccupancyRateFromDate(connection,mmsi, date);
     }

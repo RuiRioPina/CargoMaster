@@ -6,6 +6,8 @@ import lapr.project.data.DatabaseConnection;
 import lapr.project.utils.Calculator;
 
 import lapr.project.utils.Pair;
+import lapr.project.utils.graph.Graph;
+import lapr.project.utils.graph.map.MapGraph;
 import lapr.project.utils.graph.matrix.MatrixGraph;
 import oracle.jdbc.OracleTypes;
 

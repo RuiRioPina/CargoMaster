@@ -3,17 +3,19 @@ package lapr.project.model;
 public class Container {
 
     private final String numberContainer;
-    private final Dimension dimension;
-    private final Client client;
+    private Dimension dimension;
+    private Client client;
     private final TypeContainer type;
-    private final String iso;
-    private final String certificate;
+    private String iso;
+    private String certificate;
     private final String load;
 
 
     private final Position position;
     private final Port nextPort;
-    private final String date;
+    private String date;
+    private String arrivalDate;
+    private String departureDate;
 
     public Container(String numberContainer, Client idClient, TypeContainer type, String iso, String certificate, String load) {
         this.numberContainer = numberContainer;
@@ -41,19 +43,36 @@ public class Container {
         this.date = date;
     }
 
+    public Container(String numberContainer, TypeContainer type, String load, Position position, Port nextPort, String arrivalDate, String departureDate) {
+        this.numberContainer = numberContainer;
+        this.type = type;
+        this.load = load;
+        this.position = position;
+        this.nextPort = nextPort;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
+    }
+
+
     public String getIso() {
         return iso;
     }
 
     @Override
     public String toString() {
-        return "Container - " +
-                "nrContainer = " + numberContainer + ","
-                + type +
-                ", Load = " + load + ", Position "
-                + position + ", "
-                + nextPort +
-                ", Date = " + date
-                ;
+        return "Container{" +
+                "numberContainer='" + numberContainer + '\'' +
+                ", dimension=" + dimension +
+                ", client=" + client +
+                ", type=" + type +
+                ", iso='" + iso + '\'' +
+                ", certificate='" + certificate + '\'' +
+                ", load='" + load + '\'' +
+                ", position=" + position +
+                ", nextPort=" + nextPort +
+                ", date='" + date + '\'' +
+                ", arrivalDate='" + arrivalDate + '\'' +
+                ", departureDate='" + departureDate + '\'' +
+                '}';
     }
 }

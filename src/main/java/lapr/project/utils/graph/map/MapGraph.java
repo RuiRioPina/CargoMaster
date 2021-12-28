@@ -1,5 +1,11 @@
 package lapr.project.utils.graph.map;
 
+import lapr.project.controller.App;
+import lapr.project.data.CountryStore;
+import lapr.project.model.Country;
+import lapr.project.model.CountryPortGraph;
+import lapr.project.utils.Calculator;
+import lapr.project.utils.graph.Algorithms;
 import lapr.project.utils.graph.Edge;
 import lapr.project.utils.graph.CommonGraph;
 import lapr.project.utils.graph.Graph;
@@ -14,8 +20,10 @@ import java.util.*;
  */
 public class MapGraph<V, E> extends CommonGraph<V, E> {
 
-
+    int size;
     final private Map<V, MapVertex<V, E>> mapVertices;  // all the Vertices of the graph
+
+    CountryStore countryStore = App.getInstance().getCompany().getCountryStore();
 
     // Constructs an empty graph (either undirected or directed)
     public MapGraph(boolean directed) {
@@ -33,8 +41,49 @@ public class MapGraph<V, E> extends CommonGraph<V, E> {
 
     @Override
     public Collection<V> adjVertices(V vert) {
+        return mapVertices.get(vert).getAllAdjVerts();
+    }
 
-        throw new UnsupportedOperationException("Not supported yet.");
+
+    public void closeness(MapVertex<V,E> v, int[] distances) {
+        double closeness = 0;
+
+        List<Country> countriesEurope = new ArrayList<>();
+        List<Country> countriesAsia = new ArrayList<>();
+        List<Country> countriesAmerica = new ArrayList<>();
+        List<Country> countriesAfrica = new ArrayList<>();
+        for (Country country: countryStore.getCountryStore()) {
+            if(countryStore.getContinentByCountry(country.getName()).equals("Europe")){
+                countriesEurope.add(country);
+            }
+            if(countryStore.getContinentByCountry(country.getName()).equals("Asia")){
+                countriesAsia.add(country);
+            }
+            if(countryStore.getContinentByCountry(country.getName()).equals("America")){
+                countriesAmerica.add(country);
+            }
+            if(countryStore.getContinentByCountry(country.getName()).equals("Africa")){
+                countriesAfrica.add(country);
+            }
+            double averageDistance;
+            double count;
+            double averageSum;
+            for (Country country1:countriesEurope) {
+                averageDistance = 0;
+                averageSum = 0;
+                count = 0;
+                for (Country country2:countriesEurope) {
+                    if(country1 != country2) {
+                        averageSum += Calculator.calculateLocationDifference(country1.getLocation(),country2.getLocation());
+                        count++;
+                    }
+                }
+                if(count!=0) {
+                    averageDistance = averageSum / count;
+                }
+                country1.setAverageCloseness(averageDistance);
+            }
+        }
     }
 
     @Override

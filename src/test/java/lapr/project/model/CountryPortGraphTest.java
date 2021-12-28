@@ -10,7 +10,7 @@ public class CountryPortGraphTest {
     public void createGraphWithPortsAndCountries(){
         CountryPortGraph countryPortGraph= new CountryPortGraph();
         MatrixGraph graph= countryPortGraph.createGraphWithPortsAndCountries(2);
-        assertEquals(90,graph.numVertices());
+        assertEquals(148,graph.numVertices());
     }
 
 

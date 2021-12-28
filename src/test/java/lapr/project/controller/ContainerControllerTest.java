@@ -23,6 +23,16 @@ class ContainerControllerTest {
     }
 
     @Test
+    void getRouteFromContainer() throws SQLException {
+        ContainerController cc = new ContainerController();
+        DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
+        List<Container> contLoad = cc.getRoute(connection,1,"ABCU1827364");
+        for (int i = 0; i < contLoad.size(); i++) {
+            System.out.println(contLoad.get(i));
+        }
+    }
+
+    @Test
     void getContainersToLoadInNextPort() throws SQLException {
         ContainerController cc = new ContainerController();
         DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");

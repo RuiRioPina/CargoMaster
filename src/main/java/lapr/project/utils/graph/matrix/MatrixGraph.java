@@ -1,12 +1,19 @@
 package lapr.project.utils.graph.matrix;
 
+import lapr.project.data.CountryStore;
+import lapr.project.model.Country;
+import lapr.project.model.CountryPortGraph;
+import lapr.project.model.GraphLocation;
+import lapr.project.utils.graph.Algorithms;
 import lapr.project.utils.graph.CommonGraph;
 import lapr.project.utils.graph.Edge;
 import lapr.project.utils.graph.Graph;
+import lapr.project.utils.graph.map.MapVertex;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 
 /**
  *
@@ -17,9 +24,10 @@ public class MatrixGraph<V,E> extends CommonGraph<V,E> {
 
     public static final int INITIAL_CAPACITY = 10;
     public static final float RESIZE_FACTOR = 1.5F;
-
+    int size = 0;
     Edge<V,E> [][] edgeMatrix;
-
+    MatrixGraph<GraphLocation, Double> matrixGraph;
+    CountryPortGraph portGraph = new CountryPortGraph();
 
     @SuppressWarnings("unchecked")
     public MatrixGraph(boolean directed, int initialCapacity) {

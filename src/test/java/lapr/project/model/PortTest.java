@@ -9,14 +9,14 @@ class PortTest {
     @Test
     void getContinent() {
         Port port = new Port("Europa","Portugal",1,"Leixões",new Location("1","1"));
-        assertEquals(port.getContinent(), "Europa");
+        assertEquals(port.getContinent().getName(), "Europa");
     }
 
     @Test
     void setContinent() {
         Port port = new Port("Europa","Portugal",1,"Leixões",new Location("1","1"));
-        port.setContinent("Europe");
-        assertEquals(port.getContinent(), "Europe");
+        port.setContinent(new Continent("Europe"));
+        assertEquals(port.getContinent().getName(), "Europe");
     }
 
     @Test
@@ -97,7 +97,7 @@ class PortTest {
     @Test
     void testToString2() {
         Port p = new Port ("Leixões");
-        String port = "Port = Leixões";
+        String port = "Port{continent=null, country='null', code=0, namePort='Leixões', location=null, averageCloseness=0.0}";
         assertEquals(port,p.toString());
     }
 }

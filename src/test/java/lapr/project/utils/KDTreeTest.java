@@ -1,19 +1,14 @@
 package lapr.project.utils;
 
-import java.util.List;
-
 import lapr.project.model.Location;
 import lapr.project.model.Port;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.awt.geom.Point2D;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class KDTreeTest {
     Port port = new Port("Europe", "Italy", 11174, "Genoa", new Location("44.4", "8.933333333"));
@@ -364,5 +359,25 @@ class KDTreeTest {
     @Test
     void testNodeConstructor2() {
         assertEquals(3.0, (new KDTree.Node<>(2.0, 3.0)).getY().doubleValue());
+    }
+
+    @Test
+    void testAddToList1() {
+        // Setup
+        final Port port = null;
+
+        // Run the test
+        kdtree.addToList(port, 0.0, 0.0);
+
+        // Verify the results
+    }
+
+    @Test
+    void testInsert1() {
+        // Setup
+        // Run the test
+        kdtree.insert();
+
+        // Verify the results
     }
 }

@@ -13,6 +13,8 @@ public class MapVertex<V, E> {
 
     final private V element;                            // Vertex information
     final private Map<V, Edge<V, E>> outVerts;    // Adjacent vertices
+    private double closeness;
+
 
     public MapVertex(V vert) {
         if (vert == null) throw new RuntimeException("Vertice information cannot be null!");
@@ -46,6 +48,14 @@ public class MapVertex<V, E> {
 
     public Collection<Edge<V, E>> getAllOutEdges() {
         return new ArrayList<>(outVerts.values());
+    }
+
+    public void setCloseness(double closeness) {
+        this.closeness = closeness;
+    }
+
+    public double getCloseness() {
+        return closeness;
     }
 
     @Override
