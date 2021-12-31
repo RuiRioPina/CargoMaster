@@ -60,6 +60,49 @@ This report is divided into the different User Stories developed across all Spri
 
 * US210 Tiago Ribeiro
 
+### Sprint 3
+
+* US301 Rafael Leite
+
+* US302 Jorge Ferreira
+
+* US303 Rui Pina
+
+* US304 Jorge Ferreira
+
+* US305 Rui Pina
+
+* US306 Tiago Ribeiro
+
+* US307 Tiago Ribeiro
+
+* US308 Rui Pina
+
+* US309 Jorge Ferreira
+
+* US310 Rafael Leite
+
+* US311 Rafael Leite
+
+* US312 Rafael Leite
+
+* US313 Rui Pina
+
+* US314 Jorge Ferreira
+
+* US315 Rafael Leite
+
+* US316 Rafael Leite
+
+* US317 Rui Pina
+
+* US318 Rui Pina
+
+* US319 Jorge Ferreira
+
+* US320 Rafael Leite
+
+
 # Sprint 1
 
 ## Use Case Diagram
@@ -1250,8 +1293,343 @@ present the result to the User
 
 ## Review
 
+# Sprint 3
+
+## US303
+
+### [US303] As a Traffic manager I wish to know which places (cities or ports) are closest to all other places (closeness places).
+
+### Analysis
+### System Sequence Diagram
+
+![US303_SSD](/docs/Sprint 3/US303/US303_SSD.svg)
+
+The Traffic manager will need to select the number of closeness countries/ports he wants to see . With that the system will do its operations and will present the user the result.
+
+### Domain Model Diagram
+![US303_SSD](/docs/Sprint 3/US303/US303_DM.svg)
+
+### Design
+### Class Diagram
+![US303_CD](/docs/Sprint 3/US303/US303_CD.svg)
+
+We used the class CountryPortGraph which will contain the ports and countries inserted into a graph.
+Both classes (Port and Country) implement the interface GraphLocation in order to override common methods both classes will need to have
 
 
+### System Diagram
+![US303_SD](/docs/Sprint 3/US201/US201_SD.svg)
+
+The system will receive the number of countries to get the closeness ports/countries.
+With the graph containing both types of instances we can calculate the average distance between one instance to all the 
+others, in the same country, and store it in itself.
+With that we will sort the graph by lowest average distance and get the n lowest.
+
+## Implementation
+
+### Calculate and assign the closeness to the graphLocations instances
+
+     private static <V> void assignCloseness(LinkedList<V> vectors) {
+        for (V country1 : vectors) {
+            GraphLocation country1Casted;
+            double cont = 0;
+            double sumDistance = 0;
+
+            if(country1 instanceof Country) {
+                country1Casted = (Country) country1;
+            }else{
+                country1Casted = (Port) country1;
+            }
+            for (V country2 : vectors) {
+                GraphLocation country2Casted;
+
+                if(country2 instanceof Country) {
+                    country2Casted = (Country) country2;
+                }else{
+                    country2Casted = (Port) country2;
+                }
+                if ((!(country1Casted).getName().equals((country2Casted).getName())) && (country1Casted).getContinent().getName().equals((country2Casted).getContinent().getName())) {
+                    sumDistance += Calculator.calculateLocationDifference((country1Casted).getLocation(), (country2Casted).getLocation());
+                    cont++;
+                }
+                
+            }
+            if (cont != 0) {
+                country1Casted.setAverageCloseness(sumDistance / cont);
+            }
+        }
+
+### Get all GraphLocations from the graph which are in the same continent
+    private static List<GraphLocation> getAllCountriesFromContinent(String continent, LinkedList<GraphLocation> vLinkedList) {
+        List<GraphLocation> countriesInContinent = new ArrayList<>();
+        for (GraphLocation graph : vLinkedList) {
+            if (graph.getContinent().getName().equals(continent)) {
+                countriesInContinent.add(graph);
+            }
+        }
+        return countriesInContinent;
+    }
+### Sort the graph by closeness
+
+         public List<GraphLocation> calculateCloseness(int numberOfGraphs, String continent) {
+        vLinkedList = Algorithms.breadthFirstSearch(matrixGraph, matrixGraph.vertex(3));
+        assert vLinkedList != null;
+        vLinkedList.sort(Comparator.comparingDouble(GraphLocation::getCloseness));
+        graphLocations = getAllCountriesFromContinent(continent, vLinkedList);
+        if (graphLocations.size() >= numberOfGraphs) {
+            return getAllCountriesFromContinent(continent, vLinkedList).subList(0, numberOfGraphs);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+
+## Testing
+
+## Test 1: Check whether It is comparing the y correctly when adding to the KDTree
+
+    @Test
+    void killComparator3Y() {
+        KDTree<Port> kdTree = new KDTree();
+        KDTree.Node<Port> node = new KDTree.Node<Port>(port, Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude()), new KDTree.Node<Port>(Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude())), new KDTree.Node<Port>(Double.parseDouble(port2.getLocation().getLongitude()), Double.parseDouble(port2.getLocation().getLatitude())), false);
+        int actual = kdTree.cmpY.compare(node, node1);
+        int expected = 0;
+        assertEquals(expected, actual);
+    }
+
+
+## Test 2: Check whether It is comparing the x correctly when adding to the KDTree
+
+    @Test
+    void killComparatorX() {
+        KDTree<Port> kdTree = new KDTree();
+        KDTree.Node<Port> node = new KDTree.Node<Port>(port, Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude()), new KDTree.Node<Port>(Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude())), new KDTree.Node<Port>(Double.parseDouble(port2.getLocation().getLongitude()), Double.parseDouble(port2.getLocation().getLatitude())), false);
+        int actual = kdTree.cmpX.compare(node1, node2);
+        int expected = -1;
+        assertEquals(expected, actual);
+    }
+
+## Test 3: See whether the compareAxis is being done as intended
+
+    @Test
+    void killCompareAxisMutants1() {
+
+        node1.compareAxis(node2, 0);
+        node1.compareAxis(node3, 1);
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> {
+                    node1.compareAxis(node2, -1);
+                });
+        Throwable exception1 = assertThrows(IllegalArgumentException.class,
+                () -> {
+                    node1.compareAxis(node2, 2);
+                });
+    }
+
+
+
+
+## Review
+
+There could be a better way to present the result to the user. I just haven't figured out how.
+
+## US303
+
+### [US303] As a Traffic manager I wish to know which places (cities or ports) are closest to all other places (closeness places).
+
+### Analysis
+### System Sequence Diagram
+
+![US303_SSD](/docs/Sprint 3/US303/US303_SSD.svg)
+
+The Traffic manager will need to select the number of closeness countries/ports he wants to see . With that the system will do its operations and will present the user the result.
+
+### Domain Model Diagram
+![US303_SSD](/docs/Sprint 3/US303/US303_DM.svg)
+
+### Design
+### Class Diagram
+![US303_CD](/docs/Sprint 3/US303/US303_CD.svg)
+
+We used the class CountryPortGraph which will contain the ports and countries inserted into a graph.
+Both classes (Port and Country) implement the interface GraphLocation in order to override common methods both classes will need to have
+
+
+### System Diagram
+![US303_SD](/docs/Sprint 3/US303/US303_SD.svg)
+
+The system will receive the number of countries to get the closeness ports/countries.
+With the graph containing both types of instances we can calculate the average distance between one instance to all the
+others, in the same country, and store it in itself.
+With that we will sort the graph by lowest average distance and get the n lowest.
+
+## Implementation
+
+### Calculate and assign the closeness to the graphLocations instances
+
+     private static <V> void assignCloseness(LinkedList<V> vectors) {
+        for (V country1 : vectors) {
+            GraphLocation country1Casted;
+            double cont = 0;
+            double sumDistance = 0;
+
+            if(country1 instanceof Country) {
+                country1Casted = (Country) country1;
+            }else{
+                country1Casted = (Port) country1;
+            }
+            for (V country2 : vectors) {
+                GraphLocation country2Casted;
+
+                if(country2 instanceof Country) {
+                    country2Casted = (Country) country2;
+                }else{
+                    country2Casted = (Port) country2;
+                }
+                if ((!(country1Casted).getName().equals((country2Casted).getName())) && (country1Casted).getContinent().getName().equals((country2Casted).getContinent().getName())) {
+                    sumDistance += Calculator.calculateLocationDifference((country1Casted).getLocation(), (country2Casted).getLocation());
+                    cont++;
+                }
+                
+            }
+            if (cont != 0) {
+                country1Casted.setAverageCloseness(sumDistance / cont);
+            }
+        }
+
+### Get all GraphLocations from the graph which are in the same continent
+    private static List<GraphLocation> getAllCountriesFromContinent(String continent, LinkedList<GraphLocation> vLinkedList) {
+        List<GraphLocation> countriesInContinent = new ArrayList<>();
+        for (GraphLocation graph : vLinkedList) {
+            if (graph.getContinent().getName().equals(continent)) {
+                countriesInContinent.add(graph);
+            }
+        }
+        return countriesInContinent;
+    }
+### Sort the graph by closeness
+
+         public List<GraphLocation> calculateCloseness(int numberOfGraphs, String continent) {
+        vLinkedList = Algorithms.breadthFirstSearch(matrixGraph, matrixGraph.vertex(3));
+        assert vLinkedList != null;
+        vLinkedList.sort(Comparator.comparingDouble(GraphLocation::getCloseness));
+        graphLocations = getAllCountriesFromContinent(continent, vLinkedList);
+        if (graphLocations.size() >= numberOfGraphs) {
+            return getAllCountriesFromContinent(continent, vLinkedList).subList(0, numberOfGraphs);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+
+## Testing
+
+## Test 1: Check whether It is comparing the y correctly when adding to the KDTree
+
+    @Test
+    void killComparator3Y() {
+        KDTree<Port> kdTree = new KDTree();
+        KDTree.Node<Port> node = new KDTree.Node<Port>(port, Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude()), new KDTree.Node<Port>(Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude())), new KDTree.Node<Port>(Double.parseDouble(port2.getLocation().getLongitude()), Double.parseDouble(port2.getLocation().getLatitude())), false);
+        int actual = kdTree.cmpY.compare(node, node1);
+        int expected = 0;
+        assertEquals(expected, actual);
+    }
+
+
+## Test 2: Check whether It is comparing the x correctly when adding to the KDTree
+
+    @Test
+    void killComparatorX() {
+        KDTree<Port> kdTree = new KDTree();
+        KDTree.Node<Port> node = new KDTree.Node<Port>(port, Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude()), new KDTree.Node<Port>(Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude())), new KDTree.Node<Port>(Double.parseDouble(port2.getLocation().getLongitude()), Double.parseDouble(port2.getLocation().getLatitude())), false);
+        int actual = kdTree.cmpX.compare(node1, node2);
+        int expected = -1;
+        assertEquals(expected, actual);
+    }
+
+## Test 3: See whether the compareAxis is being done as intended
+
+    @Test
+    void killCompareAxisMutants1() {
+
+        node1.compareAxis(node2, 0);
+        node1.compareAxis(node3, 1);
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> {
+                    node1.compareAxis(node2, -1);
+                });
+        Throwable exception1 = assertThrows(IllegalArgumentException.class,
+                () -> {
+                    node1.compareAxis(node2, 2);
+                });
+    }
+
+
+
+
+## Review
+
+There could be a better way to present the result to the user. I just haven't figured out how.
+
+
+
+
+
+## US305
+
+### [US305] As Client, I want to know the route of a specific container I am leasing.
+
+### Analysis
+### System Sequence Diagram
+
+![US305_SSD](/docs/Sprint 3/US305/US305_SSD.svg)
+
+The Client will need to type his identifying number and the number of container he wants to see the route from . With that the system will do its operations and will present the user the result.
+
+### Domain Model Diagram
+![US305_DM](/docs/Sprint 3/US305/US305_DM.svg)
+
+### Design
+### Class Diagram
+![US305_CD](/docs/Sprint 3/US305/US305_CD.svg)
+
+We have used a ContainerController to connect the "UI" layer which in this case is the Test Class ContainerControllerTest
+The connection with the PLSQL function is done in the ContainerDB class.
+
+### System Diagram
+![US305_SD](/docs/Sprint 3/US305/US305_SD.svg)
+
+The system will receive the identifying number for the client and the number of the container to be searched, and the manifest to be searched. Then it will call the PLSQL function and
+present the result to the User
+
+
+## Implementation
+### Call the PLSQL Function
+
+    public List<Container> getRoute(DatabaseConnection connection, int idClient, String numberContainer) throws SQLException {
+        List<Container> list = new LinkedList<>();
+
+        ResultSet rSet;
+
+        try (CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call func_getRouteFromClientContainer(?,?)}")) {
+            callStmtAux.registerOutParameter(1, OracleTypes.CURSOR);
+            callStmtAux.setInt(2, idClient);
+            callStmtAux.setString(3, numberContainer);
+            callStmtAux.execute();
+            rSet = (ResultSet) callStmtAux.getObject(1);
+            while (rSet.next()) {
+                list.add(new Container(rSet.getString(1), new TypeContainer(rSet.getString(2)),
+                        rSet.getString(3), rSet.getString(4), new Position(rSet.getInt(5), rSet.getInt(6),
+                        rSet.getInt(7)), rSet.getInt(8), new Port(rSet.getString(9)), rSet.getString(10),rSet.getString(11)));
+            }
+
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return list;
+    }
+
+## Review
 
 
 
