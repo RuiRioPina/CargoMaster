@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class AuditControllerTest {
 
     @Test
-    void getContainersToOffloadInNextPort() throws SQLException {
+    void getAudit() throws SQLException {
         AuditController ac = new AuditController();
         DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
         List<AuditTrail> audit = ac.getAudit(connection,4,"JORU1234563");
