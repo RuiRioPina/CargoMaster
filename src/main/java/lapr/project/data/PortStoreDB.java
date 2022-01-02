@@ -197,7 +197,7 @@ public class PortStoreDB implements Persistable {
             rSet = (ResultSet) callStmtAux.getObject(1);
             while(rSet.next()){
                 if (Integer.parseInt(rSet.getString(1))>1000&& rSet.getString(5).equals("port")) {
-                    Port port = new Port(countryStore.getContinentByCountry(rSet.getString(7)),rSet.getString(7),Integer.parseInt(rSet.getString(1)),rSet.getString(2),new Location(rSet.getString(3),rSet.getString(4)));
+                    Port port = new Port(countryStore.getContinentByCountry(rSet.getString(8)),rSet.getString(8),Integer.parseInt(rSet.getString(1)),rSet.getString(2),new Location(rSet.getString(3),rSet.getString(4)));
                     portList.add(port);
                 }
                 }

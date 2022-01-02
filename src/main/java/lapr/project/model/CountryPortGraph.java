@@ -48,7 +48,7 @@ public class CountryPortGraph {
                     }
                 }
             }
-            if (!portfacade.getContinent().equals("ContinentFacade")){
+            if (portfacade.getCode()!=99999){
                 graph.addEdge(country,portfacade,temp);
             }
         }
