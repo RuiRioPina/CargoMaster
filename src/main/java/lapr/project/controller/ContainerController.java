@@ -34,8 +34,9 @@ public class ContainerController {
     public double getOccupancyRateFromCertainManifest(DatabaseConnection connection, String mmsi, int idManifest) throws SQLException {
         return cDB.getOccupancyRateFromCertainManifest(connection,mmsi, idManifest);
     }
-    public String getContainerStatus(DatabaseConnection connection, String numberContainer)throws SQLException{
-        return cDB.getContainerStatus(connection,numberContainer);
+    public String getContainerStatus(DatabaseConnection connection, String numberContainer,int clientID)throws SQLException{
+        return cDB.getContainerStatus(connection,numberContainer,clientID);
     }
+
 
 }

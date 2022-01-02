@@ -63,10 +63,13 @@ class ContainerControllerTest {
 //    }
     @Test
     void getContainerStatus() throws SQLException {
-        String numberContainer = "XGCU2123466";
+        String numberContainer = "JORU1234513";
+        int clientid=1;
         ContainerController cc = new ContainerController();
         DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
-        String res = cc.getContainerStatus(connection,numberContainer);
+        String res = cc.getContainerStatus(connection,numberContainer,clientid);
+
+
         System.out.println(res);
     }
 

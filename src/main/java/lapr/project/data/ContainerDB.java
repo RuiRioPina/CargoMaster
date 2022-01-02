@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -87,11 +88,12 @@ public class ContainerDB implements Persistable {
         return list;
     }
 
-    public String getContainerStatus(DatabaseConnection connection,String numberContainer)  {
+    public String getContainerStatus(DatabaseConnection connection,String numberContainer,int clientID)  {
         String res = "";
-        try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FUNC_GETSTATUSCONTAINER(?) }")) {
+        try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FUNC_GETSTATUSCONTAINER(?,?) }")) {
             callStmt.registerOutParameter(1, OracleTypes.VARCHAR);
             callStmt.setString(2, numberContainer);
+            callStmt.setInt(3,clientID);
 
             callStmt.execute();
             res  = (String)callStmt.getObject(1);
@@ -151,7 +153,6 @@ public class ContainerDB implements Persistable {
 
 
 
-
         @Override
         public boolean save(DatabaseConnection databaseConnection, Object object) {
             return false;
@@ -161,5 +162,6 @@ public class ContainerDB implements Persistable {
         public boolean delete(DatabaseConnection databaseConnection, Object object) {
             return false;
         }
+
 }
 
