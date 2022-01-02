@@ -1,4 +1,3 @@
-/* Validando o facto de nao se introduzir um container num ship com a capacidade excedida */
 create or replace trigger test_number_containers_not_exceed_capacity
     before insert or update on ContainerManifest for each row
 declare
@@ -6,7 +5,6 @@ declare
     capacity number(11);
     p_mmsi number(11);
     ex_erro EXCEPTION;
-    id_Manifest ContainerManifest.idManifest%type;
 
 
 begin
@@ -21,4 +19,4 @@ SELECT mmsi into p_mmsi FROM SHIP WHERE idVehicle IN (SELECT v.IdVehicle from Ve
         raise_application_error(-20009,'TENTOU INTRODUZIR MAIS CONTENTORES DO QUE A CAPACIDADE DO NAVIO');
     end if;
 end;
-
+/
