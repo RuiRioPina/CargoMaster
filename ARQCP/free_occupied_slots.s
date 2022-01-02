@@ -1,3 +1,7 @@
+.section .data
+
+.section .text
+
 .global free_occupied_slots
 
 free_occupied_slots:

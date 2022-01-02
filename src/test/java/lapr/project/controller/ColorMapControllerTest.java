@@ -24,7 +24,11 @@ class ColorMapControllerTest {
         assertEquals(68, mapColored.size());
         assertEquals(0, mapColored.get(graph.vertices().get(34)));
 
-        PrintToFile.print(mapColored.toString(),"colorMap.txt");
+        StringBuilder output = new StringBuilder("");
+        for (GraphLocation country : mapColored.keySet()){
+            output.append(country.getName()).append(" ").append(mapColored.get(country)).append("\n");
+        }
+        PrintToFile.printB(output,"colorMap.txt");
     }
 
 }
