@@ -31,7 +31,6 @@ int main ( void ) {
 		
 		char * position;
 		position = (char *) array;
-	    position++;
 		long result = free_occupied_slots(position, SIZE);
 
 		int *ptr;

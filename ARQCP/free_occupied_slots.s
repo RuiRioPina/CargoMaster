@@ -5,7 +5,7 @@
 .global free_occupied_slots
 
 free_occupied_slots:
-
+incq %rdi          
 movl $0, %edx      # contador de posições
 movq $0, %rcx      # nr slots livres
 movq $0, %rax      # nr slots ocupados
@@ -15,7 +15,7 @@ loop:
 cmpl %esi, %edx    # verifica se o contador de posições atingiu o máximo SIZE 
 je end
 
-cmpb $0, (%rdi)    # compara a posição com 0 (null), para verificar se o slot está livre
+cmpb $0, (%rdi)   # compara a posição com 0 (null), para verificar se o slot está livre
 je free
 
 addq $1, %rax      # adiciona 1 ao nr de slots ocupados
