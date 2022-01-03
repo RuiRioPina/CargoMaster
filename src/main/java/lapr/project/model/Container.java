@@ -3,6 +3,7 @@ package lapr.project.model;
 public class Container {
 
     private final String numberContainer;
+    private String typeOfVehicle;
     private Dimension dimension;
     private Client client;
     private final TypeContainer type;
@@ -10,7 +11,7 @@ public class Container {
     private String certificate;
     private final String load;
 
-
+    private String typeManifest;
     private final Position position;
     private final Port nextPort;
     private String date;
@@ -53,6 +54,18 @@ public class Container {
         this.departureDate = departureDate;
     }
 
+    public Container(String numberContainer, TypeContainer type, String load, String typeManifest, Position position, String typeOfVehicle, Port nextPort, String arrivalDate, String departureDate) {
+        this.numberContainer = numberContainer;
+        this.type = type;
+        this.load = load;
+        this.typeManifest = typeManifest;
+        this.position = position;
+        this.typeOfVehicle = typeOfVehicle;
+        this.nextPort = nextPort;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
+    }
+
 
     public String getIso() {
         return iso;
@@ -62,12 +75,14 @@ public class Container {
     public String toString() {
         return "Container{" +
                 "numberContainer='" + numberContainer + '\'' +
+                ", typeOfVehicle='" + typeOfVehicle + '\'' +
                 ", dimension=" + dimension +
                 ", client=" + client +
                 ", type=" + type +
                 ", iso='" + iso + '\'' +
                 ", certificate='" + certificate + '\'' +
                 ", load='" + load + '\'' +
+                ", typeManifest='" + typeManifest + '\'' +
                 ", position=" + position +
                 ", nextPort=" + nextPort +
                 ", date='" + date + '\'' +

@@ -4,10 +4,8 @@ import lapr.project.model.Country;
 import lapr.project.model.GraphLocation;
 import lapr.project.model.Port;
 import lapr.project.utils.Calculator;
-import lapr.project.utils.graph.matrix.MatrixGraph;
 
 import java.util.*;
-import java.util.function.BinaryOperator;
 
 /**
  * @author DEI-ISEP
@@ -46,11 +44,11 @@ public class Algorithms {
         }
 
 
-        calculateCloseness(qbfs);
+        assignCloseness(qbfs);
         return qbfs;
     }
 
-    private static <V> void calculateCloseness(LinkedList<V> vectors) {
+    private static <V> void assignCloseness(LinkedList<V> vectors) {
         for (V country1 : vectors) {
             GraphLocation country1Casted;
             double cont = 0;
@@ -69,7 +67,8 @@ public class Algorithms {
                 }else{
                     country2Casted = (Port) country2;
                 }
-                if ((!(country1Casted).getName().equals((country2Casted).getName())) && (country1Casted).getContinent().getName().equals((country2Casted).getContinent().getName())) {
+                if ((!(country1Casted).getName().equals((country2Casted).getName())) &&
+                        (country1Casted).getContinent().getName().equals((country2Casted).getContinent().getName())) {
                     sumDistance += Calculator.calculateLocationDifference((country1Casted).getLocation(), (country2Casted).getLocation());
                     cont++;
                 }

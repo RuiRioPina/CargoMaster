@@ -65,29 +65,47 @@ public class ContainerDB implements Persistable {
         }
         return list;
     }
-
     public List<Container> getRoute(DatabaseConnection connection, int idClient, String numberContainer) throws SQLException {
         List<Container> list = new LinkedList<>();
 
         ResultSet rSet;
 
         try (CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call func_getRouteFromClientContainer(?,?)}")) {
+
             callStmtAux.registerOutParameter(1, OracleTypes.CURSOR);
             callStmtAux.setInt(2, idClient);
             callStmtAux.setString(3, numberContainer);
-            callStmtAux.execute();
+
+                callStmtAux.executeQuery();
+
             rSet = (ResultSet) callStmtAux.getObject(1);
             while (rSet.next()) {
-                list.add(new Container(rSet.getString(1), new TypeContainer(rSet.getString(2)),
-                        rSet.getString(3), new Position(rSet.getInt(4), rSet.getInt(5),
-                        rSet.getInt(6)), new Port(rSet.getString(7)), rSet.getString(8),rSet.getString(9)));
+
+                list.add(new Container(numberContainer, new TypeContainer(rSet.getString(1)),
+                        rSet.getString(2), rSet.getString(3), new Position(rSet.getInt(4), rSet.getInt(5),
+                        rSet.getInt(6)), seeIfTruckOrShip(connection,rSet.getInt(7)), new Port(rSet.getString(8)), rSet.getString(9),rSet.getString(10)));
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.out.println(exception.getMessage());
         }
         return list;
     }
 
+    private String seeIfTruckOrShip(DatabaseConnection connection,int idVehicle) {
+        String sql = "SELECT IDVEHICLE FROM SHIP";
+        try {
+            ResultSet result = connection.getConnection().prepareStatement(sql).executeQuery();
+            result.next();
+            while (result.next()) {
+                if(idVehicle == result.getInt(1)){
+                    return "Ship";
+                }
+            }
+            } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "Truck";
+    }
     public String getContainerStatus(DatabaseConnection connection,String numberContainer,int clientID)  {
         String res = "";
         try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FUNC_GETSTATUSCONTAINER(?,?) }")) {
