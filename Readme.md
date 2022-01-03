@@ -1294,6 +1294,65 @@ present the result to the User
 ## Review
 
 # Sprint 3
+## US301
+
+### [US302] As a Traffic manager, I which to import data from countries, ports, borders and seadists files from the database to build a freight network.
+
+### Analysis
+### System Sequence Diagram
+
+![US303_SSD](/docs/Sprint3/US301/US301_SSD.svg)
+
+### Domain Model Diagram
+![US302_DM](/docs/Sprint3/US301/US301_DM.svg)
+
+### Design
+### Class Diagram
+![US302_CD](/docs/Sprint3/US301/US301_CD.svg)
+
+### System Diagram
+![US302_SD](/docs/Sprint3/US301/US301_SD.svg)
+
+## Implementation
+
+### Creating the graph
+    
+    public MatrixGraph<GraphLocation,Double> createGraphWithPortsAndCountries(int n){
+        MatrixGraph<GraphLocation,Double> graph= new MatrixGraph<>(false);
+        countryStore.getCountriesFromDatabase();
+        for (Country country: countryStore.getCountryStore()){
+            graph.addVertex(country);
+        }
+        portStore.getPortsFromDatabase();
+        for (Port port: portStore.getPortList()){
+            graph.addVertex(port);
+        }
+        makeBorderEdges(graph);
+        for (Country country:countryStore.getCountryStore()){
+            double temp =Double.MAX_VALUE;
+            Port portfacade= new Port("ContinentFacade","CountryFacade",99999,"PortFacade",new Location("-86.6222","-128.48"));
+            Location capitalLocation = country.getLocation();
+            for (Port port:portStore.getPortList()){
+                if (port.getCountry().equals(country.getName())){
+                    if (Calculator.calculateLocationDifference(capitalLocation,port.getLocation())<temp){
+                        temp=Calculator.calculateLocationDifference(capitalLocation,port.getLocation());
+                        portfacade=port;
+                    }
+                }
+            }
+            if (portfacade.getCode()!=99999){
+                graph.addEdge(country,portfacade,temp);
+            }
+        }
+        makeSameCountryPortDistance(graph);
+        makeClosestPortOutsideOfCountryDistance(graph,n);
+        return graph;
+  
+## Testing
+
+## Test 1
+
+     The test was mainly done through debugging to see if the graph was made correctly.
 
 ## US302
 
@@ -1417,23 +1476,23 @@ present the result to the User
 ### Analysis
 ### System Sequence Diagram
 
-![US303_SSD](/docs/Sprint 3/US303/US303_SSD.svg)
+![US303_SSD](/docs/Sprint3/US303/US303_SSD.svg)
 
 The Traffic manager will need to select the number of closeness countries/ports he wants to see . With that the system will do its operations and will present the user the result.
 
 ### Domain Model Diagram
-![US303_SSD](/docs/Sprint 3/US303/US303_DM.svg)
+![US303_SSD](/docs/Sprint3/US303/US303_DM.svg)
 
 ### Design
 ### Class Diagram
-![US303_CD](/docs/Sprint 3/US303/US303_CD.svg)
+![US303_CD](/docs/Sprint3/US303/US303_CD.svg)
 
 We used the class CountryPortGraph which will contain the ports and countries inserted into a graph.
 Both classes (Port and Country) implement the interface GraphLocation in order to override common methods both classes will need to have
 
 
 ### System Diagram
-![US303_SD](/docs/Sprint 3/US201/US201_SD.svg)
+![US303_SD](/docs/Sprint3/US303/US303_SD.svg)
 
 The system will receive the number of countries to get the closeness ports/countries.
 With the graph containing both types of instances we can calculate the average distance between one instance to all the 
@@ -1660,22 +1719,22 @@ There could be a better way to present the result to the user. I just haven't fi
 ### Analysis
 ### System Sequence Diagram
 
-![US305_SSD](/docs/Sprint 3/US305/US305_SSD.svg)
+![US305_SSD](/docs/Sprint3/US305/US305_SSD.svg)
 
 The Client will need to type his identifying number and the number of container he wants to see the route from . With that the system will do its operations and will present the user the result.
 
 ### Domain Model Diagram
-![US305_DM](/docs/Sprint 3/US305/US305_DM.svg)
+![US305_DM](/docs/Sprint3/US305/US305_DM.svg)
 
 ### Design
 ### Class Diagram
-![US305_CD](/docs/Sprint 3/US305/US305_CD.svg)
+![US305_CD](/docs/Sprint3/US305/US305_CD.svg)
 
 We have used a ContainerController to connect the "UI" layer which in this case is the Test Class ContainerControllerTest
 The connection with the PLSQL function is done in the ContainerDB class.
 
 ### System Diagram
-![US305_SD](/docs/Sprint 3/US305/US305_SD.svg)
+![US305_SD](/docs/Sprint3/US305/US305_SD.svg)
 
 The system will receive the identifying number for the client and the number of the container to be searched, and the manifest to be searched. Then it will call the PLSQL function and
 present the result to the User
@@ -1709,7 +1768,139 @@ present the result to the User
 
 ## Review
 
+## US310
 
+### [US305] As Port manager, I intend to have a map of the occupation of the existing resources in the port during a given month.
+
+### Analysis
+### System Sequence Diagram
+
+![US305_SSD](/docs/Sprint3/US310/US310_SSD.svg)
+
+### Domain Model Diagram
+![US305_DM](/docs/Sprint3/US310/US310_DM.svg)
+
+### Design
+### Class Diagram
+![US305_CD](/docs/Sprint3/US310/US310_CD.svg)
+
+
+### System Diagram
+![US305_SD](/docs/Sprint3/US310/US310_SD.svg)
+
+
+
+## Implementation
+### Call the PLSQL Function
+
+    public List<String> occupancyRateShips(DatabaseConnection connection, int facilityCode, int year, int month){
+        List<String> occupRateList= new ArrayList<>();
+        String res="";
+        for (int i=1;i<monthNumOfDays(month)+1;i++) {
+            try (CallableStatement callStmt = connection.getConnection().prepareCall("{? = call func_getShipsOccupInDay(?,?) }")) {
+                callStmt.registerOutParameter(1, OracleTypes.NUMBER);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+                java.util.Date date1u = null;
+                String date =year+"/"+month+"/"+i;
+                try {
+                    date1u = sdf.parse(year+"/"+month+"/"+i+" 00:00");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                long millis = date1u.getTime();
+                Date date1 = new Date(millis);
+                callStmt.setInt(2, facilityCode);
+                callStmt.setDate(3, date1);
+
+                callStmt.execute();
+                res =callStmt.getString(1);
+                occupRateList.add(date+" "+res+"%");
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return occupRateList;
+    }
+	
+	public List<String> occupancyRateContainers(DatabaseConnection connection,int facilityCode,int year,int month){
+        List<String> occupRateList= new ArrayList<>();
+        String res="";
+        for (int i=1;i<monthNumOfDays(month)+1;i++) {
+            try (CallableStatement callStmt = connection.getConnection().prepareCall("{? = call  func_getContainersOccupRateInDay(?,?) }")) {
+                callStmt.registerOutParameter(1,OracleTypes.NUMBER);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+                java.util.Date date1u = null;
+                String date =year+"/"+month+"/"+i;
+                try {
+                    date1u = sdf.parse(year+"/"+month+"/"+i+" 00:00");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                long millis = date1u.getTime();
+                Date date1 = new Date(millis);
+                callStmt.setInt(2, facilityCode);
+                callStmt.setDate(3, date1);
+
+                callStmt.execute();
+                res =callStmt.getString(1);
+                occupRateList.add(date+" "+res+"%");
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return occupRateList;
+    }
+
+## Review
+
+## US312
+
+### As Client, I want to know the current situation of a specific container being used to transport my goods – US204.
+
+### Analysis:
+
+### System Sequence Diagram
+![US204_SSD](/docs/Sprint3/US312/US312_SSD.svg)
+
+
+### Domain Model Diagram
+![US_204_DM](/docs/Sprint3/US312/US312_DM.svg)
+
+### Design
+
+### Class Diagram
+![US204_CD](/docs/Sprint3/US312/US312_CD.svg)
+
+
+### Sequence Diagram
+![US204_SD](/docs/Sprint3/US312/US312_SD.svg)
+
+The system will receive the container number and the find its whereabouts
+
+## Implementation
+### Call the PLSQL Function
+
+    public String getContainerStatus(DatabaseConnection connection,String numberContainer,int clientID)  {
+        String res = "";
+        try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FUNC_GETSTATUSCONTAINER(?,?) }")) {
+            callStmt.registerOutParameter(1, OracleTypes.VARCHAR);
+            callStmt.setString(2, numberContainer);
+            callStmt.setInt(3,clientID);
+
+            callStmt.execute();
+            res  = (String)callStmt.getObject(1);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+
+    }
+
+## Review
 
 #=======================================================================|End of Report|====================================================
 
