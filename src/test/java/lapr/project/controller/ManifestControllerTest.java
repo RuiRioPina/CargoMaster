@@ -45,7 +45,7 @@ public class ManifestControllerTest {
     void insertCargoManifestTrip(){
         try {
             DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
-            PreparedStatement prepareStatement = connection.getConnection().prepareStatement("INSERT INTO TRIP(idCargoManifest, startFacility, endFacility, startDateTrip, endDateTrip,ShipCaptainNrIdentification   ,FleetManagerNrIdentification  ,ChiefEletricalNrIdentificatio, startVehicle ) VALUES(7,3,5,TO_DATE('2022/04/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2022/05/05 8:15:30', 'yyyy/mm/dd hh24:mi:ss'),345,459,5,5)");
+            PreparedStatement prepareStatement = connection.getConnection().prepareStatement("INSERT INTO TRIP(idCargoManifest, startFacility, endFacility, startDateTrip, endDateTrip,ShipCaptainNrIdentification   ,FleetManagerNrIdentification  ,ChiefEletricalNrIdentificatio, startVehicle ) VALUES(12,3,5,TO_DATE('2022/04/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2022/05/05 8:15:30', 'yyyy/mm/dd hh24:mi:ss'),345,459,5,5)");
             prepareStatement.execute();
         } catch (SQLException e) {
             System.out.println("It was not possible to allow a cargo manifest for the trip because the ship is already in transit.");
