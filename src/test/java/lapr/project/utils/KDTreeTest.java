@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,6 +44,65 @@ class KDTreeTest {
     void testFindNearestNeigbour2() {
         KDTree<Object> kdTree = new KDTree<>();
         kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.insert();
+        assertEquals("Port", kdTree.findNearestNeigbour(2.0, 3.0));
+    }
+
+    @Test
+    void testFindNearestNeigbour12() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", -2.0, 3.0);
+        kdTree.insert();
+        assertEquals("Port", kdTree.findNearestNeigbour(-2.0, 3.0));
+    }
+    @Test
+    void testFindNearestNeigbour13() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", 2.0, -3.0);
+        kdTree.insert();
+        assertEquals("Port", kdTree.findNearestNeigbour(2.0, -3.0));
+    }
+    @Test
+    void testFindNearestNeigbour14() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", -2.0, -3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.insert();
+        assertEquals("Port", kdTree.findNearestNeigbour(2.0, 3.0));
+    }
+
+    @Test
+    void testFindNearestNeigbour15() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", 2.0, -3.0);
+        kdTree.addToList("Port", 2.0, 3.0);
+        kdTree.insert();
+        assertEquals("Port", kdTree.findNearestNeigbour(2.0, 3.0));
+    }
+
+    @Test
+    void testFindNearestNeigbour16() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", -2.0, 3.0);
+        kdTree.addToList("Port", 2.0, -3.0);
+        kdTree.insert();
+        assertEquals("Port", kdTree.findNearestNeigbour(2.0, 3.0));
+    }
+
+    @Test
+    void testFindNearestNeigbour17() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", -2.0, 3.0);
+        kdTree.addToList("Port", -2.0, -3.0);
+        kdTree.insert();
+        assertEquals("Port", kdTree.findNearestNeigbour(2.0, 3.0));
+    }
+
+    @Test
+    void testFindNearestNeigbour18() {
+        KDTree<Object> kdTree = new KDTree<>();
+        kdTree.addToList("Port", -2.0, -3.0);
+        kdTree.addToList("Port", -2.0, -3.0);
         kdTree.insert();
         assertEquals("Port", kdTree.findNearestNeigbour(2.0, 3.0));
     }
@@ -380,4 +440,124 @@ class KDTreeTest {
 
         // Verify the results
     }
+
+    @Test
+    void insertTestSize0() {
+        List<KDTree.Node<Port>> list = new ArrayList<>();
+        KDTree<Port> portKDTree = new KDTree<>();
+
+        KDTree.Node<Port> actual = portKDTree.insert(list,0);
+        assertNull(actual);
+    }
+
+    @Test
+    void insertTestSize1() {
+        KDTree.Node<Port> node = new KDTree.Node<>(2,5);
+        List<KDTree.Node<Port>> list = new ArrayList<>();
+        list.add(node);
+        KDTree<Port> portKDTree = new KDTree<>();
+        String expected = node.toString();
+
+        KDTree.Node<Port> actual = portKDTree.insert(list,0);
+        assertEquals(expected,actual.toString());
+    }
+
+    @Test
+    void insertTestSize2() {
+        KDTree.Node<Port> node = new KDTree.Node<>(2,5);
+        KDTree.Node<Port> node1 = new KDTree.Node<>(-5,-5);
+        List<KDTree.Node<Port>> list = new ArrayList<>();
+        list.add(node);
+        list.add(node1);
+
+        KDTree<Port> portKDTree = new KDTree<>();
+        String expected = "Node{coords=Point2D.Double[2.0, 5.0], info=null, left=Node{coords=Point2D.Double[-5.0, -5.0], info=null, left=null, right=null, size=0, vertical=false}, right=null, size=0, vertical=false}";
+
+        KDTree.Node<Port> actual = portKDTree.insert(list,0);
+        assertEquals(expected,actual.toString());
+    }
+
+    @Test
+    void insertTestSize2Different() {
+        KDTree.Node<Port> node1 = new KDTree.Node<>(2,5);
+        KDTree.Node<Port> node = new KDTree.Node<>(-5,-5);
+        List<KDTree.Node<Port>> list = new ArrayList<>();
+        list.add(node);
+        list.add(node1);
+
+        KDTree<Port> portKDTree = new KDTree<>();
+        String expected = "Node{coords=Point2D.Double[2.0, 5.0], info=null, left=Node{coords=Point2D.Double[-5.0, -5.0], info=null, left=null, right=null, size=0, vertical=false}, right=null, size=0, vertical=false}";
+
+        KDTree.Node<Port> actual = portKDTree.insert(list,0);
+        assertEquals(expected,actual.toString());
+    }
+
+    @Test
+    void insertTestSize4Different() {
+        KDTree.Node<Port> node = new KDTree.Node<>(2,5);
+        KDTree.Node<Port> node1 = new KDTree.Node<>(-5,-5);
+        KDTree.Node<Port> node2 = new KDTree.Node<>(-10,3);
+        KDTree.Node<Port> node3 = new KDTree.Node<>(40,-10);
+
+        List<KDTree.Node<Port>> list = new ArrayList<>();
+        list.add(node);
+        list.add(node1);
+        list.add(node2);
+        list.add(node3);
+
+        KDTree<Port> portKDTree = new KDTree<>();
+        String expected = "Node{coords=Point2D.Double[2.0, 5.0], info=null, left=Node{coords=Point2D.Double[-10.0, 3.0], info=null, left=Node{coords=Point2D.Double[-5.0, -5.0], info=null, left=null, right=null, size=0, vertical=false}, right=null, size=0, vertical=false}, right=Node{coords=Point2D.Double[40.0, -10.0], info=null, left=null, right=null, size=0, vertical=false}, size=0, vertical=false}";
+
+        KDTree.Node<Port> actual = portKDTree.insert(list,0);
+        assertEquals(expected,actual.toString());
+    }
+
+    @Test
+    void insertTestSize10Different() {
+        KDTree.Node<Port> node = new KDTree.Node<>(2,5);
+        KDTree.Node<Port> node1 = new KDTree.Node<>(-5,-5);
+        KDTree.Node<Port> node2 = new KDTree.Node<>(-10,3);
+        KDTree.Node<Port> node3 = new KDTree.Node<>(40,-10);
+        KDTree.Node<Port> node4 = new KDTree.Node<>(-5,-5);
+        KDTree.Node<Port> node5 = new KDTree.Node<>(5,5);
+        KDTree.Node<Port> node6 = new KDTree.Node<>(10,-3);
+        KDTree.Node<Port> node7 = new KDTree.Node<>(-40,10);
+        KDTree.Node<Port> node8 = new KDTree.Node<>(-10,-3);
+        KDTree.Node<Port> node9 = new KDTree.Node<>(40,10);
+
+        List<KDTree.Node<Port>> list = new ArrayList<>();
+        list.add(node);
+        list.add(node1);
+        list.add(node2);
+        list.add(node3);
+        list.add(node4);
+        list.add(node5);
+        list.add(node6);
+        list.add(node7);
+        list.add(node8);
+        list.add(node9);
+
+        KDTree<Port> portKDTree = new KDTree<>();
+        String expected = "Node{coords=Point2D.Double[2.0, 5.0], info=null, left=Node{coords=Point2D.Double[-10.0, -3.0], info=null, left=Node{coords=Point2D.Double[-5.0, -5.0], info=null, left=null, right=Node{coords=Point2D.Double[-5.0, -5.0], info=null, left=null, right=null, size=0, vertical=false}, size=0, vertical=false}, right=Node{coords=Point2D.Double[-10.0, 3.0], info=null, left=Node{coords=Point2D.Double[-40.0, 10.0], info=null, left=null, right=null, size=0, vertical=false}, right=null, size=0, vertical=false}, size=0, vertical=false}, right=Node{coords=Point2D.Double[5.0, 5.0], info=null, left=Node{coords=Point2D.Double[40.0, -10.0], info=null, left=Node{coords=Point2D.Double[10.0, -3.0], info=null, left=null, right=null, size=0, vertical=false}, right=null, size=0, vertical=false}, right=Node{coords=Point2D.Double[40.0, 10.0], info=null, left=null, right=null, size=0, vertical=false}, size=0, vertical=false}, size=0, vertical=false}";
+
+        KDTree.Node<Port> actual = portKDTree.insert(list,0);
+        assertEquals(expected,actual.toString());
+    }
+
+    @Test
+    void insertTestSize2SizeNodes() {
+        KDTree.Node<Port> node1 = new KDTree.Node<>(2,5);
+        KDTree.Node<Port> node = new KDTree.Node<>(-5,-5);
+        List<KDTree.Node<Port>> list = new ArrayList<>();
+        list.add(node);
+        list.add(node1);
+
+        KDTree<Port> portKDTree = new KDTree<>();
+        String expected = "Node{coords=Point2D.Double[2.0, 5.0], info=null, left=Node{coords=Point2D.Double[-5.0, -5.0], info=null, left=null, right=null, size=0, vertical=false}, right=null, size=0, vertical=false}";
+
+        KDTree.Node<Port> actual = portKDTree.insert(list,2);
+        assertEquals(expected,actual.toString());
+    }
+
+
 }

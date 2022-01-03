@@ -2,15 +2,12 @@ package lapr.project.utils;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class KDTree<T> {
 
     private int size = 0;
-    private int k = 2;
-    int depth = 0;
     protected static final int X_AXIS = 0;
     protected static final int Y_AXIS = 1;
     List<Node<T>> nodes = new ArrayList<>();
@@ -72,13 +69,7 @@ public class KDTree<T> {
                 other = node.getY();
             }
 
-            if (mine > other) {
-                return 1;
-            } else if (mine < other) {
-                return -1;
-            } else {
-                return 0;
-            }
+            return Double.compare(mine, other);
         }
 
         public T getInfo() {
@@ -106,36 +97,25 @@ public class KDTree<T> {
             return coords;
         }
 
-        private void changecoords(Node node) {
-            this.info = (T) node.getInfo();
-            this.coords = node.getCoordinates();
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "coords=" + coords +
+                    ", info=" + info +
+                    ", left=" + left +
+                    ", right=" + right +
+                    ", size=" + size +
+                    ", vertical=" + vertical +
+                    '}';
         }
-
-        public void setObject(Node node) {
-            this.info = (T) node.getInfo();
-
-        }
-
     }
 
     //----------- end of nested Node class -----------
 
 
-    Comparator<Node<T>> cmpY = new
-            Comparator<Node<T>>() {
-                @Override
-                public int compare(Node<T> tNode, Node<T> t1) {
-                    return Double.compare(tNode.getY(), t1.getY());
-                }
-            };
+    Comparator<Node<T>> cmpY = Comparator.comparingDouble(Node::getY);
 
-    Comparator<Node<T>> cmpX = new
-            Comparator<Node<T>>() {
-                @Override
-                public int compare(Node<T> tNode, Node<T> t1) {
-                    return Double.compare(tNode.getX(), t1.getX());
-                }
-            };
+    Comparator<Node<T>> cmpX = Comparator.comparingDouble(Node::getX);
     private Node<T> root;
 
 
@@ -191,21 +171,22 @@ public class KDTree<T> {
      * @return the last node added
      */
 
-    private Node<T> insert(List<Node<T>> list, int depth) {
+    public Node<T> insert(List<Node<T>> list, int depth) {
         int sizeOfLists = list.size();
-        Node<T> node = null;
+        Node<T> node;
 
         if (sizeOfLists == 0) {
-            return node;
+            return null;
         }
 
+        int k = 2;
         int axis = depth % k;
 
 
         if (axis == X_AXIS) {
-            Collections.sort(list, cmpX);
+            list.sort(cmpX);
         } else if (axis == Y_AXIS) {
-            Collections.sort(list, cmpY);
+            list.sort(cmpY);
         }
         Node<T> median;
         int mid = sizeOfLists / 2;
