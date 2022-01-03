@@ -1770,7 +1770,7 @@ present the result to the User
 
 ## US310
 
-### [US305] As Port manager, I intend to have a map of the occupation of the existing resources in the port during a given month.
+### [US310] As Port manager, I intend to have a map of the occupation of the existing resources in the port during a given month.
 
 ### Analysis
 ### System Sequence Diagram
@@ -1857,7 +1857,7 @@ present the result to the User
 
 ## US312
 
-### As Client, I want to know the current situation of a specific container being used to transport my goods – US204.
+### [US_312]As Client, I want to know the current situation of a specific container being used to transport my goods – US204.
 
 ### Analysis:
 
