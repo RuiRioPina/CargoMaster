@@ -1548,7 +1548,7 @@ With that we will sort the graph by lowest average distance and get the n lowest
 
 There could be a better way to present the result to the user. I just haven't figured out how.
 
-## US302
+## US304
 
 ### [US304] As Ship Captain, I want to have access to audit trails for a given container of a given cargo manifest, that is, I want to have access to a list of all operations performed on a given container of a given manifest, in chronological order.
 
