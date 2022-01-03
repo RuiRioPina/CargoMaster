@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MatrixGraphTest {
 
+    
     @Test
     public void testAddVertex_Success(){
         Graph<String, String> g = new MatrixGraph<>(false);
