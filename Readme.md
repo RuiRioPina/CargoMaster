@@ -1295,6 +1295,121 @@ present the result to the User
 
 # Sprint 3
 
+## US302
+
+### [US302] As a Traffic manager I wish to colour the map using as few colours as possible.
+
+### Analysis
+### System Sequence Diagram
+
+![US303_SSD](/docs/Sprint3/US302/US302_SSD.svg)
+
+### Domain Model Diagram
+![US302_DM](/docs/Sprint3/US302/US302_DM.svg)
+
+### Design
+### Class Diagram
+![US302_CD](/docs/Sprint3/US302/US302_CD.svg)
+
+### System Diagram
+![US302_SD](/docs/Sprint3/US302/US302_SD.svg)
+
+## Implementation
+
+### Color Map
+    
+    public static Map<GraphLocation, Integer> colorMap(Graph<GraphLocation, Double> G) {
+
+        GraphLocation v = G.vertices().get(0);
+        for (GraphLocation vertex : G.vertices()) {
+            Collection<GraphLocation> adjV = G.adjVertices(vertex);
+            adjV.removeIf(vert -> !vert.getClass().equals(Country.class));
+            Collection<GraphLocation> vSize = G.adjVertices(v);
+            vSize.removeIf(vert -> !vert.getClass().equals(Country.class));
+            if (adjV.size() > vSize.size()) {
+                v = vertex;
+            } }
+
+        Map<GraphLocation, Integer> coloredMap = new HashMap<>();
+        Queue<GraphLocation> queue = new LinkedList<>();
+        queue.add(v);
+
+        for (GraphLocation country : G.vertices()) {    // Atribuição de -1 como cor a todos os países (default)
+            coloredMap.put(country, -1); }
+
+        int n = 100;                                    // Número máximo de cores
+        int colorsCardinality = 0;
+
+        while (!queue.isEmpty()) {
+            GraphLocation i = queue.poll();
+            Collection<Edge<GraphLocation, Double>> edges = G.incomingEdges(i);
+            Collection<GraphLocation> adjV = G.adjVertices(i);
+
+            for (GraphLocation e : adjV) {
+                int colorEnd = coloredMap.get(e);
+                if (colorEnd == -1) {
+                    queue.add(e);
+                } }
+
+            for (int j = 0; j < n; j++) {
+                coloredMap.put(i, j);
+                if (colorsCardinality < j) {
+                    colorsCardinality = j;
+                }
+                if (isSafe(edges, coloredMap)) {
+                    break;
+                } } }
+
+        Map<GraphLocation, Integer> countriesColored = new HashMap<>();
+        for (GraphLocation g : coloredMap.keySet()) {
+            if (g.getClass().equals(Country.class) && coloredMap.get(g) != -1) {
+                countriesColored.put(g, coloredMap.get(g));
+            } else if (g.getClass().equals(Country.class)) {
+                countriesColored.put(g, 0);
+            } }
+
+        return countriesColored;
+    }
+
+### isSafe
+
+    public static boolean isSafe(Collection<Edge<GraphLocation, Double>> edges, Map<GraphLocation, Integer> coloredMap) {
+        for (Edge<GraphLocation, Double> e : edges) {
+            GraphLocation startVertex = e.getVOrig();
+            GraphLocation endVertex = e.getVDest();
+            int colorStart = coloredMap.get(startVertex);
+            int colorEnd = coloredMap.get(endVertex);
+            if (colorStart == colorEnd)
+                return false;
+        }
+        return true;
+    }
+  
+## Testing
+
+## Test 1: Check map colored size
+
+     @Test
+     void colorMap() throws IOException {
+        CountryPortGraph cPG = new CountryPortGraph();
+        ColorMapController cMP = new ColorMapController();
+
+        Graph<GraphLocation,Double> graph = cPG.createGraphWithPortsAndCountries(2);
+        Map <GraphLocation,Integer> mapColored = cMP.colorMap(graph);
+
+        assertEquals(68, mapColored.size());
+        assertEquals(0, mapColored.get(graph.vertices().get(34)));
+     }
+
+## Test 2: Empty in is Safe method
+
+    @Test
+    void testIsSafe() {
+        ArrayList<Edge<GraphLocation, Double>> edges = new ArrayList<>();
+        assertTrue(ColorMap.isSafe(edges, new HashMap<>()));
+    }
+
+    
 ## US303
 
 ### [US303] As a Traffic manager I wish to know which places (cities or ports) are closest to all other places (closeness places).
@@ -1433,147 +1548,110 @@ With that we will sort the graph by lowest average distance and get the n lowest
 
 There could be a better way to present the result to the user. I just haven't figured out how.
 
-## US303
+## US302
 
-### [US303] As a Traffic manager I wish to know which places (cities or ports) are closest to all other places (closeness places).
+### [US304] As Ship Captain, I want to have access to audit trails for a given container of a given cargo manifest, that is, I want to have access to a list of all operations performed on a given container of a given manifest, in chronological order.
 
 ### Analysis
 ### System Sequence Diagram
 
-![US303_SSD](/docs/Sprint 3/US303/US303_SSD.svg)
-
-The Traffic manager will need to select the number of closeness countries/ports he wants to see . With that the system will do its operations and will present the user the result.
+![US304_SSD](/docs/Sprint3/US304/US304_SSD.svg)
 
 ### Domain Model Diagram
-![US303_SSD](/docs/Sprint 3/US303/US303_DM.svg)
+![US304_DM](/docs/Sprint3/US304/US304_DM.svg)
 
 ### Design
 ### Class Diagram
-![US303_CD](/docs/Sprint 3/US303/US303_CD.svg)
-
-We used the class CountryPortGraph which will contain the ports and countries inserted into a graph.
-Both classes (Port and Country) implement the interface GraphLocation in order to override common methods both classes will need to have
-
+![US304_CD](/docs/Sprint3/US304/US304_CD.svg)
 
 ### System Diagram
-![US303_SD](/docs/Sprint 3/US303/US303_SD.svg)
-
-The system will receive the number of countries to get the closeness ports/countries.
-With the graph containing both types of instances we can calculate the average distance between one instance to all the
-others, in the same country, and store it in itself.
-With that we will sort the graph by lowest average distance and get the n lowest.
+![US304_SD](/docs/Sprint3/US304/US304_SD.svg)
 
 ## Implementation
-
-### Calculate and assign the closeness to the graphLocations instances
-
-     private static <V> void assignCloseness(LinkedList<V> vectors) {
-        for (V country1 : vectors) {
-            GraphLocation country1Casted;
-            double cont = 0;
-            double sumDistance = 0;
-
-            if(country1 instanceof Country) {
-                country1Casted = (Country) country1;
-            }else{
-                country1Casted = (Port) country1;
-            }
-            for (V country2 : vectors) {
-                GraphLocation country2Casted;
-
-                if(country2 instanceof Country) {
-                    country2Casted = (Country) country2;
-                }else{
-                    country2Casted = (Port) country2;
-                }
-                if ((!(country1Casted).getName().equals((country2Casted).getName())) && (country1Casted).getContinent().getName().equals((country2Casted).getContinent().getName())) {
-                    sumDistance += Calculator.calculateLocationDifference((country1Casted).getLocation(), (country2Casted).getLocation());
-                    cont++;
-                }
-                
-            }
-            if (cont != 0) {
-                country1Casted.setAverageCloseness(sumDistance / cont);
-            }
-        }
-
-### Get all GraphLocations from the graph which are in the same continent
-    private static List<GraphLocation> getAllCountriesFromContinent(String continent, LinkedList<GraphLocation> vLinkedList) {
-        List<GraphLocation> countriesInContinent = new ArrayList<>();
-        for (GraphLocation graph : vLinkedList) {
-            if (graph.getContinent().getName().equals(continent)) {
-                countriesInContinent.add(graph);
-            }
-        }
-        return countriesInContinent;
-    }
-### Sort the graph by closeness
-
-         public List<GraphLocation> calculateCloseness(int numberOfGraphs, String continent) {
-        vLinkedList = Algorithms.breadthFirstSearch(matrixGraph, matrixGraph.vertex(3));
-        assert vLinkedList != null;
-        vLinkedList.sort(Comparator.comparingDouble(GraphLocation::getCloseness));
-        graphLocations = getAllCountriesFromContinent(continent, vLinkedList);
-        if (graphLocations.size() >= numberOfGraphs) {
-            return getAllCountriesFromContinent(continent, vLinkedList).subList(0, numberOfGraphs);
-        } else {
-            return Collections.emptyList();
-        }
-    }
+  
+    create or replace trigger AuditTrail1 after insert
+    on ContainerManifest for each row
+    declare
+    cargo NUMBER;
+    begin
+    select idCargoManifest into cargo from Manifest where Manifest.idManifest = :new.idManifest;
+    INSERT INTO AuditTrail (registDate, author, action, idCargoManifest, idManifest, nrContainer)
+    VALUES (SYSDATE,TO_CHAR(USER),'INSERT',cargo,  :new.idManifest, :new.nrContainer);
+    EXCEPTION
+    WHEN NO_DATA_FOUND
+    THEN
+        DBMS_OUTPUT.PUT_LINE(TO_CHAR(SQLERRM(-20299)));
+    WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE(TO_CHAR(SQLERRM(-20298)));
+    end;
+    /
 
 
+    create or replace trigger AuditTrail2 before update
+    on ContainerManifest for each row
+    declare
+    cargo NUMBER;
+    begin
+    select idCargoManifest into cargo from Manifest where Manifest.idManifest = :new.idManifest;
+    INSERT INTO AuditTrail (registDate, author, action, idCargoManifest, idManifest, nrContainer)
+    VALUES (SYSDATE,TO_CHAR(USER),'UPDATE',cargo, :new.idManifest,:new.nrContainer);
+    EXCEPTION
+    WHEN NO_DATA_FOUND
+    THEN
+        DBMS_OUTPUT.PUT_LINE(TO_CHAR(SQLERRM(-20299)));
+    WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE(TO_CHAR(SQLERRM(-20298)));
+    end;
+    /
+
+    create or replace trigger AuditTrail3 before delete
+    on ContainerManifest for each row
+    declare
+    cargo NUMBER;
+    begin
+    select idCargoManifest into cargo from Manifest where Manifest.idManifest = :new.idManifest;
+    INSERT INTO AuditTrail (registDate, author, action, idCargoManifest, idManifest, nrContainer)
+    VALUES (SYSDATE,TO_CHAR(USER),'DELETE',cargo, :new.idManifest,:new.nrContainer);
+    EXCEPTION
+    WHEN NO_DATA_FOUND
+    THEN
+        DBMS_OUTPUT.PUT_LINE(TO_CHAR(SQLERRM(-20299)));
+    WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE(TO_CHAR(SQLERRM(-20298)));
+    end;
+
+
+    create or replace function fnc_getAudit (idCargo Number, container AuditTrail.nrContainer%TYPE)
+    RETURN SYS_REFCURSOR IS
+    cursor_audit SYS_REFCURSOR;
+    begin
+    open cursor_audit for
+    select * from AuditTrail where idCargoManifest = idCargo AND nrContainer = container;
+    return cursor_audit;
+    end;
+
+  
 ## Testing
 
-## Test 1: Check whether It is comparing the y correctly when adding to the KDTree
+## Test: Check sql return
 
-    @Test
-    void killComparator3Y() {
-        KDTree<Port> kdTree = new KDTree();
-        KDTree.Node<Port> node = new KDTree.Node<Port>(port, Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude()), new KDTree.Node<Port>(Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude())), new KDTree.Node<Port>(Double.parseDouble(port2.getLocation().getLongitude()), Double.parseDouble(port2.getLocation().getLatitude())), false);
-        int actual = kdTree.cmpY.compare(node, node1);
-        int expected = 0;
-        assertEquals(expected, actual);
+     @Test
+    void getAudit() throws SQLException {
+        AuditController ac = new AuditController();
+        DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
+        List<AuditTrail> audit = ac.getAudit(connection,4,"JORU1234563");
+        for (int i = 0; i < audit.size(); i++) {
+            System.out.println(audit.get(i));
+        }
+        String a = "[AuditTrail - Author = 'LAPR3_G076' Date = '2021-12-21 00:06:27' nrContainer = '4' Action = 'LAPR3_G076' idCargo = 'INSERT' idManifest = '4, AuditTrail - Author = 'LAPR3_G076' Date = '2021-12-21 00:06:27' nrContainer = '6' Action = 'LAPR3_G076' idCargo = 'INSERT' idManifest = '4]";
+        String b = "Author = 'LAPR3_G076' Date = '2021-12-27 23:36:23' nrContainer = 'JORU1234563' Action = 'INSERT' idCargo = '4' idManifest = '4\n" +
+                "AuditTrail - Author = 'LAPR3_G076' Date = '2021-12-27 23:36:23' nrContainer = 'JORU1234563' Action = 'INSERT' idCargo = '4' idManifest = '6\n";
+        assertEquals(2, audit.size());
+        assertNotEquals(audit.toString(),b);
+        assertNotEquals(a,audit.toString());
     }
 
-
-## Test 2: Check whether It is comparing the x correctly when adding to the KDTree
-
-    @Test
-    void killComparatorX() {
-        KDTree<Port> kdTree = new KDTree();
-        KDTree.Node<Port> node = new KDTree.Node<Port>(port, Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude()), new KDTree.Node<Port>(Double.parseDouble(port1.getLocation().getLongitude()), Double.parseDouble(port1.getLocation().getLatitude())), new KDTree.Node<Port>(Double.parseDouble(port2.getLocation().getLongitude()), Double.parseDouble(port2.getLocation().getLatitude())), false);
-        int actual = kdTree.cmpX.compare(node1, node2);
-        int expected = -1;
-        assertEquals(expected, actual);
-    }
-
-## Test 3: See whether the compareAxis is being done as intended
-
-    @Test
-    void killCompareAxisMutants1() {
-
-        node1.compareAxis(node2, 0);
-        node1.compareAxis(node3, 1);
-        Throwable exception = assertThrows(IllegalArgumentException.class,
-                () -> {
-                    node1.compareAxis(node2, -1);
-                });
-        Throwable exception1 = assertThrows(IllegalArgumentException.class,
-                () -> {
-                    node1.compareAxis(node2, 2);
-                });
-    }
-
-
-
-
-## Review
-
-There could be a better way to present the result to the user. I just haven't figured out how.
-
-
-
-
+    
 
 ## US305
 
