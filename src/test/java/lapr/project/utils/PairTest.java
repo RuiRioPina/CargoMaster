@@ -30,9 +30,16 @@ public class PairTest {
     public void equals(){
         assertEquals(pair,pair);
         Pair <Double,Double> doublePair= pair;
+        Pair <String,String> StringPair1= new Pair<>("ab","cd");
+        Pair <String,String> StringPair2= new Pair<>("ab","cd");
+        Pair <String,String> StringPair3= new Pair<>("ab","ed");
+        Pair <String,String> StringPair4= new Pair<>("cb","cd");
         assertEquals(pair,doublePair);
         assertNotEquals(pair,null);
         List<Double> list= new ArrayList<>();
         assertNotEquals(pair,list);
+        assertEquals(StringPair1,StringPair2);
+        assertNotEquals(StringPair1,StringPair3);
+        assertNotEquals(StringPair1,StringPair4);
     }
 }
