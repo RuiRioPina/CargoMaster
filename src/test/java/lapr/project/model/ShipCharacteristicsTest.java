@@ -4,20 +4,21 @@ import lapr.project.utils.Utils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ShipCharacteristicsTest {
 
     @Test
     void testEquals() {
-        ShipCharacteristics actual = new ShipCharacteristics(30,30.0,30.0,30.0);
-        ShipCharacteristics expect = new ShipCharacteristics(30,30.0,30.0,30.0);
+        ShipCharacteristics actual = new ShipCharacteristics(30, 30.0, 30.0, 30.0);
+        ShipCharacteristics expect = new ShipCharacteristics(30, 30.0, 30.0, 30.0);
         boolean result = actual.equals(expect);
         assertTrue(result);
     }
 
     @Test
     void testEquals1() {
-        ShipCharacteristics actual = new ShipCharacteristics(30,30.0,30.0,30.0);
+        ShipCharacteristics actual = new ShipCharacteristics(30, 30.0, 30.0, 30.0);
         ShipCharacteristics expect = null;
         boolean result = actual.equals(expect);
         assertFalse(result);
@@ -25,14 +26,14 @@ class ShipCharacteristicsTest {
 
     @Test
     void testEquals2() {
-        ShipCharacteristics actual = new ShipCharacteristics(30,30.0,30.0,30.0);
-        ShipCharacteristics expect = new ShipCharacteristics(30,23.0,30.0,30.0);
+        ShipCharacteristics actual = new ShipCharacteristics(30, 30.0, 30.0, 30.0);
+        ShipCharacteristics expect = new ShipCharacteristics(30, 23.0, 30.0, 30.0);
         boolean result = actual.equals(expect);
         assertFalse(result);
     }
 
     @Test
-    public void testCalculateShipCapacity_Success(){
+    public void testCalculateShipCapacity_Success() {
         double length = Utils.convertFeetToMeters(64);
         double width = Utils.convertFeetToMeters(64);
         int expected = 4;
@@ -43,7 +44,7 @@ class ShipCharacteristicsTest {
     }
 
     @Test
-    public void testCalculateShipCapacity_NegativeLength(){
+    public void testCalculateShipCapacity_NegativeLength() {
         double length = -1;
         double width = 1;
         int expected = 0;
@@ -54,7 +55,7 @@ class ShipCharacteristicsTest {
     }
 
     @Test
-    public void testCalculateShipCapacity_NegativeWidth(){
+    public void testCalculateShipCapacity_NegativeWidth() {
         double length = Utils.convertFeetToMeters(100);
         double width = -1;
         int expected = -16;
@@ -65,7 +66,15 @@ class ShipCharacteristicsTest {
     }
 
     @Test
-    public void testCalculateShipCapacity_NegativeHeight(){
+    void testCalculateShipCapacity() {
+        assertEquals(53, (new ShipCharacteristics()).calculateShipCapacity(10.0, 10.0));
+        assertEquals(343, (new ShipCharacteristics()).calculateShipCapacity(64.0, 10.0));
+        assertEquals(1, (new ShipCharacteristics()).calculateShipCapacity(0.305, 10.0));
+        assertEquals(107, (new ShipCharacteristics()).calculateShipCapacity(20.0, 10.0));
+    }
+
+    @Test
+    public void testCalculateShipCapacity_NegativeHeight() {
         double length = Utils.convertFeetToMeters(20);
         double width = Utils.convertFeetToMeters(20);
         double localHeight = Utils.convertFeetToMeters(-1);
@@ -76,7 +85,7 @@ class ShipCharacteristicsTest {
     }
 
     @Test
-    public void testCalculateShipCapacity_ZeroLength(){
+    public void testCalculateShipCapacity_ZeroLength() {
         double length = 0;
         double width = 10;
         int expected = 0;
@@ -87,7 +96,7 @@ class ShipCharacteristicsTest {
     }
 
     @Test
-    public void testCalculateShipCapacity_ZeroWidth(){
+    public void testCalculateShipCapacity_ZeroWidth() {
         double length = Utils.convertFeetToMeters(64);
         double width = 0;
         int expected = 1;
@@ -98,7 +107,7 @@ class ShipCharacteristicsTest {
     }
 
     @Test
-    public void testCalculateShipCapacity_ZeroHeight(){
+    public void testCalculateShipCapacity_ZeroHeight() {
         double length = 10;
         double width = 10;
         double localHeight = 0;
@@ -109,7 +118,7 @@ class ShipCharacteristicsTest {
     }
 
     @Test
-    public void testCalculateShipCapacity_ZeroVolumeContainer(){
+    public void testCalculateShipCapacity_ZeroVolumeContainer() {
         double length = 10;
         double width = 10;
         double localHeight = Utils.convertFeetToMeters(64);
@@ -120,7 +129,7 @@ class ShipCharacteristicsTest {
     }
 
     @Test
-    public void testCalculateShipCapacity_ZeroVolumeShip(){
+    public void testCalculateShipCapacity_ZeroVolumeShip() {
         double length = 0;
         double width = 0;
         double localHeight = Utils.convertFeetToMeters(64);
@@ -131,7 +140,7 @@ class ShipCharacteristicsTest {
     }
 
     @Test
-    public void testEquals_Success(){
+    public void testEquals_Success() {
         ShipCharacteristics ship1 = new ShipCharacteristics(10, 100.0, 100.0, 100.0);
         ShipCharacteristics ship2 = new ShipCharacteristics(10, 100.0, 100.0, 100.0);
 
@@ -139,7 +148,7 @@ class ShipCharacteristicsTest {
     }
 
     @Test
-    public void testShipCharacteristics_Success(){
+    public void testShipCharacteristics_Success() {
         ShipCharacteristics ship = new ShipCharacteristics(10, 100.0, 100.0, 100.0);
         assertEquals(10, ship.getVesselType());
         assertEquals(100.0, ship.getLength(), 0.0);

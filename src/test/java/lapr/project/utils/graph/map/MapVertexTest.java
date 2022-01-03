@@ -27,6 +27,18 @@ class MapVertexTest {
     }
 
     @Test
+    void testConstructor4() {
+        MapVertex<Object, Object> actualMapVertex = new MapVertex<>("Vert");
+        actualMapVertex.setCloseness(10.0);
+        assertEquals(10.0, actualMapVertex.getCloseness());
+    }
+
+    @Test
+    void testConstructor5() {
+        assertEquals(0.0, (new MapVertex<>("Vert")).getCloseness());
+    }
+
+    @Test
     void testRemAdjVert() {
         MapVertex<Object, Object> mapVertex = new MapVertex<>("Vert");
         mapVertex.remAdjVert("V Adj");
