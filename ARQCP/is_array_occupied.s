@@ -48,9 +48,11 @@ movl ptr_array_size(%rip) ,%ecx
 ciclo:# cycle that uses the auxiliary function for each adress and continuosuly adds 1 or 0 depending on if its occupied or not.
 movq (%rsi),%rax
 pushq %rcx
+pushq %rdx
 pushq %rsi
 call is_array_occupied
 popq %rsi
+popq %rdx
 popq %rcx
 addl %eax,%edx
 addq $8 ,%rsi
