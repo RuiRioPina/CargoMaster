@@ -35,6 +35,7 @@ int main ( void ) {
 		
 		char * position;
 		position = (char *) array;
+	    position++;
 		long result = free_occupied_slots(position, SIZE);
 
 		int *ptr;
@@ -42,10 +43,12 @@ int main ( void ) {
 	    printf("\nNumber of occupied slots: %d\n", *ptr);
 	    ptr++;
 		printf("Number of free slots: %d\n", *ptr);
-		
-		ptr_pos_init= array[7][5][1];
+		int x=7;
+		int y=5;
+		int z=1;
+		ptr_pos_init= array[x][y][z];
 		ocu=is_array_occupied_ptr();
-		printf("Is the 3d matrix occupied in that position ? : %d\n", ocu);
+		printf("Is the 3d matrix occupied in the position[%d][%d][%d]? :%d\n",x,y,z ,ocu);
 		ptr_array_size=5;
 
 		ptr_pos[0]= array[4][4][4];
@@ -62,7 +65,7 @@ int main ( void ) {
 
 		num_of_occupied_array_positions=num_of_occupied_positions();
 
-		printf ("The number of postions that are occupied is : %d\n", num_of_occupied_array_positions);
+		printf ("The number of postions that are occupied in the list of positions is : %d\n", num_of_occupied_array_positions);
 			
    return 0;
 }
