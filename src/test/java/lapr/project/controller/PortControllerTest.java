@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class PortControllerTest {
 
     @Test
-    void getContainerStatus() throws SQLException {
+    void occupancyRate() throws SQLException {
 
         PortController pc = new PortController();
         DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");

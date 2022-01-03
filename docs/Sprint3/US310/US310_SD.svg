@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="601px" preserveAspectRatio="none" style="width:1431px;height:601px;background:#FFFFFF;" version="1.1" viewBox="0 0 1431 601" width="1431px" zoomAndPan="magnify"><defs><filter height="300%" id="f12pb9ezfv5al8" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="410.0625" style="stroke:#A80036;stroke-width:1.0;" width="10" x="51" y="98.2969"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="59.1328" style="stroke:#A80036;stroke-width:1.0;" width="10" x="326" y="119.4297"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="124.2656" style="stroke:#A80036;stroke-width:1.0;" width="10" x="326" y="338.9609"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="89.1328" style="stroke:#A80036;stroke-width:1.0;" width="10" x="769" y="148.5625"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="59.1328" style="stroke:#A80036;stroke-width:1.0;" width="10" x="769" y="338.9609"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="95.1328" style="stroke:#A80036;stroke-width:1.0;" width="10" x="1217" y="207.6953"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="28" style="stroke:#A80036;stroke-width:1.0;" width="10" x="1222" y="274.8281"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="95.1328" style="stroke:#A80036;stroke-width:1.0;" width="10" x="1217" y="368.0938"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="28" style="stroke:#A80036;stroke-width:1.0;" width="10" x="1222" y="435.2266"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="56" x2="56" y1="88.2969" y2="517.3594"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="330.5" x2="330.5" y1="88.2969" y2="517.3594"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="773.5" x2="773.5" y1="88.2969" y2="517.3594"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="1221.5" x2="1221.5" y1="88.2969" y2="517.3594"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="5" y="84.9951">Port Manager</text><ellipse cx="56" cy="15" fill="#FEFECE" filter="url(#f12pb9ezfv5al8)" rx="8" ry="8" style="stroke:#A80036;stroke-width:2.0;"/><path d="M56,23 L56,50 M43,31 L69,31 M56,50 L43,65 M56,50 L69,65 " fill="none" filter="url(#f12pb9ezfv5al8)" style="stroke:#A80036;stroke-width:2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="5" y="529.3545">Port Manager</text><ellipse cx="56" cy="542.6563" fill="#FEFECE" filter="url(#f12pb9ezfv5al8)" rx="8" ry="8" style="stroke:#A80036;stroke-width:2.0;"/><path d="M56,550.6563 L56,577.6563 M43,558.6563 L69,558.6563 M56,577.6563 L43,592.6563 M56,577.6563 L69,592.6563 " fill="none" filter="url(#f12pb9ezfv5al8)" style="stroke:#A80036;stroke-width:2.0;"/><rect fill="#FEFECE" filter="url(#f12pb9ezfv5al8)" height="30.2969" style="stroke:#A80036;stroke-width:1.5;" width="155" x="251.5" y="53"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="141" x="258.5" y="72.9951">:PortControllerTest</text><rect fill="#FEFECE" filter="url(#f12pb9ezfv5al8)" height="30.2969" style="stroke:#A80036;stroke-width:1.5;" width="155" x="251.5" y="516.3594"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="141" x="258.5" y="536.3545">:PortControllerTest</text><rect fill="#FEFECE" filter="url(#f12pb9ezfv5al8)" height="30.2969" style="stroke:#A80036;stroke-width:1.5;" width="123" x="710.5" y="53"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="717.5" y="72.9951">:PortController</text><rect fill="#FEFECE" filter="url(#f12pb9ezfv5al8)" height="30.2969" style="stroke:#A80036;stroke-width:1.5;" width="123" x="710.5" y="516.3594"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="717.5" y="536.3545">:PortController</text><rect fill="#FEFECE" filter="url(#f12pb9ezfv5al8)" height="30.2969" style="stroke:#A80036;stroke-width:1.5;" width="71" x="1184.5" y="53"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="1191.5" y="72.9951">:PortDB</text><rect fill="#FEFECE" filter="url(#f12pb9ezfv5al8)" height="30.2969" style="stroke:#A80036;stroke-width:1.5;" width="71" x="1184.5" y="516.3594"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="1191.5" y="536.3545">:PortDB</text><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="410.0625" style="stroke:#A80036;stroke-width:1.0;" width="10" x="51" y="98.2969"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="59.1328" style="stroke:#A80036;stroke-width:1.0;" width="10" x="326" y="119.4297"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="124.2656" style="stroke:#A80036;stroke-width:1.0;" width="10" x="326" y="338.9609"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="89.1328" style="stroke:#A80036;stroke-width:1.0;" width="10" x="769" y="148.5625"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="59.1328" style="stroke:#A80036;stroke-width:1.0;" width="10" x="769" y="338.9609"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="95.1328" style="stroke:#A80036;stroke-width:1.0;" width="10" x="1217" y="207.6953"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="28" style="stroke:#A80036;stroke-width:1.0;" width="10" x="1222" y="274.8281"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="95.1328" style="stroke:#A80036;stroke-width:1.0;" width="10" x="1217" y="368.0938"/><rect fill="#FFFFFF" filter="url(#f12pb9ezfv5al8)" height="28" style="stroke:#A80036;stroke-width:1.0;" width="10" x="1222" y="435.2266"/><polygon fill="#A80036" points="314,115.4297,324,119.4297,314,123.4297,318,119.4297" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="61" x2="320" y1="119.4297" y2="119.4297"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="68" y="114.3638">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="191" x="81" y="114.3638">chooses month to get map of</text><polygon fill="#A80036" points="757,144.5625,767,148.5625,757,152.5625,761,148.5625" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="336" x2="763" y1="148.5625" y2="148.5625"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="343" y="143.4966">2</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="371" x="356" y="143.4966">occupancyRateShips(connection,facilityCode,year,month)</text><polygon fill="#A80036" points="1205,203.6953,1215,207.6953,1205,211.6953,1209,207.6953" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="779" x2="1211" y1="207.6953" y2="207.6953"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="8" x="786" y="202.6294">3</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="371" x="798" y="202.6294">occupancyRateShips(connection,facilityCode,year,month)</text><line style="stroke:#A80036;stroke-width:1.0;" x1="1232" x2="1274" y1="266.8281" y2="266.8281"/><line style="stroke:#A80036;stroke-width:1.0;" x1="1274" x2="1274" y1="266.8281" y2="279.8281"/><line style="stroke:#A80036;stroke-width:1.0;" x1="1233" x2="1274" y1="279.8281" y2="279.8281"/><polygon fill="#A80036" points="1243,275.8281,1233,279.8281,1243,283.8281,1239,279.8281" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="1239" y="261.7622">4</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="172" x="1252" y="261.7622">monthNumOfDays(month)</text><polygon fill="#A80036" points="757,334.9609,767,338.9609,757,342.9609,761,338.9609" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="336" x2="763" y1="338.9609" y2="338.9609"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="343" y="333.895">5</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="406" x="356" y="333.895">occupancyRateContainers(connection,facilityCode,year,month)</text><polygon fill="#A80036" points="1205,364.0938,1215,368.0938,1205,372.0938,1209,368.0938" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="779" x2="1211" y1="368.0938" y2="368.0938"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="786" y="363.0278">6</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="406" x="799" y="363.0278">occupancyRateContainers(connection,facilityCode,year,month)</text><line style="stroke:#A80036;stroke-width:1.0;" x1="1232" x2="1274" y1="427.2266" y2="427.2266"/><line style="stroke:#A80036;stroke-width:1.0;" x1="1274" x2="1274" y1="427.2266" y2="440.2266"/><line style="stroke:#A80036;stroke-width:1.0;" x1="1233" x2="1274" y1="440.2266" y2="440.2266"/><polygon fill="#A80036" points="1243,436.2266,1233,440.2266,1243,444.2266,1239,440.2266" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="1239" y="422.1606">7</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="172" x="1252" y="422.1606">monthNumOfDays(month)</text><polygon fill="#A80036" points="72,495.3594,62,499.3594,72,503.3594,68,499.3594" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="66" x2="330" y1="499.3594" y2="499.3594"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="78" y="494.2935">8</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="233" x="91" y="494.2935">shows the map to the port manager</text><!--MD5=[e4d2c01192143008912618a8c4d8a584]
+@startuml
+autonumber
+actor "Port Manager" as REC
+
+participant  ":PortControllerTest" as TEST
+participant ":PortController" as UI
+participant ":PortDB" as PDB
+
+
+
+
+
+
+activate REC
+
+
+
+
+REC -> TEST: chooses month to get map of 
+activate TEST
+
+TEST-> UI : occupancyRateShips(connection,facilityCode,year,month)
+activate UI
+deactivate TEST
+UI -> PDB :occupancyRateShips(connection,facilityCode,year,month)
+activate PDB
+deactivate UI
+PDB -> PDB :monthNumOfDays(month)
+activate PDB
+deactivate PDB
+deactivate PDB
+
+TEST-> UI : occupancyRateContainers(connection,facilityCode,year,month)
+activate TEST
+activate UI
+
+UI -> PDB :occupancyRateContainers(connection,facilityCode,year,month)
+activate PDB
+deactivate UI
+PDB -> PDB :monthNumOfDays(month)
+activate PDB
+deactivate PDB
+deactivate PDB
+deactivate TEST
+
+
+
+
+deactivate TEST
+TEST-> REC : shows the map to the port manager
+@enduml
+
+PlantUML version 1.2021.17beta4(Unknown compile time)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
