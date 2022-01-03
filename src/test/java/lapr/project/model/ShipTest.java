@@ -348,7 +348,7 @@ class ShipTest {
         Route route1 = new Route();
         route1.add(dynamic);
         Ship ship = new Ship(identificationShip, shipsCharacteristics, route1);
-
+        Ship ship2 = null;
         boolean expected = true;
         boolean actual = this.ship.equals(ship);
         assertEquals(expected, actual);
@@ -360,6 +360,8 @@ class ShipTest {
         assertTrue(route1.equals(o));
         assertFalse(route1.equals(null));
         assertNotEquals(ship.getRouteTravelledDistance(), 78);
+        assertNotEquals(ship,ship2);
+        assertNotEquals(ship,route1);
     }
 
     @Test
