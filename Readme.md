@@ -20,7 +20,7 @@ This report is divided into the different User Stories developed across all Spri
 
 ### Sprint 1 
 
-* US101 Rui Pina
+* US101 Rui Pina 
 
 * US102 Rui Pina
 
