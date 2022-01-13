@@ -5,6 +5,7 @@ import lapr.project.data.ContainerDB;
 import lapr.project.data.DatabaseConnection;
 import lapr.project.model.AuditTrail;
 import lapr.project.model.Container;
+import lapr.project.model.ShipIdleDays;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -21,5 +22,7 @@ public class AuditController {
     public List<AuditTrail> getAudit (DatabaseConnection connection, int cargo, String nrContainer) throws SQLException {
         return aDB.getAuditTrail(connection,cargo,nrContainer);
     }
-
+    public List<ShipIdleDays> getShipIdleDays (DatabaseConnection connection, int idFleet) throws SQLException {
+        return aDB.getShipIdleDays(connection, idFleet);
+    }
 }

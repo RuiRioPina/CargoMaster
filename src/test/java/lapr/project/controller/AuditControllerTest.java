@@ -3,6 +3,7 @@ package lapr.project.controller;
 import lapr.project.data.DatabaseConnection;
 import lapr.project.model.AuditTrail;
 import lapr.project.model.Container;
+import lapr.project.model.ShipIdleDays;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -26,5 +27,16 @@ class AuditControllerTest {
         assertEquals(2, audit.size());
         assertNotEquals(audit.toString(),b);
         assertNotEquals(a,audit.toString());
+    }
+
+    @Test
+    void getShipIdleDays() throws SQLException {
+        AuditController ac = new AuditController();
+        DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
+        int idFleet = 459;
+        List<ShipIdleDays> idle= ac.getShipIdleDays(connection,idFleet);
+        assertEquals(idle.size(),3);
+        assertEquals(idle.toString(),"[MMSI = 987654322  Idle Time = 263 days, MMSI = 923456780  Idle Time = 270 days, MMSI = 123456780  Idle Time = 263 days]");
+        System.out.println(idle);
     }
 }

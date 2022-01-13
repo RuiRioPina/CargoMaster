@@ -6,6 +6,7 @@ import oracle.jdbc.internal.OracleTypes;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,4 +43,45 @@ public class AuditTrailDB {
         }
         return audit;
     }
+
+    public List<ShipIdleDays> getShipIdleDays (DatabaseConnection connection, int fleetId) throws SQLException {
+        ResultSet r1Set;
+
+        List<String> mmsis = new ArrayList<>();
+
+        try (CallableStatement c = connection.getConnection().prepareCall("{ ? = call fnc_getMmsi(?)}")) {
+            c.registerOutParameter(1, OracleTypes.CURSOR);
+            c.setInt(2, fleetId);
+            c.execute();
+            r1Set = (ResultSet) c.getObject(1);
+            while (r1Set.next()) {
+                mmsis.add(r1Set.getString(1));
+            }
+        } catch (SQLException ignored) {
+            ignored.printStackTrace();
+        }
+
+        List <Integer> idle = new ArrayList<>();
+
+        for (int i = 0; i < mmsis.size(); i++) {
+            try (CallableStatement c = connection.getConnection().prepareCall("{ ? = call fnc_shipIdleDays(?,?)}")) {
+                c.registerOutParameter(1, OracleTypes.INTEGER);
+                c.setInt(2, fleetId);
+                c.setString(3,mmsis.get(i));
+                c.execute();
+                idle.add((Integer) c.getObject(1));
+
+            } catch (SQLException ignored) {
+                ignored.printStackTrace();
+            }
+        }
+        List <ShipIdleDays> shipIdleDays = new ArrayList<>();
+        for (int i = 0; i < idle.size(); i++) {
+            shipIdleDays.add(new ShipIdleDays(mmsis.get(i),idle.get(i)));
+        }
+        return shipIdleDays;
+    }
+
 }
+
+
