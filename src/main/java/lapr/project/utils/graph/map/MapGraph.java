@@ -45,47 +45,6 @@ public class MapGraph<V, E> extends CommonGraph<V, E> {
     }
 
 
-    public void closeness(MapVertex<V,E> v, int[] distances) {
-        double closeness = 0;
-
-        List<Country> countriesEurope = new ArrayList<>();
-        List<Country> countriesAsia = new ArrayList<>();
-        List<Country> countriesAmerica = new ArrayList<>();
-        List<Country> countriesAfrica = new ArrayList<>();
-        for (Country country: countryStore.getCountryStore()) {
-            if(countryStore.getContinentByCountry(country.getName()).equals("Europe")){
-                countriesEurope.add(country);
-            }
-            if(countryStore.getContinentByCountry(country.getName()).equals("Asia")){
-                countriesAsia.add(country);
-            }
-            if(countryStore.getContinentByCountry(country.getName()).equals("America")){
-                countriesAmerica.add(country);
-            }
-            if(countryStore.getContinentByCountry(country.getName()).equals("Africa")){
-                countriesAfrica.add(country);
-            }
-            double averageDistance;
-            double count;
-            double averageSum;
-            for (Country country1:countriesEurope) {
-                averageDistance = 0;
-                averageSum = 0;
-                count = 0;
-                for (Country country2:countriesEurope) {
-                    if(country1 != country2) {
-                        averageSum += Calculator.calculateLocationDifference(country1.getLocation(),country2.getLocation());
-                        count++;
-                    }
-                }
-                if(count!=0) {
-                    averageDistance = averageSum / count;
-                }
-                country1.setAverageCloseness(averageDistance);
-            }
-        }
-    }
-
     @Override
     public Collection<Edge<V, E>> edges() {
 
