@@ -432,4 +432,24 @@ class ShipTest {
         assertFalse(ship.isClose(ship3));
         assertFalse(ship.isClose(ship4));
     }
+
+    @Test
+    void testGetTravelledDistance1() {
+        double expected = 0.0;
+        double actual = ship.getTravelledDistance();
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    void getRouteTravelledDistance() {
+        double expected = 0.0;
+        double actual = ship.getRouteTravelledDistance();
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    void getShipEnergy() {
+        ShipEnergy actual = ship.getShipEnergy();
+        assertEquals(actual,actual);
+    }
 }

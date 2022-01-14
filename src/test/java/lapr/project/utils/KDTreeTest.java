@@ -558,6 +558,22 @@ class KDTreeTest {
         KDTree.Node<Port> actual = portKDTree.insert(list,2);
         assertEquals(expected,actual.toString());
     }
+    @Test
+    void insertTestS() {
+        KDTree.Node<Port> node1 = new KDTree.Node<>(2,5);
+        KDTree.Node<Port> node = new KDTree.Node<>(-5,-5);
+        List<KDTree.Node<Port>> list = new ArrayList<>();
+        list.add(node);
+        list.add(node1);
+
+        KDTree<Port> portKDTree = new KDTree<>();
+        String expected = "Node{coords=Point2D.Double[2.0, 5.0], info=null, left=Node{coords=Point2D.Double[-5.0, -5.0], info=null, left=null, right=null, size=0, vertical=false}, right=null, size=0, vertical=false}";
+
+        KDTree.Node<Port> actual = portKDTree.insert(list,-2);
+        assertEquals(expected,actual.toString());
+    }
+
+
 
 
 }

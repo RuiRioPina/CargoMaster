@@ -1,9 +1,8 @@
 package lapr.project.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class PortStoreTest {
 
@@ -71,10 +70,20 @@ class PortStoreTest {
     void testGetSize() {
         assertEquals(0, (new PortStore()).getSize());
     }
+    @Test
+    void testGetSize1() {
+        PortStore portStore = new PortStore();
+        portStore.addToList(new Port("Europe","Portugal",1,"Leixoes",new Location("1","1")),1,1);
+        portStore.insert();
+        assertEquals(1, portStore.getSize());
+    }
+
 
     @Test
-    void testCodeExists() {
+    void testCodeDoesNotExist() {
         assertFalse((new PortStore()).codeExists(1));
     }
+
+
 }
 
