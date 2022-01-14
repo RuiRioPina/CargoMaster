@@ -22,7 +22,7 @@ This report is divided into the different User Stories developed across all Spri
 
 * US101 Rui Pina 
 
-* US102 Rui Pina 
+* US102 Rui Pina
 
 * US103 Jorge Ferreira
 
