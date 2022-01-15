@@ -6,9 +6,7 @@
 
 #include "fill_array.h"
 
-char * array[20][20][20] = {0};
 
-#define n 3
 
 struct container {
 
@@ -60,16 +58,16 @@ struct container {
 
 };
 
-struct container ***containers_in_ship;
+struct container *containers_in_ship;
 
 
 
-
+	int lines = 0;
 
 void fill_array_of_structs() {
 	
 	 
-	
+
 	
    char first_line = 0;
 
@@ -80,9 +78,22 @@ void fill_array_of_structs() {
    if ( file != NULL ) {    
 
      char line [ 512 ]; 
+     char ch[512];
+     while(!feof(file))
+{
+  *ch = fgetc(file);
+  if(*ch == '\n')
+  {
+	
+    lines++;
+  }
+}
+  lines--;
+	containers_in_ship = (struct container *)malloc(lines*sizeof(struct container));
+	rewind(file);
+		
 
      while ( fgets ( line, sizeof line, file ) != NULL ) {
-				
 	    	char *token[40];
 			int count = 0;
  			token[0] = strtok (line,";");
@@ -102,80 +113,60 @@ void fill_array_of_structs() {
 
 				int z = atoi(token[8]);
 				if(first_line != 0) {
-				if(first_line == 1) {
-					int xMax, yMax, zMax;
-					int i,j;
-					xMax=atoi(token[12]);
-					yMax=atoi(token[13]);
-					zMax=atoi(token[14]);
 
-					containers_in_ship = (struct container ***)malloc(xMax*sizeof(struct container**));
+				containers_in_ship[first_line-1].mmsi = atoi(token[0]);
 
-					for (i = 0; i< xMax; i++) {
-
-					containers_in_ship[i] = (struct container **) malloc(yMax*sizeof(struct container *));
-
-					for (j = 0; j < yMax; j++) {
-
-					containers_in_ship[i][j] = (struct container *)malloc(zMax*sizeof(struct container));
-					}
-
-					}
-	
-				}
-
-				containers_in_ship[x][y][z].mmsi = atoi(token[0]);
-
-				containers_in_ship[x][y][z].length = atoi(token[1]);
+				containers_in_ship[first_line-1].length = atoi(token[1]);
 			
 
-				containers_in_ship[x][y][z].width = atoi(token[2]);
+				containers_in_ship[first_line-1].width = atoi(token[2]);
 
-				strcpy(containers_in_ship[x][y][z].numberContainer, strdup(token[3]));
+				strcpy(containers_in_ship[first_line-1].numberContainer, strdup(token[3]));
 
-				strcpy(containers_in_ship[x][y][z].typeOfContainer, strdup(token[4]));
+				strcpy(containers_in_ship[first_line-1].typeOfContainer, strdup(token[4]));
 
-				strcpy(containers_in_ship[x][y][z].load, strdup(token[5]));
+				strcpy(containers_in_ship[first_line-1].load, strdup(token[5]));
 
 				
 
-				containers_in_ship[x][y][z].x = x;
+				containers_in_ship[first_line-1].x = x;
 
-				containers_in_ship[x][y][z].y = y;
+				containers_in_ship[first_line-1].y = y;
 
-				containers_in_ship[x][y][z].z = z;
+				containers_in_ship[first_line-1].z = z;
 
-				strcpy(containers_in_ship[x][y][z].arrivalPort, strdup(token[9]));
+				strcpy(containers_in_ship[first_line-1].arrivalPort, strdup(token[9]));
 
-				strcpy(containers_in_ship[x][y][z].arrivalDate, strdup(token[10]));
+				strcpy(containers_in_ship[first_line-1].arrivalDate, strdup(token[10]));
 
-				strcpy(containers_in_ship[x][y][z].departureDate, strdup(token[11]));
+				strcpy(containers_in_ship[first_line-1].departureDate, strdup(token[11]));
 
-				containers_in_ship[x][y][z].xMax = atoi(token[12]);
+				containers_in_ship[first_line-1].xMax = atoi(token[12]);
 
-				containers_in_ship[x][y][z].yMax = atoi(token[13]);
+				containers_in_ship[first_line-1].yMax = atoi(token[13]);
 
-				containers_in_ship[x][y][z].zMax = atoi(token[14]);
+				containers_in_ship[first_line-1].zMax = atoi(token[14]);
 				
-				containers_in_ship[x][y][z].zMax = atoi(token[14]);
+				containers_in_ship[first_line-1].zMax = atoi(token[14]);
 				
-				containers_in_ship[x][y][z].thicknessExternal = atof(token[15]);
+				containers_in_ship[first_line-1].thicknessExternal = atof(token[15]);
 				
-				containers_in_ship[x][y][z].thicknessMiddle = atof(token[16]);
+				containers_in_ship[first_line-1].thicknessMiddle = atof(token[16]);
 
-				containers_in_ship[x][y][z].thicknessInternal = atof(token[17]);
+				containers_in_ship[first_line-1].thicknessInternal = atof(token[17]);
 				
-				containers_in_ship[x][y][z].kExternal = atof(token[18]);
+				containers_in_ship[first_line-1].kExternal = atof(token[18]);
 
-				containers_in_ship[x][y][z].kMiddle = atof(token[19]);
+				containers_in_ship[first_line-1].kMiddle = atof(token[19]);
 
-				containers_in_ship[x][y][z].kInternal = atof(token[20]);
+				containers_in_ship[first_line-1].kInternal = atof(token[20]);
 
 
 
 
 		}
 							first_line++;
+							
 
 		}
 
@@ -195,90 +186,64 @@ int main ( void ) {
 
 	
 
-		//US314
+		//US409
 
-	
+		//Prints for debugging US409 | To be deleted later on
+
+
+		
+
 
 		fill_array_of_structs(containers_in_ship);
 
-		
+		for(int i = 0; i < lines;i++) {
+	
+		printf("numberContainer %s\n", containers_in_ship[i].numberContainer);
 
-		printf("numberContainer %s\n", containers_in_ship[1][1][1].numberContainer);
+		printf("typeOfContainer %s\n", containers_in_ship[i].typeOfContainer);
 
-		printf("typeOfContainer %s\n", containers_in_ship[1][1][1].typeOfContainer);
+		printf("load %s\n", containers_in_ship[i].load);
 
-		printf("load %s\n", containers_in_ship[1][1][1].load);
+		printf("arrivalPort %s\n", containers_in_ship[i].arrivalPort);
 
-		printf("arrivalPort %s\n", containers_in_ship[1][1][1].arrivalPort);
-
-		printf("arrivalDate %s\n", containers_in_ship[1][1][1].arrivalDate);
+		printf("arrivalDate %s\n", containers_in_ship[i].arrivalDate);
 
 	
 
-		printf("departureDate %s\n", containers_in_ship[1][1][1].departureDate);
+		printf("departureDate %s\n", containers_in_ship[i].departureDate);
 
-		printf("mmsi %d\n", containers_in_ship[1][1][1].mmsi);
+		printf("mmsi %d\n", containers_in_ship[i].mmsi);
 
-		printf("x %d\n", containers_in_ship[1][1][1].x);
+		printf("x %d\n", containers_in_ship[i].x);
 
-		printf("y %d\n", containers_in_ship[1][1][1].y);
-
-		
-
-		printf("z %d\n", containers_in_ship[1][1][1].z);
-
-		printf("length %f\n", containers_in_ship[1][1][1].length);
-
-		printf("width %f\n", containers_in_ship[1][1][1].width);
-		
-		printf("thicknessExternal %f\n", containers_in_ship[1][1][1].thicknessExternal);
-		
-		printf("thicknessMiddle %f\n", containers_in_ship[1][1][1].thicknessMiddle);
-		
-		printf("thicknessInternal %f\n", containers_in_ship[1][1][1].thicknessInternal);
-		
-		printf("kExternal %f\n", containers_in_ship[1][1][1].kExternal);
-		
-		printf("kMiddle %f\n", containers_in_ship[1][1][1].kMiddle);
-		
-		printf("kInternal %f\n", containers_in_ship[1][1][1].kInternal);
-		
-
+		printf("y %d\n", containers_in_ship[i].y);
 
 		
-		printf("numberContainer %s\n", containers_in_ship[12][12][12].numberContainer);
 
+		printf("z %d\n", containers_in_ship[i].z);
 
+		printf("length %f\n", containers_in_ship[i].length);
 
-
-
-
-
-
-   
-
-		/**Prints for debugging US313 | To be deleted later on
-
-		for(int i = 0; i < 20;i++) {
-
-		for(int j = 0; j < 20;j++) {
-
-		for(int k = 0; k < 20;k++) {
-
-			printf("array[%d][%d][%d] = %s\n",i,j,k,array[i][j][k]);
-
-		}	
-
-		}	
-
-		}
+		printf("width %f\n", containers_in_ship[i].width);
+		
+		printf("thicknessExternal %f\n", containers_in_ship[i].thicknessExternal);
+		
+		printf("thicknessMiddle %f\n", containers_in_ship[i].thicknessMiddle);
+		
+		printf("thicknessInternal %f\n", containers_in_ship[i].thicknessInternal);
+		
+		printf("kExternal %f\n", containers_in_ship[i].kExternal);
+		
+		printf("kMiddle %f\n", containers_in_ship[i].kMiddle);
+		
+		printf("kInternal %f\n", containers_in_ship[i].kInternal);
 
 		printf("\n");
+		printf("-");
+		printf("\n");
 
-		**/
-
-	
-
+		}
+		
 		
 
    return 0;
