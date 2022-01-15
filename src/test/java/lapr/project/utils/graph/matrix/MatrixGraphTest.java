@@ -178,7 +178,8 @@ class MatrixGraphTest {
         g.addEdge("A", "B", "1");
         g.addEdge("B", "C", "2");
         g.addEdge("C", "A", "3");
-
+        assertNotNull(g.edges());
+        assertNotNull(g.outgoingEdges(g.vertices().get(0)));
         assertNotEquals("1", g.edge("A", "B"));
         assertNotEquals("2", g.edge("B", "C"));
         assertNotEquals("3", g.edge("C", "A"));
