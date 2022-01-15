@@ -11,14 +11,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PortStoreDB implements Persistable {
-    CountryContinentDB countryContinentDB = new CountryContinentDB();
     @Override
     public boolean save(DatabaseConnection databaseConnection, Object object) {
         Port port = (Port) object;
         boolean returnValue = false;
 
         try {
-            countryContinentDB.save(databaseConnection,port);
             savePortToDatabase(databaseConnection, port);
 
             //Save changes.
@@ -73,8 +71,6 @@ public class PortStoreDB implements Persistable {
      */
     private void savePortToDatabase(DatabaseConnection databaseConnection,
                                     Port port) throws SQLException {
-        CountryContinentDB countryContinentDB = new CountryContinentDB();
-        countryContinentDB.save(databaseConnection, port);
         if (isPortOnDatabase(databaseConnection, port)) {
             updatePortOnDatabase(databaseConnection, port);
         } else {
