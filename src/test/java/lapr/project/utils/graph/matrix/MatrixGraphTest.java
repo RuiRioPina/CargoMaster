@@ -184,8 +184,7 @@ class MatrixGraphTest {
         assertNotEquals("2", g.edge("B", "C"));
         assertNotEquals("3", g.edge("C", "A"));
     }
-
-
+    
     @Test
     public void testEdge_Failure(){
         Graph<String, String> g = new MatrixGraph<>(true);
