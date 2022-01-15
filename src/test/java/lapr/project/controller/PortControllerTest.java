@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class PortControllerTest {
 
-    @Test
+   /* @Test
     void occupancyRate() throws SQLException {
 
         PortController pc = new PortController();
@@ -18,5 +18,5 @@ public class PortControllerTest {
         System.out.println(pc.occupancyRateContainers(connection,29002,2022,6));
 
 
-    }
+    }*/
 }
