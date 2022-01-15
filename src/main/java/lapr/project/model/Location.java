@@ -2,7 +2,6 @@ package lapr.project.model;
 
 import lapr.project.utils.ShipValidation;
 
-import java.util.Objects;
 
 /**
  * This class will contain the Location related attributes of a ship
@@ -82,10 +81,4 @@ public class Location {
                 '}';
     }
 
-
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(latitude, longitude);
-    }
 }
