@@ -104,4 +104,11 @@ class MovementTest {
         //Assert
         assertEquals(expected, actual);
     }
+    @Test
+    public void validation(){
+        assertThrows(IllegalArgumentException.class,()->new Movement(400.0,190.0,"371.0"));
+        assertThrows(IllegalArgumentException.class,()->new Movement(400.0,400.0,"30.0"));
+
+    }
+
 }
