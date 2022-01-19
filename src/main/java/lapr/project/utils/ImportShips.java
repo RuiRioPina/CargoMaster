@@ -18,14 +18,9 @@ import java.util.logging.Logger;
 
 public class ImportShips {
     private static final Logger LOGGER = Logger.getLogger("MainLog");
-    StringBuilder sout = new StringBuilder("");
-    final String fileToBeWrittenTo = "linesNotImported.txt";
     PositionShipDB positionShipDB = new PositionShipDB();
     ShipStoreDB shipStoreDB = new ShipStoreDB();
 
-    String url = System.getProperty("database.url");
-    String username = System.getProperty("database.username");
-    String password = System.getProperty("database.password");
     DatabaseConnection databaseConnection;
     /**
      * Construtor that will not be used since this class is not to be instantiated
@@ -51,17 +46,13 @@ public class ImportShips {
         ShipDynamic shipDynamic;
         String line;
         String splitBy = ",";
-        BufferedReader br = null;
+
+
         Ship ship = null;
         Route route = null;
-        int size = 0;
-
-
-        try {
-            br = new BufferedReader(new FileReader(fileName));
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             br.readLine();
             while ((line = br.readLine()) != null) {
-                size++;
                 String[] elements = line.split(splitBy);
                 if (ship == null || !ship.getShipId().getMmsi().equals(elements[0])) {
 
@@ -73,8 +64,6 @@ public class ImportShips {
                         ships.add(ship);
                     } catch (Exception e) {
                         ship = null;
-                        sout.append("Failed to import line ").append(size);
-                        sout.append('\n');
                     }
                 }
                 if (ship != null) {
@@ -83,24 +72,14 @@ public class ImportShips {
                         route.add(shipDynamic);
                         ship.setRoute(route);
                     } catch (Exception e) {
-                        sout.append("Failed to import line ").append(size);
-                        sout.append('\n');
+                        //
                     }
                 }
             }
         } catch (NullPointerException | IOException | IndexOutOfBoundsException e) {
             LOGGER.log(Level.INFO, "An unexpected error occured. Please check the name of the csv file to import the data.");
-        } finally {
-            try {
-                PrintToFile.printB(sout, fileToBeWrittenTo);
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException | IllegalArgumentException e) {
-                LOGGER.log(Level.INFO, "-");
-            }
-
         }
+        //
         for (Ship ship1 : ships) {
             store.addShipToAVL(ship1);
         }
@@ -108,23 +87,17 @@ public class ImportShips {
     }
 
     public List<Ship> importShipsAndSaveToDatabase(String fileName) {
-        final String fileToBeWrittenTo = "linesNotImported.txt";
-        ShipStore store = App.getInstance().getCompany().getShipStore();
         List<Ship> ships = new ArrayList<>();
         Identification idShip;
         ShipCharacteristics characteristics;
         String line;
         String splitBy = ",";
-        BufferedReader br = null;
+
+
         Ship ship = null;
-        int size = 0;
-
-
-        try {
-            br = new BufferedReader(new FileReader(fileName));
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             br.readLine();
             while ((line = br.readLine()) != null) {
-                size++;
                 String[] elements = line.split(splitBy);
                 if (ship == null || !ship.getShipId().getMmsi().equals(elements[0])) {
 
@@ -136,23 +109,11 @@ public class ImportShips {
                         shipStoreDB.save(databaseConnection, ship);
                     } catch (Exception e) {
                         ship = null;
-                        sout.append("Failed to import line ").append(size);
-                        sout.append('\n');
                     }
                 }
             }
         } catch (NullPointerException | IOException | IndexOutOfBoundsException e) {
             LOGGER.log(Level.INFO, "An unexpected error occured. Please check the name of the csv file to import the data.");
-        } finally {
-            try {
-                PrintToFile.printB(sout, fileToBeWrittenTo);
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException | IllegalArgumentException e) {
-                LOGGER.log(Level.INFO, "-");
-            }
-
         }
 
         return ships;
@@ -163,81 +124,24 @@ public class ImportShips {
         ShipDynamic shipDynamic;
         String line;
         String splitBy = ",";
-        BufferedReader br = null;
-        int size = 0;
 
 
-        try {
-            br = new BufferedReader(new FileReader(fileName));
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             br.readLine();
             while ((line = br.readLine()) != null) {
-                size++;
-                String[] elements = line.split(splitBy);
-
-                    try {
-                        shipDynamic = createShipDynamic(elements);
-                        positionShipDB.save(databaseConnection, shipDynamic);
-                        shipsDynamic.add(shipDynamic);
-                        } catch (Exception e) {
-                        sout.append("Failed to import line ").append(size);
-                        sout.append('\n');
-                    }
-
-            }
-        } catch (NullPointerException | IOException | IndexOutOfBoundsException e) {
-            LOGGER.log(Level.INFO, "An unexpected error occured. Please check the name of the csv file to import the data.");
-        } finally {
-            try {
-                PrintToFile.printB(sout, fileToBeWrittenTo);
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException | IllegalArgumentException e) {
-                LOGGER.log(Level.INFO, "-");
-            }
-
-        }
-
-    }
-
-    public void importShipEnergyAndSaveToDatabase(String fileName) {
-
-        ShipEnergyDB shipEnergyDB = new ShipEnergyDB();
-        ShipEnergy shipEnergy;
-        String line;
-        String splitBy = ",";
-        BufferedReader br = null;
-        int size = 0;
-
-
-        try {
-            br = new BufferedReader(new FileReader(fileName));
-            br.readLine();
-            while ((line = br.readLine()) != null) {
-                size++;
                 String[] elements = line.split(splitBy);
 
                 try {
-                    shipEnergy = createShipEnergy(elements);
-                    shipEnergyDB.save(databaseConnection, shipEnergy);
+                    shipDynamic = createShipDynamic(elements);
+                    positionShipDB.save(databaseConnection, shipDynamic);
+                    shipsDynamic.add(shipDynamic);
                 } catch (Exception e) {
-                    sout.append("Failed to import line ").append(size);
-                    sout.append('\n');
+                    //
                 }
 
             }
         } catch (NullPointerException | IOException | IndexOutOfBoundsException e) {
             LOGGER.log(Level.INFO, "An unexpected error occured. Please check the name of the csv file to import the data.");
-        } finally {
-            try {
-                PrintToFile.printB(sout, fileToBeWrittenTo);
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException | IllegalArgumentException e) {
-                LOGGER.log(Level.INFO, "-");
-            }
-
         }
 
     }
@@ -296,12 +200,5 @@ public class ImportShips {
         return new ShipDynamic(mmsi, baseDateTime, new Location(lat, lon), new Movement(sog, cog, heading), cargo, transceiverClass);
     }
 
-    private static ShipEnergy createShipEnergy(String[] elements) {
-        int nrGenerator = Integer.parseInt(elements[10]);
-        int power = Integer.parseInt(elements[10]);
-        return new ShipEnergy(nrGenerator, power);
-    }
 
-
-
-}  
+}

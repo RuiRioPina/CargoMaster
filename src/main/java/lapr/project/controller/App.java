@@ -64,7 +64,6 @@ public class App {
        ImportPorts.importPorts(fileName2);
 //        IpomrtCountries.importCountries(fileName3);
 //        ImportPorts.importPortsAndSaveToDatabase(fileName2);
-//        importShips.importShipEnergyAndSaveToDatabase(fileName);
 //        importShips.importShipsAndSaveToDatabase(fileName);
 //        importShips.importShipPositionsAndSaveToDatabase(fileName);
 //          shipStoreDB.getShips(databaseConnection);

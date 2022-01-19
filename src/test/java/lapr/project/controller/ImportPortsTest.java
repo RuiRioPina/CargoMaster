@@ -15,16 +15,17 @@ public class ImportPortsTest {
 
     @Test
     void importPorts() {
-
+        ImportPorts importPorts = new ImportPorts();
         String fileName = "csvFiles/sports.csv";
-        ImportPorts.importPorts(fileName);
+        importPorts.importPorts(fileName);
     }
 
     @Test
     void importPorts1() {
+        ImportPorts importPorts = new ImportPorts();
 
         String fileName = "csvFiles/sports.csv";
-        ImportPorts.importPortsAndSaveToDatabase(fileName);
+        importPorts.importPortsAndSaveToDatabase(fileName);
 
     }
 
