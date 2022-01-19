@@ -366,9 +366,9 @@ on ContainerManifest for each row
 declare
 cargo NUMBER;
 begin
-select idCargoManifest into cargo from Manifest where Manifest.idManifest = :new.idManifest;
+select idCargoManifest into cargo from Manifest where Manifest.idManifest = :old.idManifest;
 INSERT INTO AuditTrail (registDate, author, action, idCargoManifest, idManifest, nrContainer)
-VALUES (SYSDATE,TO_CHAR(USER),'DELETE',cargo, :new.idManifest,:new.nrContainer);
+VALUES (SYSDATE,TO_CHAR(USER),'DELETE',cargo, :new.idManifest,:old.nrContainer);
 
 EXCEPTION
     WHEN NO_DATA_FOUND
