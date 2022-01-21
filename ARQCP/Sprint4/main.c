@@ -159,7 +159,7 @@ double energy_calculator(int xx, int yy, int zz) {
 			} 
 		}
 		
-		totalArea = ((c.length * c.height) * 4) + ((c.height * c.width) * 2);
+		totalArea = ((c.length * c.height) * 3) + ((c.height * c.width) * 2);
 		
 		R_external = c.thicknessExternal / (totalArea * c.kExternal);
 		R_middle = c.thicknessMiddle / (totalArea * c.kMiddle);
@@ -174,7 +174,63 @@ double energy_calculator(int xx, int yy, int zz) {
 		return E;
 	
 }
+double energy_calculator_411(int xx, int yy, int zz,double tempe) {
 
+		double temperature, actualTemperature = tempe;
+		double R_external, R_middle, R_internal, R_total;
+		double totalArea, Q, E;
+		struct container c;
+		
+		int type = refrigerated_or_not(xx, yy, zz);
+		
+		if (type == 0) {
+			temperature = -5;
+		}
+		if (type == 1 ) {
+			temperature = 7;
+		}
+		if (type == -1) {
+			return 0;
+		}
+		
+		for(int i = 0; i < lines; i++) {
+		if (containers_in_ship[i].x == xx && containers_in_ship[i].y == yy && containers_in_ship[i].z == zz) {
+			c = containers_in_ship[i];
+			} 
+		}
+		
+		totalArea = ((c.length * c.height) * 3) + ((c.height * c.width) * 2);
+		
+		R_external = c.thicknessExternal / (totalArea * c.kExternal);
+		R_middle = c.thicknessMiddle / (totalArea * c.kMiddle);
+		R_internal = c.thicknessInternal / (totalArea * c.kInternal);
+		
+		R_total = R_external + R_middle + R_internal;
+		
+		Q = (actualTemperature - temperature) / R_total;
+		
+		E = Q * 3600; //energy per hour 
+		
+		return E;
+	
+}
+double energy_for_ship(struct container* containers,double temperature){
+	double finalvalue=0;
+		for (int i =0;i<lines;i++){
+			finalvalue+=energy_calculator_411(containers[i].x,containers[i].y,containers[i].z,temperature);
+		}
+		return finalvalue;
+}
+void is_energy_enough(struct container* containers,double temperature,double gen_energy){
+	printf("Generator energy:\n%f\n",gen_energy*3600);
+	double needed_energy=energy_for_ship(containers,temperature);
+	printf("Needed energy:\n%f\n",needed_energy);
+	if (needed_energy>gen_energy*3600){
+		printf("Energy provided is not enough!\n");
+	}else{
+		printf("Energy provided is enough.\n");
+	}
+}
 int main ( void ) {
 
 		//US409
@@ -214,6 +270,10 @@ int main ( void ) {
 		
 		double energy1 = energy_calculator(x1,y1,z1);
 		printf("The container in the position %d,%d,%d needs %f J of energy per hour\n",x1,y1,z1,energy1);
+		//US411
+		double cdegrees=20;
+		double generator_energy=999999999;
+		is_energy_enough(containers_in_ship,cdegrees,generator_energy);
 		
    return 0;
 
