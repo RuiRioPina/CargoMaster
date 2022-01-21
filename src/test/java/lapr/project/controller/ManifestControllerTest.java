@@ -53,4 +53,25 @@ public class ManifestControllerTest {
         }
 
     }*/
+    /*
+    @Test
+    void getOffLoadLoadMapTruck(){
+        ManifestController mc = new ManifestController();
+        DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsrvbd1.dei.isep.ipp.pt:1521/pdborcl?oracle.net.disableOob=true", "LAPR3_G076_C", "qwerty");
+        int codeFacility = 1;
+        System.out.println("Facility " + codeFacility + " next week's operations: \n");
+        System.out.println("Containers transported by ship");
+        System.out.println("-------------------------------------------------");
+        mc.getOffLoadLoadMapShip(connection,codeFacility);
+        System.out.println("-------------------------------------------------");
+        System.out.println();
+        System.out.println("Containers transported by truck");
+        System.out.println("-------------------------------------------------");
+        mc.getOffLoadLoadMapTruck(connection,codeFacility);
+        System.out.println("-------------------------------------------------");
+
+
+    }
+*/
+
 }

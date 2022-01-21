@@ -1,13 +1,20 @@
 package lapr.project.data;
 
+import lapr.project.model.Container;
+import lapr.project.model.Port;
+import lapr.project.model.Position;
+import lapr.project.model.TypeContainer;
 import oracle.jdbc.internal.OracleTypes;
 
 
 import java.sql.CallableStatement;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ManifestDB implements Persistable {
     DatabaseConnection databaseConnection;
@@ -115,6 +122,54 @@ public class ManifestDB implements Persistable {
             e.printStackTrace();
         }
         return res;
+
+    }
+
+    public void getOffLoadLoadMapTruck(DatabaseConnection connection, Integer codFacility)  {
+        ResultSet rSet;
+        try (CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call func_containersLoadOffLoadInADayTruck(?)}")) {
+
+            callStmtAux.registerOutParameter(1, OracleTypes.REF_CURSOR);
+            callStmtAux.setInt(2, codFacility);
+
+
+            callStmtAux.executeQuery();
+
+            rSet = (ResultSet) callStmtAux.getObject(1);
+            System.out.println("Date of Manifest     Number of Container  Type of Manifest  Registration of the Truck  Code Facility");
+            while (rSet.next()) {
+
+                System.out.printf("%s    %s            %s                     %s                %s%n",(rSet.getString(1)),
+                        rSet.getString(2), rSet.getString(3), rSet.getString(4), rSet.getString(5));
+            }
+        } catch (SQLException exception) {
+            System.out.println(exception.getMessage());
+        }
+
+    }
+
+    public void getOffLoadLoadMapShip(DatabaseConnection connection, Integer codFacility)  {
+        ResultSet rSet;
+        try (CallableStatement callStmtAux = connection.getConnection().prepareCall("{ ? = call func_containersLoadOffLoadInADaySHIP(?)}")) {
+
+            callStmtAux.registerOutParameter(1, OracleTypes.REF_CURSOR);
+            callStmtAux.setInt(2, codFacility);
+
+
+            callStmtAux.executeQuery();
+
+            rSet = (ResultSet) callStmtAux.getObject(1);
+
+            System.out.println("Date of Manifest  Number of Container   x   y   z   Type of Manifest Ship MMSI  Code Facility");
+            while (rSet.next()) {
+
+                System.out.printf("%s   %s       %d   %d   %d        %s        %d       %d%n",(rSet.getString(1)),
+                        rSet.getString(2), rSet.getInt(3), rSet.getInt(4), rSet.getInt(5),
+                        rSet.getString(6), rSet.getInt(7), (rSet.getInt(8)));
+            }
+        } catch (SQLException exception) {
+            System.out.println(exception.getMessage());
+        }
 
     }
 

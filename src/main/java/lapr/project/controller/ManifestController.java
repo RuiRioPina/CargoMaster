@@ -16,7 +16,11 @@ public class ManifestController {
         return manifestDB.getoccupancyRate(connection,codFacility);
     }
 
-    public Integer getOffcontainer(DatabaseConnection connection, Integer codFacility)  {
-        return manifestDB.getOffcontainer(connection,codFacility);
+    public void getOffLoadLoadMapTruck(DatabaseConnection connection, Integer codFacility)  {
+         manifestDB.getOffLoadLoadMapTruck(connection,codFacility);
+    }
+
+    public void getOffLoadLoadMapShip(DatabaseConnection connection, Integer codFacility)  {
+        manifestDB.getOffLoadLoadMapShip(connection,codFacility);
     }
 }
