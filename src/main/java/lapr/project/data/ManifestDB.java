@@ -173,6 +173,50 @@ public class ManifestDB implements Persistable {
 
     }
 
+    public String getmanifestOccupancySmaller(DatabaseConnection connection)  {
+        String res= new String();;
+        try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FNC_manifestOccupancySmaller1}")) {
+            callStmt.registerOutParameter(1, OracleTypes.VARCHAR);
+
+            callStmt.executeUpdate();
+            res  = (String) callStmt.getString(1);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+
+    }
+
+    public Double getManifestOccupancyRate(DatabaseConnection connection, Integer vehicle, String startDate, String endDate)  {
+        Double res = 0.0;
+        try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FNC_manifestOccupancyRate(?,?,?)}")) {
+            callStmt.registerOutParameter(1, OracleTypes.DOUBLE);
+            callStmt.setInt(2,vehicle);
+            java.sql.Date date1=null;
+            java.sql.Date date2=null;
+            try {
+                SimpleDateFormat formatter  = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+                date1 = new java.sql.Date( ((java.util.Date)formatter.parse(startDate)).getTime() );
+                date2 = new java.sql.Date( ((java.util.Date)formatter.parse(endDate)).getTime() );
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            callStmt.setDate(3, date1);
+            callStmt.setDate(4, date2);
+
+            callStmt.execute();
+            res  = (Double) callStmt.getObject(1);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+
+    }
+
     @Override
     public boolean save(DatabaseConnection databaseConnection, Object object) {
         return false;
