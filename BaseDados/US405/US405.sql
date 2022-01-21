@@ -24,7 +24,7 @@ CREATE OR REPLACE FUNCTION FNC_manifestOccupancyRate(vehicle INTEGER, startDate 
         WITH idTripTemporario1 AS (
             SELECT idTrip
             From TripVehicle
-            Where idVehicle = 1
+            Where idVehicle = vehicle
         )SELECT COUNT(DISTINCT m.idTrip )
         FROM Manifest m
         INNER JOIN idTripTemporario1 t ON m.idTrip = t.idTrip
@@ -56,7 +56,7 @@ BEGIN
     END LOOP;
     Close cManifest;
 
-    IF(cont=0 OR ship_capacity=0) THEN
+    IF(cont=0 OR ship_capacity=0 OR nr_manifest=0) THEN
         taxa:=0.0;
     ELSE
         result :=cont/ship_capacity;
@@ -71,5 +71,5 @@ END;
 
 begin
     dbms_output.put_line('Taxa de ocupação por manifesto de um determinado navio durante um período de tempo');
-    dbms_output.put_line(FNC_manifestOccupancyRate(1,TO_DATE('2003/05/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2003/05/11 8:15:30', 'yyyy/mm/dd hh24:mi:ss')));
+    dbms_output.put_line(FNC_manifestOccupancyRate(6,TO_DATE('2021/03/15 11:00:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2021/04/15 11:00:00', 'yyyy/mm/dd hh24:mi:ss')));
 end;

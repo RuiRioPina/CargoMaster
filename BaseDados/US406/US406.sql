@@ -1,4 +1,4 @@
-/*Viaguens de barco acabadas com taxa menor que 66 */
+/*Viagens de barco acabadas com taxa menor que 66 */
 CREATE OR REPLACE PROCEDURE PROC_manifestOccupancySmaller
 IS
 

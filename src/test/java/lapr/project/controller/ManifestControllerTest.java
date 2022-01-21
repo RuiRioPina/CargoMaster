@@ -52,8 +52,17 @@ public class ManifestControllerTest {
             System.out.println(e.getMessage());
         }
 
-    }*/
-    /*
+    }
+
+    @Test
+    void getmanifestOccupancySmaller(){
+        ManifestController mc = new ManifestController();
+        DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
+        String res= mc.getmanifestOccupancySmaller(connection);
+        System.out.println("Viagens de barco acabadas com taxa menor que 66: ");
+        System.out.println(res);
+    }
+
     @Test
     void getOffLoadLoadMapTruck(){
         ManifestController mc = new ManifestController();
@@ -72,6 +81,13 @@ public class ManifestControllerTest {
 
 
     }
-*/
 
+    @Test
+    void getManifestOccupancyRate(){
+        ManifestController mc = new ManifestController();
+        DatabaseConnection connection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
+        Double res= mc.getManifestOccupancyRate(connection,6,"2021/03/15 11:00:00","2021/04/15 11:00:00");
+        System.out.println("Taxa de ocupação por manifesto de um determinado navio durante um período de tempo: "+res);
+    }
+    */
 }

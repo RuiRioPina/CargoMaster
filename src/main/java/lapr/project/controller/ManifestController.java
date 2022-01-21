@@ -3,6 +3,8 @@ package lapr.project.controller;
 import lapr.project.data.DatabaseConnection;
 import lapr.project.data.ManifestDB;
 
+import java.sql.Date;
+
 public class ManifestController {
     private ManifestDB manifestDB;
     public ManifestController(){manifestDB= new ManifestDB();}
@@ -23,4 +25,13 @@ public class ManifestController {
     public void getOffLoadLoadMapShip(DatabaseConnection connection, Integer codFacility)  {
         manifestDB.getOffLoadLoadMapShip(connection,codFacility);
     }
+
+    public String getmanifestOccupancySmaller(DatabaseConnection connection) {
+        return manifestDB.getmanifestOccupancySmaller(connection);
+    }
+
+    public Double getManifestOccupancyRate(DatabaseConnection connection, Integer vehicle, String startDate, String endDate)  {
+        return manifestDB.getManifestOccupancyRate(connection, vehicle, startDate, endDate);
+    }
+
 }
