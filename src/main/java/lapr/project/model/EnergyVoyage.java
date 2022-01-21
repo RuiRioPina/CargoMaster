@@ -5,7 +5,10 @@ public class EnergyVoyage {
     private double k_external;
     private double k_middle;
     private double k_internal;
-
+    private final double a = 2.56;
+    private final double b = 2.44;
+    private final double c = 6.09;
+    private double totalAreaExposed = 2 * (2 * b * 4 * a) + 3 * (2 *b * 5 * c); // 40 contentores
 
     public double energyCalculator(double hours_voyage1, double temperature1,
                                    double hours_voyage2, double temperature2, double type) {
@@ -24,10 +27,7 @@ public class EnergyVoyage {
             k_internal = 0.055;
         }
 
-        double a = 2.56;
-        double b = 2.44;
-        double c = 6.09;
-        double totalAreaExposed = 2 * (2 * b * 4 * a) + 3 * (2 *b * 5 * c); // 40 contentores
+
         double thicknessExternal = 0.002;
         double thicknessMiddle = 0.095;
         double thicknessInternal = 0.003;
@@ -45,4 +45,7 @@ public class EnergyVoyage {
         return E1 + E2;
     }
 
+    public void setTotalArea(double totalAreaExposed) {
+        this.totalAreaExposed = totalAreaExposed;
+    }
 }
