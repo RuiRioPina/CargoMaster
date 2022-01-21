@@ -3,7 +3,7 @@ package lapr.project.model;
 public class DraughtAndPressionCalculator {
 
     private double shipMass;
-    private double seaWaterDensity = 1030;
+    private final double seaWaterDensity = 1023;
     private double shipLength;
     private double shipWidth;
     private int shipCapacity;
@@ -46,9 +46,14 @@ public class DraughtAndPressionCalculator {
     public double draught (double shipMass, double seaWaterDensity, double shipLength,
                                      double shipWidth, double  cargoTonage) {
 
-        double shipTotalMass = (shipMass + cargoTonage) * Math.pow(10,3);
+        double shipEmptyMass = shipMass * Math.pow(10,3);
+        double shipEmptyDraught = shipEmptyMass / (shipLength * shipWidth * seaWaterDensity);
 
-        return shipTotalMass/(shipLength * shipWidth * seaWaterDensity);
+
+        double shipTotalMass = (shipMass + cargoTonage) * Math.pow(10,3);
+        double shipTotalDraught = shipTotalMass/(shipLength * shipWidth * seaWaterDensity);
+
+        return shipTotalDraught - shipEmptyDraught;
 
     }
 

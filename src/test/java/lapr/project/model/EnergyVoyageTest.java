@@ -12,17 +12,19 @@ class EnergyVoyageTest {
     @Test
     void energyCalculator() throws IOException {
         EnergyVoyage ev = new EnergyVoyage();
-        double hours_voyage = 2.5;
-        double actualTemperature = 20;
+        double hours_voyage1 = 2;
+        double hours_voyage2 = 1;
+        double temperature1 = 20;
+        double temperature2 = 30;
         double type1 = 7;
         double type2 = -5;
-        double energyR7 = ev.energyCalculator(hours_voyage,actualTemperature,type1);
-        assertEquals(2.948308693965587E7,energyR7);
-        System.out.println(energyR7);
-        double energyM5 = ev.energyCalculator(hours_voyage,actualTemperature,type2);
-        assertEquals(3.76919290745309E7, energyM5);
-        System.out.println(energyM5);
-        double mut = ev.energyCalculator(2.5,20,0);
+        double energyR7 = ev.energyCalculator(hours_voyage1,temperature1,hours_voyage2,temperature2,type1);
+        assertEquals(4.44514233859427E7,energyR7);
+
+        double energyM5 = ev.energyCalculator(hours_voyage1,temperature1,hours_voyage2,temperature2,type2);
+        assertEquals(5.126102354136202E7, energyM5);
+
+        double mut = ev.energyCalculator(hours_voyage1,temperature1,hours_voyage2,temperature2,0);
         assertEquals(0,mut);
 
         StringBuilder output = new StringBuilder();
