@@ -65,11 +65,22 @@ public class Container {
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
     }
-
+    public Container(String numberContainer, TypeContainer type, String load, Position position, Port nextPort, String arrivalDate, String departureDate,double length,double width,double height) {
+        this.numberContainer = numberContainer;
+        this.type = type;
+        this.load = load;
+        this.position = position;
+        this.nextPort = nextPort;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
+        this.dimension=new Dimension(length,width,height);
+    }
 
     public String getIso() {
         return iso;
     }
+
+
 
     @Override
     public String toString() {
@@ -89,5 +100,8 @@ public class Container {
                 ", arrivalDate='" + arrivalDate + '\'' +
                 ", departureDate='" + departureDate + '\'' +
                 '}';
+    }
+    public String centerOfMass(){
+        return String.format("(%.2f;%.2f;%.2f)",this.dimension.getLength()/2,this.dimension.getWidth()/2,this.dimension.getHeight()/2);
     }
 }

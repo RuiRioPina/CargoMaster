@@ -14,6 +14,24 @@ public class Dimension {
         height = decodeHeightAndWidthFromIso(containerIso);
         width = decodeHeightAndWidthFromIso(containerIso);
     }
+    public Dimension(double length,double width ,double height){
+        this.length=length;
+        this.width=width;
+        this.height=height;
+    }
+
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public double getWidth() {
+        return width;
+    }
 
     public double decodeLengthFromIso(String containerIso) {
         switch (containerIso.charAt(0)) {

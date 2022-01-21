@@ -34,4 +34,25 @@ class ContainerTest {
         String expected = "42PC";
         assertEquals(actual,expected);
     }
+    @Test
+    void centerOfMass(){
+        TypeContainer tc = new TypeContainer("Leixões","1");
+        Client c = new Client("Sérgio","12");
+        Container C = new Container("JORU1234553",c,tc,"42PC","certificate","load");
+        Container cont = new Container("JORU1234553",new TypeContainer("MAXMINUS5"),"Cherries",
+                new Position(7,5,1),new Port("Fisgao Port"),"2021-12-21 17:30:00","2021-12-21 17:30:00",7,3,2);
+
+        assertEquals("(3,50;1,50;1,00)",cont.centerOfMass());
+    }
+/*
+    @Test
+    void centerOfMassIntegratedTest(){
+        TypeContainer tc = new TypeContainer("Leixões","1");
+        Client c = new Client("Sérgio","12");
+        Container C = new Container("JORU1234553",c,tc,"42PC","certificate","load");
+        Container cont = new Container("JORU1234553",new TypeContainer("MAXMINUS5"),"Cherries",
+                new Position(7,5,1),new Port("Fisgao Port"),"2021-12-21 17:30:00","2021-12-21 17:30:00",7,3,2);
+        System.out.println(cont.centerOfMass());
+    }
+    */
 }

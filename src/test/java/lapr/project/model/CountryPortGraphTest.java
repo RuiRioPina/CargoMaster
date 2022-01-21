@@ -9,13 +9,19 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CountryPortGraphTest {
-    /*@Test
+    /*
+    First test is an integrated test ,check Countrykeys.txt for keys.
+     */
+ /*
+    @Test
     public void createGraphWithPortsAndCountries(){
         CountryPortGraph countryPortGraph= new CountryPortGraph();
         MatrixGraph<GraphLocation,Double> graph= countryPortGraph.createGraphWithPortsAndCountries(2);
         assertEquals(90,graph.numVertices());
-        System.out.println(countryPortGraph.shortestPath(graph, graph.vertex(5),graph.vertex(20)));
-      //  System.out.println(countryPortGraph.shortestPathMaritime(graph, graph.vertex(5),graph.vertex(20)));
+        System.out.println(countryPortGraph.shortestPath(graph, graph.vertex(85),graph.vertex(81)));
+        System.out.println(countryPortGraph.shortestPathLand(graph, graph.vertex(85),graph.vertex(81)));
+        System.out.println(countryPortGraph.shortestPathMaritime(graph,graph.vertex(5),graph.vertex(25)));
+        System.out.println(countryPortGraph.shortestPathMaritime(graph,graph.vertex(85),graph.vertex(81)));
     }
 */
 
@@ -54,9 +60,41 @@ public class CountryPortGraphTest {
         keylist.add("country5");
         keylist.add("country2");
         keylist.add("country3");
+        List<String> keylist2 = new ArrayList<>();
+        keylist2.add("port1");
+        keylist2.add("port5");
+        keylist2.add("port2");
+        keylist2.add("port3");
+        Port port1= new Port("port1");
+        Port port2= new Port("port2");
+        Port port3= new Port("port3");
+        Port port4= new Port("port4");
+        Port port5= new Port("port5");
+        graph.addVertex(port1);
+        graph.addVertex(port2);
+        graph.addVertex(port3);
+        graph.addVertex(port4);
+        graph.addVertex(port5);
+        graph.addEdge(port1,port2,4.0);
+        graph.addEdge(port1,port5,1.0);
+        graph.addEdge(port5,port2,1.0);
+        graph.addEdge(port2,port3,1.0);
+        graph.addEdge(port3,port5,5.0);
+        graph.addEdge(port5,port4,3.0);
+        graph.addEdge(port3,port4,2.0);
+        graph.addEdge(port2,country2,1.0);
+        graph.addEdge(country2,port3,1.0);
         //System.out.println(countryPortGraph.shortestPath(graph,country1,country3));
         assertEquals(keylist,countryPortGraph.shortestPath(graph,country1,country3));
         assertEquals(keylist,countryPortGraph.shortestPathLand(graph,country1,country3));
+        List<String> emptyList=new ArrayList<>();
+        emptyList.add("Countries should not be used.");
+        assertEquals(emptyList,countryPortGraph.shortestPathMaritime(graph,country1,country2));
+        assertEquals(keylist2,countryPortGraph.shortestPathMaritime(graph,port1,port3));
+
+
+
+
 
     }
 

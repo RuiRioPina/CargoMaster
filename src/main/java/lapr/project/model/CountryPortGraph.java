@@ -170,7 +170,12 @@ public class CountryPortGraph {
 
         return GraphLocationPathList;
     }
-   /* public List<String> shortestPathMaritime(Graph<GraphLocation, Double> g, GraphLocation vOrig, GraphLocation vDest) {
+    public List<String> shortestPathMaritime(Graph<GraphLocation, Double> g, GraphLocation vOrig, GraphLocation vDest) {
+        if (vOrig instanceof Country|| vDest instanceof Country){
+            List<String> stringList= new ArrayList<>();
+            stringList.add("Countries should not be used.");
+            return stringList;
+        }
         int keyCopy = g.key(vDest);
         int size = g.numVertices();
         boolean[] visited = new boolean[size];
@@ -212,8 +217,8 @@ public class CountryPortGraph {
 
         return GraphLocationPathList;
     }
-    *
-    */
+
+
     public List<String> shortestPathLand(Graph<GraphLocation, Double> g, GraphLocation vOrig, GraphLocation vDest) {
         int keyCopy = g.key(vDest);
         int size = g.numVertices();
