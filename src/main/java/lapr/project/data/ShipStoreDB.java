@@ -166,7 +166,6 @@ public class ShipStoreDB implements Persistable {
      */
     private void updateShipOnDatabase(DatabaseConnection databaseConnection,
                                       Ship ship) throws SQLException {
-        Connection connection = databaseConnection.getConnection();
         String sqlCommand =
                 "update ship set draft = ?, nameShip = ?, imo = ?, typeShip = ?, capacity = ?, length = ?, width = ?, callsign = ? where mmsi = ?";
 

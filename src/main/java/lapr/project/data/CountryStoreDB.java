@@ -1,6 +1,5 @@
 package lapr.project.data;
 
-import lapr.project.controller.App;
 import lapr.project.model.*;
 import oracle.jdbc.OracleTypes;
 

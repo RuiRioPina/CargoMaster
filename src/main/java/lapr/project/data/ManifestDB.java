@@ -1,9 +1,5 @@
 package lapr.project.data;
 
-import lapr.project.model.Container;
-import lapr.project.model.Port;
-import lapr.project.model.Position;
-import lapr.project.model.TypeContainer;
 import oracle.jdbc.internal.OracleTypes;
 
 
@@ -13,10 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.LinkedList;
-import java.util.List;
 
-public class ManifestDB implements Persistable {
+public class ManifestDB {
     DatabaseConnection databaseConnection;
     public ManifestDB() {
         databaseConnection = new DatabaseConnection("jdbc:oracle:thin:@vsgate-s1.dei.isep.ipp.pt:10713/xepdb1?oracle.net.disableOob=true", "LAPR3_G076", "mypassword");
@@ -174,12 +168,12 @@ public class ManifestDB implements Persistable {
     }
 
     public String getmanifestOccupancySmaller(DatabaseConnection connection)  {
-        String res= new String();;
+        String res = null;
         try(CallableStatement callStmt = connection.getConnection().prepareCall("{ ? = call FNC_manifestOccupancySmaller1}")) {
             callStmt.registerOutParameter(1, OracleTypes.VARCHAR);
 
             callStmt.executeUpdate();
-            res  = (String) callStmt.getString(1);
+            res  = callStmt.getString(1);
 
 
         } catch (SQLException e) {
@@ -198,8 +192,8 @@ public class ManifestDB implements Persistable {
             java.sql.Date date2=null;
             try {
                 SimpleDateFormat formatter  = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
-                date1 = new java.sql.Date( ((java.util.Date)formatter.parse(startDate)).getTime() );
-                date2 = new java.sql.Date( ((java.util.Date)formatter.parse(endDate)).getTime() );
+                date1 = new java.sql.Date( (formatter.parse(startDate)).getTime() );
+                date2 = new java.sql.Date( (formatter.parse(endDate)).getTime() );
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -217,15 +211,15 @@ public class ManifestDB implements Persistable {
 
     }
 
-    @Override
-    public boolean save(DatabaseConnection databaseConnection, Object object) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(DatabaseConnection databaseConnection, Object object) {
-        return false;
-    }
+//    @Override
+//    public boolean save(DatabaseConnection databaseConnection, Object object) {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean delete(DatabaseConnection databaseConnection, Object object) {
+//        return false;
+//    }
 
 
 }

@@ -1,10 +1,9 @@
 package lapr.project.controller;
 
 import lapr.project.data.AuditTrailDB;
-import lapr.project.data.ContainerDB;
 import lapr.project.data.DatabaseConnection;
 import lapr.project.model.AuditTrail;
-import lapr.project.model.Container;
+
 import lapr.project.model.ShipIdleDays;
 
 import java.sql.SQLException;

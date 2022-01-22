@@ -1,7 +1,6 @@
 package lapr.project.data;
 
 import lapr.project.model.*;
-import oracle.jdbc.OracleTypes;
 
 import java.sql.*;
 import java.text.ParseException;

@@ -3,8 +3,6 @@ package lapr.project.controller;
 import lapr.project.data.DatabaseConnection;
 import lapr.project.data.ManifestDB;
 
-import java.sql.Date;
-
 public class ManifestController {
     private ManifestDB manifestDB;
     public ManifestController(){manifestDB= new ManifestDB();}

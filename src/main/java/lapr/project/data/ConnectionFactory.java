@@ -4,7 +4,6 @@ package lapr.project.data;/*
  * and open the template in the editor.
  */
 
-import lapr.project.data.DatabaseConnection;
 
 import java.io.IOException;
 import java.io.InputStream;
