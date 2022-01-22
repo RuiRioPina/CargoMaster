@@ -3,6 +3,7 @@ package lapr.project.model;
 import lapr.project.utils.PrintToFile;
 import org.junit.jupiter.api.Test;
 
+
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,4 +67,42 @@ class EnergyVoyageTest {
 
         PrintToFile.printB(output,"EnergyCalculatorSameConditions.txt");
     }
+    @Test
+    void us412Calc(){
+        EnergyVoyage ev = new EnergyVoyage();
+        double expected=1457727;
+        assertEquals(expected,ev.us412Calc(21.106,-5),1);
+        double expected2=1140251;
+        assertEquals(expected2,ev.us412Calc(21.106,7),1);
+    }
+    /*
+    @Test
+    void us412CalcIntegrated(){
+        EnergyVoyage ev = new EnergyVoyage();
+        double areaExposed=21.106;
+        double containertype=-5;
+        System.out.println(ev.us412Calc(areaExposed,containertype));
+    }
+    */
+
+    @Test
+    void us415Calc(){
+        double expected=7541;
+        EnergyVoyage ev = new EnergyVoyage();
+        assertEquals(expected,ev.us415Calc(99.2836,609.6588,20,30),1);
+        assertEquals(expected,ev.us415Calc(99.2836,609.6588,30,20),1);
+        int expected1= 1;
+        assertEquals(expected1,ev.generatorsNecessary(99.2836,609.6588,20,30));
+        int expected2= 5;
+        assertEquals(expected2,ev.generatorsNecessary(99.2836,609.6588,20,1000));
+    }
+    /*
+    @Test
+    void us415CalcIntegrated(){
+        EnergyVoyage ev = new EnergyVoyage();
+        System.out.println(ev.us415Calc(99.2836,609.6588,20,30)+ " J");
+        System.out.println("Generators necessary:");
+        System.out.println(ev.generatorsNecessary(99.2836,609.6588,20,30));
+    }
+     */
 }
