@@ -44,6 +44,12 @@ class ContainerTest {
 
         assertEquals("(3.50;1.50;1.00)",cont.centerOfMass());
     }
+
+    @Test
+    void toString2() {
+        Container c = new Container("ABDU",new TypeContainer("Refrigerated"), "cash",new Position(1,2,2),new Port("port"),"2-3-4");
+        assertEquals(c.toString2(),"Container{numberContainer='ABDU', Type = Refrigerated', load='cash', position=[X = 1, Y = 2, Z = 2], nextPort=port, date='2-3-4'}");
+    }
 /*
     @Test
     void centerOfMassIntegratedTest(){

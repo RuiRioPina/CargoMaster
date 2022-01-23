@@ -101,6 +101,18 @@ public class Container {
                 ", departureDate='" + departureDate + '\'' +
                 '}';
     }
+
+    public String toString2() {
+        return "Container{" +
+                "numberContainer='" + numberContainer + '\'' +
+                "," +type +
+                ", load='" + load + '\'' +
+                ", position=" + position +
+                ", nextPort=" + nextPort.getName() +
+                ", date='" + date + '\'' +
+                '}';
+    }
+
     public String centerOfMass(){
         return String.format("(%.2f;%.2f;%.2f)",this.dimension.getLength()/2,this.dimension.getWidth()/2,this.dimension.getHeight()/2);
     }
