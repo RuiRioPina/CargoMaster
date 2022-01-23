@@ -1968,6 +1968,67 @@ The system will receive the container number and the find its whereabouts
 ## Testing
 
 
+## U403
+
+### [US403] As a Traffic manager I wish to know the most efficient circuit that starts from a source location and visits the greatest number of other locations once, returning to the starting location and with the shortest total distance-
+
+### Analysis
+### System Sequence Diagram
+
+![US403_SSD](/docs/Sprint4/US403/US403_SSD.svg)
+
+### Domain Model Diagram
+![US403_DM](/docs/Sprint4/US403/US403_DM.svg)
+
+### Design
+### Class Diagram
+![US403_CD](/docs/Sprint4/US403/US403_CD.svg)
+
+### System Diagram
+![US403_SD](/docs/Sprint4/US403/US403_SD.svg)
+
+## Implementation
+
+### Creating the graph
+
+    public MatrixGraph<GraphLocation,Double> createGraphWithPortsAndCountries(int n){
+        MatrixGraph<GraphLocation,Double> graph= new MatrixGraph<>(false);
+        countryStore.getCountriesFromDatabase();
+        for (Country country: countryStore.getCountryStore()){
+            graph.addVertex(country);
+        }
+        portStore.getPortsFromDatabase();
+        for (Port port: portStore.getPortList()){
+            graph.addVertex(port);
+        }
+        makeBorderEdges(graph);
+        for (Country country:countryStore.getCountryStore()){
+            double temp =Double.MAX_VALUE;
+            Port portfacade= new Port("ContinentFacade","CountryFacade",99999,"PortFacade",new Location("-86.6222","-128.48"));
+            Location capitalLocation = country.getLocation();
+            for (Port port:portStore.getPortList()){
+                if (port.getCountry().equals(country.getName())){
+                    if (Calculator.calculateLocationDifference(capitalLocation,port.getLocation())<temp){
+                        temp=Calculator.calculateLocationDifference(capitalLocation,port.getLocation());
+                        portfacade=port;
+                    }
+                }
+            }
+            if (portfacade.getCode()!=99999){
+                graph.addEdge(country,portfacade,temp);
+            }
+        }
+        makeSameCountryPortDistance(graph);
+        makeClosestPortOutsideOfCountryDistance(graph,n);
+        return graph;
+
+## Testing
+
+## Test 1
+
+     The test was mainly done through debugging to see if the graph was made correctly.
+
+
 ## US404
 
 ### [US404] As Fleet Manager, I want to know the number of days each ship has been idle since the beginning of the current year.
@@ -2029,67 +2090,6 @@ The system will receive the container number and the find its whereabouts
     }
   
 ## Testing
-
-# Sprint 4
-## U403
-
-### [US403] As a Traffic manager I wish to know the most efficient circuit that starts from a source location and visits the greatest number of other locations once, returning to the starting location and with the shortest total distance-
-
-### Analysis
-### System Sequence Diagram
-
-![US403_SSD](/docs/Sprint4/US403/US403_SSD.svg)
-
-### Domain Model Diagram
-![US403_DM](/docs/Sprint4/US403/US403_DM.svg)
-
-### Design
-### Class Diagram
-![US403_CD](/docs/Sprint4/US403/US403_CD.svg)
-
-### System Diagram
-![US403_SD](/docs/Sprint4/US403/US403_SD.svg)
-
-## Implementation
-
-### Creating the graph
-
-    public MatrixGraph<GraphLocation,Double> createGraphWithPortsAndCountries(int n){
-        MatrixGraph<GraphLocation,Double> graph= new MatrixGraph<>(false);
-        countryStore.getCountriesFromDatabase();
-        for (Country country: countryStore.getCountryStore()){
-            graph.addVertex(country);
-        }
-        portStore.getPortsFromDatabase();
-        for (Port port: portStore.getPortList()){
-            graph.addVertex(port);
-        }
-        makeBorderEdges(graph);
-        for (Country country:countryStore.getCountryStore()){
-            double temp =Double.MAX_VALUE;
-            Port portfacade= new Port("ContinentFacade","CountryFacade",99999,"PortFacade",new Location("-86.6222","-128.48"));
-            Location capitalLocation = country.getLocation();
-            for (Port port:portStore.getPortList()){
-                if (port.getCountry().equals(country.getName())){
-                    if (Calculator.calculateLocationDifference(capitalLocation,port.getLocation())<temp){
-                        temp=Calculator.calculateLocationDifference(capitalLocation,port.getLocation());
-                        portfacade=port;
-                    }
-                }
-            }
-            if (portfacade.getCode()!=99999){
-                graph.addEdge(country,portfacade,temp);
-            }
-        }
-        makeSameCountryPortDistance(graph);
-        makeClosestPortOutsideOfCountryDistance(graph,n);
-        return graph;
-
-## Testing
-
-## Test 1
-
-     The test was mainly done through debugging to see if the graph was made correctly.
 
 ## US409
 
