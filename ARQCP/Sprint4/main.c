@@ -221,6 +221,36 @@ double energy_for_ship(struct container* containers,double temperature){
 		}
 		return finalvalue;
 }
+/* Esta função é uma alternativa mais eficiente à outra
+double energy_for_ship2(struct container* containers){
+	double temperature, actualTemperature = 20;
+		double R_external, R_middle, R_internal, R_total;
+		double totalArea, Q, E;
+
+	double finalvalue=0;
+		for (int i =0;i<lines;i++){
+			if (strcmp(containers[i].typeOfContainer,"MAXMINUS5")==0){
+				temperature = -5;
+			}
+			if (strcmp(containers[i].typeOfContainer,"Refrigerated")==0){
+				temperature =7;
+			}
+			totalArea = ((containers[i].length * containers[i].height) * 3) + ((containers[i].height * containers[i].width) * 2);
+		
+		R_external = containers[i].thicknessExternal / (totalArea * containers[i].kExternal);
+		R_middle = containers[i].thicknessMiddle / (totalArea * containers[i].kMiddle);
+		R_internal = containers[i].thicknessInternal / (totalArea * containers[i].kInternal);
+		
+		R_total = R_external + R_middle + R_internal;
+		
+		Q = (actualTemperature - temperature) / R_total;
+		
+		E = Q * 3600; //energy per hour 	
+			finalvalue+=E;
+		}
+		return finalvalue;
+}
+* */
 void is_energy_enough(struct container* containers,double temperature,double gen_energy){
 	printf("Generator energy:\n%f\n",gen_energy*3600);
 	double needed_energy=energy_for_ship(containers,temperature);
@@ -274,6 +304,7 @@ int main ( void ) {
 		double cdegrees=20;
 		double generator_energy=999999999;
 		is_energy_enough(containers_in_ship,cdegrees,generator_energy);
+		
 		
    return 0;
 
