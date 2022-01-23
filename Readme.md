@@ -1902,6 +1902,175 @@ The system will receive the container number and the find its whereabouts
 
 ## Review
 
+# Sprint 4
+## U403
+
+### [US403] As a Traffic manager I wish to know the most efficient circuit that starts from a source location and visits the greatest number of other locations once, returning to the starting location and with the shortest total distance-
+
+### Analysis
+### System Sequence Diagram
+
+![US403_SSD](/docs/Sprint4/US403/US403_SSD.svg)
+
+### Domain Model Diagram
+![US403_DM](/docs/Sprint4/US403/US403_DM.svg)
+
+### Design
+### Class Diagram
+![US403_CD](/docs/Sprint4/US403/US403_CD.svg)
+
+### System Diagram
+![US403_SD](/docs/Sprint4/US403/US403_SD.svg)
+
+## Implementation
+
+### Creating the graph
+
+    public MatrixGraph<GraphLocation,Double> createGraphWithPortsAndCountries(int n){
+        MatrixGraph<GraphLocation,Double> graph= new MatrixGraph<>(false);
+        countryStore.getCountriesFromDatabase();
+        for (Country country: countryStore.getCountryStore()){
+            graph.addVertex(country);
+        }
+        portStore.getPortsFromDatabase();
+        for (Port port: portStore.getPortList()){
+            graph.addVertex(port);
+        }
+        makeBorderEdges(graph);
+        for (Country country:countryStore.getCountryStore()){
+            double temp =Double.MAX_VALUE;
+            Port portfacade= new Port("ContinentFacade","CountryFacade",99999,"PortFacade",new Location("-86.6222","-128.48"));
+            Location capitalLocation = country.getLocation();
+            for (Port port:portStore.getPortList()){
+                if (port.getCountry().equals(country.getName())){
+                    if (Calculator.calculateLocationDifference(capitalLocation,port.getLocation())<temp){
+                        temp=Calculator.calculateLocationDifference(capitalLocation,port.getLocation());
+                        portfacade=port;
+                    }
+                }
+            }
+            if (portfacade.getCode()!=99999){
+                graph.addEdge(country,portfacade,temp);
+            }
+        }
+        makeSameCountryPortDistance(graph);
+        makeClosestPortOutsideOfCountryDistance(graph,n);
+        return graph;
+
+## Testing
+
+## Test 1
+
+     The test was mainly done through debugging to see if the graph was made correctly.
+
+## US409
+
+### [US409] As a Port staff given a Cargo Manifest, I wish to fill a dynamically reserved array in memory with all the container's information in its respective place.
+
+This US is part of the ARQCP component and therefore it hasn't got any docs nor tests.
+
+## Implementation
+
+### fill_array_of_structs
+    void fill_array_of_structs() {
+    
+    char first_line = 0;
+    
+    static const char filename[] = "ContainersInManifest.csv";
+    
+    FILE *file = fopen ( filename, "r" );
+    
+    if ( file != NULL ) {
+
+     char line [ 512 ]; 
+     char ch[512];
+     while(!feof(file)){
+	*ch = fgetc(file);
+		if(*ch == '\n'){
+		lines++;
+		}	
+	}
+
+    lines--;
+	containers_in_ship = (struct container *)malloc(lines*sizeof(struct container));
+	rewind(file);
+		
+     while ( fgets ( line, sizeof line, file ) != NULL ) {
+	    	char *token[40];
+			int count = 0;
+ 			token[0] = strtok (line,";");
+
+  			while (token[count] != NULL) {
+				count++;
+
+				token[count] = strtok (NULL, ";");
+			}
+
+
+			/*pegar no array de structs e meter na posicao do x, y ,z pegando pelo atoi e depois é que se faz isto tudo*/
+
+				int x = atoi(token[6]);
+
+				int y = atoi(token[7]);
+
+				int z = atoi(token[8]);
+				if(first_line != 0) {
+
+				containers_in_ship[first_line-1].mmsi = atoi(token[0]);
+
+				containers_in_ship[first_line-1].length = atof(token[1]);
+			
+				containers_in_ship[first_line-1].height = atof(token[21]);
+
+				containers_in_ship[first_line-1].width = atof(token[2]);
+
+				strcpy(containers_in_ship[first_line-1].numberContainer, strdup(token[3]));
+
+				strcpy(containers_in_ship[first_line-1].typeOfContainer, strdup(token[4]));
+
+				strcpy(containers_in_ship[first_line-1].load, strdup(token[5]));
+
+				
+				containers_in_ship[first_line-1].x = x;
+
+				containers_in_ship[first_line-1].y = y;
+
+				containers_in_ship[first_line-1].z = z;
+
+				strcpy(containers_in_ship[first_line-1].arrivalPort, strdup(token[9]));
+
+				strcpy(containers_in_ship[first_line-1].arrivalDate, strdup(token[10]));
+
+				strcpy(containers_in_ship[first_line-1].departureDate, strdup(token[11]));
+
+				containers_in_ship[first_line-1].xMax = atoi(token[12]);
+
+				containers_in_ship[first_line-1].yMax = atoi(token[13]);
+
+				containers_in_ship[first_line-1].zMax = atoi(token[14]);
+				
+				containers_in_ship[first_line-1].zMax = atoi(token[14]);
+				
+				containers_in_ship[first_line-1].thicknessExternal = atof(token[15]);
+				
+				containers_in_ship[first_line-1].thicknessMiddle = atof(token[16]);
+
+				containers_in_ship[first_line-1].thicknessInternal = atof(token[17]);
+				
+				containers_in_ship[first_line-1].kExternal = atof(token[18]);
+
+				containers_in_ship[first_line-1].kMiddle = atof(token[19]);
+
+				containers_in_ship[first_line-1].kInternal = atof(token[20]);
+		}
+				first_line++;	
+		}
+
+    }
+    fclose ( file );   
+    }
+
+
 #=======================================================================|End of Report|====================================================
 
 # README
