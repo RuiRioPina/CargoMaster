@@ -368,7 +368,7 @@ cargo NUMBER;
 begin
 select idCargoManifest into cargo from Manifest where Manifest.idManifest = :old.idManifest;
 INSERT INTO AuditTrail (registDate, author, action, idCargoManifest, idManifest, nrContainer)
-VALUES (SYSDATE,TO_CHAR(USER),'DELETE',cargo, :new.idManifest,:old.nrContainer);
+VALUES (SYSDATE,TO_CHAR(USER),'DELETE',cargo, :old.idManifest,:old.nrContainer);
 
 EXCEPTION
     WHEN NO_DATA_FOUND
@@ -378,81 +378,9 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE(TO_CHAR(SQLERRM(-20298)));
 end;
 /
-create or replace trigger test_number_containers_not_exceed_capacity
-    before insert or update on ContainerManifest for each row
-declare
-    number_of_containers number(5);
-    capacity number(11);
-    p_mmsi number(11);
-    ex_erro EXCEPTION;
-    id_Manifest ContainerManifest.idManifest%type;
 
 
-begin
-        SELECT COUNT(c.IDMANIFEST) into number_of_containers
-FROM CONTAINERMANIFEST c WHERE
-        c.IDMANIFEST IN ( SELECT m.IDMANIFEST FROM MANIFEST m WHERE m.idManifest = :new.idManifest AND m.IDTRIP IN (SELECT  t.IDTRIP
-                                                                                                                    FROM TRIP t INNER JOIN TRIPVEHICLE tv ON t.IDTRIP LIKE tv.IDTRIP
-                                                                                                                    WHERE tv.IDVEHICLE IN (SELECT IdVehicle FROM Vehicle v WHERE v.IDVEHICLE IN (SELECT IdVehicle FROM SHIP))));
-SELECT mmsi into p_mmsi FROM SHIP WHERE idVehicle IN (SELECT v.IdVehicle from Vehicle v where v.IDVEHICLE = (SELECT tv.IDVEHICLE from TripVehicle tv WHERE tv.IDTRIP IN (SELECT t.IDTRIP from Trip t WHERE t.IdTrip = (SELECT m.idTrip FROM MANIFEST m WHERE m.IDMANIFEST = :new.idManifest))));   
-    capacity := func_getcapacityfromgivenship(p_mmsi);
-    if capacity <= number_of_containers then
-        raise_application_error(-20009,'TENTOU INTRODUZIR MAIS CONTENTORES DO QUE A CAPACIDADE DO NAVIO');
-    end if;
-end;
-/
 
-create or replace trigger test_number_containers_not_exceed_capacity
-    before insert or update on ContainerManifest for each row
-declare
-    number_of_containers number(5);
-    capacity number(11);
-    p_mmsi number(11);
-    ex_erro EXCEPTION;
-    id_Manifest ContainerManifest.idManifest%type;
-
-
-begin
-        SELECT COUNT(c.IDMANIFEST) into number_of_containers
-FROM CONTAINERMANIFEST c WHERE
-        c.IDMANIFEST IN ( SELECT m.IDMANIFEST FROM MANIFEST m WHERE m.idManifest = :new.idManifest AND m.IDTRIP IN (SELECT  t.IDTRIP
-                                                                                                                    FROM TRIP t INNER JOIN TRIPVEHICLE tv ON t.IDTRIP LIKE tv.IDTRIP
-                                                                                                                    WHERE tv.IDVEHICLE IN (SELECT IdVehicle FROM Vehicle v WHERE v.IDVEHICLE IN (SELECT IdVehicle FROM SHIP))));
-SELECT mmsi into p_mmsi FROM SHIP WHERE idVehicle IN (SELECT v.IdVehicle from Vehicle v where v.IDVEHICLE = (SELECT tv.IDVEHICLE from TripVehicle tv WHERE tv.IDTRIP IN (SELECT t.IDTRIP from Trip t WHERE t.IdTrip = (SELECT m.idTrip FROM MANIFEST m WHERE m.IDMANIFEST = :new.idManifest))));   
-    capacity := func_getcapacityfromgivenship(p_mmsi);
-    if capacity <= number_of_containers then
-        raise_application_error(-20009,'TENTOU INTRODUZIR MAIS CONTENTORES DO QUE A CAPACIDADE DO NAVIO');
-    end if;
-end;
-/
-
-create or replace trigger PortFull
-before insert or update on MANIFEST
-for each row
-
-declare
-    manifest      SYS_REFCURSOR;
-    codFacility  INTEGER;
-    occupancy    Number(8,3);
-    taxa         Number(8,3);
-
-BEGIN
-
-    OPEN manifest FOR
-    SELECT codeFacility
-    FROM MANIFEST
-    WHERE UPPER(TYPEMANIFEST) LIKE 'OFFLOAD';
-
-    fetch manifest into codFacility;
-
-    occupancy := fnc_occupancyRate(codFacility);
-    taxa:= 100;
-
-    IF occupancy >= taxa THEN
-        raise_application_error (-20007, 'The port is full, you can not create a manifest for the port.');
-    END IF;
-END;
-/
 
 --UserApplication
 INSERT INTO UserApplication(email, password) VALUES('JoaoAlmeida@gmail.com','FleetManagerJoao');
@@ -992,15 +920,22 @@ VALUES(8,7,9,TO_DATE('2022/01/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2
 INSERT INTO Trip(idCargoManifest, startFacility, endFacility, startDateTrip, endDateTrip)
 VALUES(9,8,9,TO_DATE('2022/02/17 10:02:44', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2022/03/01 8:15:30', 'yyyy/mm/dd hh24:mi:ss'));
 
+INSERT INTO TRIP(idCargoManifest, startFacility, endFacility, startDateTrip, endDateTrip,ShipCaptainNrIdentification   ,FleetManagerNrIdentification  ,ChiefEletricalNrIdentificatio ) VALUES(10,1,3,TO_DATE('2022/01/24 09:00:00', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2022/01/30 18:00:00', 'yyyy/mm/dd hh24:mi:ss'),345,459,5); -- change this
+INSERT INTO TRIP(idCargoManifest, startFacility, endFacility, startDateTrip, endDateTrip,ShipCaptainNrIdentification   ,FleetManagerNrIdentification  ,ChiefEletricalNrIdentificatio ) VALUES(11,3,1,TO_DATE('2022/01/24 09:00:00', 'yyyy/mm/dd hh24:mi:ss'), TO_DATE('2022/01/30 18:00:00', 'yyyy/mm/dd hh24:mi:ss'),345,459,5); -- change this
+
 INSERT INTO TripVehicle (idTrip, idCargoManifest, idVehicle) VALUES (1,1,1);
 INSERT INTO TripVehicle (idTrip, idCargoManifest, idVehicle) VALUES (2,2,1);
 INSERT INTO TripVehicle (idTrip, idCargoManifest, idVehicle) VALUES (3,3,1);
 INSERT INTO TripVehicle (idTrip, idCargoManifest, idVehicle) VALUES (4,4,2);
 INSERT INTO TripVehicle (idTrip, idCargoManifest, idVehicle) VALUES (5,5,5);
-INSERT INTO TripVehicle (idTrip, idCargoManifest, idVehicle) VALUES (6,6,6);
+INSERT INTO TripVehicle (idTrip, idCargoManifest, idVehicle) VALUES (7,7,6);
 
 INSERT INTO TripVehicle(idTrip, idCargoManifest, idvehicle) VALUES(8,8,7);
 INSERT INTO TripVehicle(idTrip, idCargoManifest, idvehicle) VALUES(9,9,8);
+INSERT INTO TripVehicle(idTrip, idCargoManifest, idvehicle) VALUES(10,10,8);
+INSERT INTO TripVehicle(idTrip, idCargoManifest, idvehicle) VALUES(11,11,5);
+
+
 
 
 --Energy
@@ -1072,12 +1007,23 @@ INSERT INTO TripFacility(idTrip,idCargoManifest,codeFacility,arrivalDate,departu
 INSERT INTO TripFacility(idTrip,idCargoManifest,codeFacility,arrivalDate,departureDate) VALUES(6,6,29002,TO_DATE('2022/06/09 07:30:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/06/11 10:02:44', 'yyyy/mm/dd hh24:mi:ss'));
 INSERT INTO TripFacility(idTrip,idCargoManifest,codeFacility,arrivalDate,departureDate) VALUES(6,6,5,TO_DATE('2022/06/05 08:15:30', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/06/07 11:32:42', 'yyyy/mm/dd hh24:mi:ss'));
 
+INSERT INTO TripFacility(idTrip,idCargoManifest,codeFacility,arrivalDate,departureDate) VALUES(7,7,1,TO_DATE('2022/01/23 08:15:30', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/01/27 11:32:42', 'yyyy/mm/dd hh24:mi:ss'));
+
+
 INSERT INTO TripFacility(IDTRIP, IDCARGOMANIFEST, CODEFACILITY, ARRIVALDATE, DEPARTUREDATE) VALUES(8,8,7,TO_DATE('2022/01/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/01/03 12:00:00', 'yyyy/mm/dd hh24:mi:ss'));
 INSERT INTO TripFacility(IDTRIP, IDCARGOMANIFEST, CODEFACILITY, ARRIVALDATE, DEPARTUREDATE) VALUES(8,8,8,TO_DATE('2022/01/06 22:30:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2003/01/07 9:00:00', 'yyyy/mm/dd hh24:mi:ss'));
 INSERT INTO TripFacility(IDTRIP, IDCARGOMANIFEST, CODEFACILITY, ARRIVALDATE, DEPARTUREDATE) VALUES(8,8,9,TO_DATE('2022/01/10 07:15:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/03/01 8:15:30', 'yyyy/mm/dd hh24:mi:ss'));
 
 INSERT INTO TripFacility(IDTRIP, IDCARGOMANIFEST, CODEFACILITY, ARRIVALDATE, DEPARTUREDATE) VALUES(9,9,8,TO_DATE('2022/02/17 10:02:44', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/02/17 12:02:44', 'yyyy/mm/dd hh24:mi:ss'));
 INSERT INTO TripFacility(IDTRIP, IDCARGOMANIFEST, CODEFACILITY, ARRIVALDATE, DEPARTUREDATE) VALUES(9,9,9,TO_DATE('2022/03/01 07:30:30', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/03/01 8:15:30', 'yyyy/mm/dd hh24:mi:ss'));
+
+--20/01/2022 trip facilities US407
+INSERT INTO TripFacility(idTrip,idCargoManifest,codeFacility,arrivalDate,departureDate) VALUES(10,10,3,TO_DATE('2022/01/27 09:00:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/03/27 18:00:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO TripFacility(idTrip,idCargoManifest,codeFacility,arrivalDate,departureDate) VALUES(10,10,1,TO_DATE('2022/01/25 09:00:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/03/26 18:00:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO TripFacility(idTrip,idCargoManifest,codeFacility,arrivalDate,departureDate) VALUES(11,11,1,TO_DATE('2022/01/26 09:00:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/03/28 18:00:00', 'yyyy/mm/dd hh24:mi:ss'));
+
+
+
 
 --Manifest
 
@@ -1095,12 +1041,32 @@ INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, 
 INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (50,'offload',TO_DATE('2022/06/09 11:30:00', 'yyyy/mm/dd hh24:mi:ss'),5,29002,5);
 INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (50,'load',TO_DATE('2021/03/15 11:30:00', 'yyyy/mm/dd hh24:mi:ss'),6,5,6);
 
+
+
 INSERT INTO Manifest(grossWeight, typeManifest, dateManifest, idTrip, idCargoManifest, codeFacility) VALUES(120,'OFFLOAD',TO_DATE('2022/01/03 10:02:44', 'yyyy/mm/dd hh24:mi:ss'),8,8,7);
 INSERT INTO Manifest(grossWeight, typeManifest, dateManifest, idTrip, idCargoManifest, codeFacility) VALUES(400,'LOAD',TO_DATE('2022/01/06 22:30:00', 'yyyy/mm/dd hh24:mi:ss'),8,8,8);
 INSERT INTO Manifest(grossWeight, typeManifest, dateManifest, idTrip, idCargoManifest, codeFacility) VALUES(200,'OFFLOAD',TO_DATE('2022/01/10 8:15:30', 'yyyy/mm/dd hh24:mi:ss'),8,8,9);
 
 INSERT INTO Manifest(grossWeight, typeManifest, dateManifest, idTrip, idCargoManifest, codeFacility) VALUES(200,'LOAD',TO_DATE('2022/02/17 10:02:44', 'yyyy/mm/dd hh24:mi:ss'),9,9,8);
 INSERT INTO Manifest(grossWeight, typeManifest, dateManifest, idTrip, idCargoManifest, codeFacility) VALUES(200,'LOAD',TO_DATE('2022/03/01 8:15:30', 'yyyy/mm/dd hh24:mi:ss'),9,9,9);
+
+--Truck Manifest Added 13/01/2022
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (1,'load',TO_DATE('2022/01/24 9:00:00', 'yyyy/mm/dd hh24:mi:ss'),7,1,7);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (1,'offload',TO_DATE('2022/01/25 18:00:00', 'yyyy/mm/dd hh24:mi:ss'),7,1,7);
+
+--Ship Manifest Added 20/01/2022 SEMANA A SEGUIR AO 
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (3,'offload',TO_DATE('2022/01/25 18:00:00', 'yyyy/mm/dd hh24:mi:ss'),10,1,10);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (3,'load',TO_DATE('2022/01/24 9:00:00', 'yyyy/mm/dd hh24:mi:ss'),10,1,10);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (3,'offload',TO_DATE('2022/01/26 18:00:00', 'yyyy/mm/dd hh24:mi:ss'),10,1,10);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (3,'load',TO_DATE('2022/01/25 9:00:00', 'yyyy/mm/dd hh24:mi:ss'),11,1,11);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (3,'offload',TO_DATE('2022/01/27 18:00:00', 'yyyy/mm/dd hh24:mi:ss'),11,1,11);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (3,'load',TO_DATE('2022/01/26 9:00:00', 'yyyy/mm/dd hh24:mi:ss'),11,1,11);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (3,'offload',TO_DATE('2022/01/28 18:00:00', 'yyyy/mm/dd hh24:mi:ss'),11,1,11);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (3,'load',TO_DATE('2022/01/28 9:00:00', 'yyyy/mm/dd hh24:mi:ss'),10,1,10);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (3,'offload',TO_DATE('2022/01/30 18:00:00', 'yyyy/mm/dd hh24:mi:ss'),11,1,11);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (3,'load',TO_DATE('2022/01/29 9:00:00', 'yyyy/mm/dd hh24:mi:ss'),11,1,11);
+INSERT INTO Manifest(grossWeight,typeManifest,dateManifest,idTrip,codefacility, IDCARGOMANIFEST) VALUES (3,'load',TO_DATE('2022/01/30 9:00:00', 'yyyy/mm/dd hh24:mi:ss'),10,1,10);
+
 
 --ContainerManifest
 INSERT INTO ContainerManifest (idManifest,nrContainer,idPosition) VALUES (1,'ABCU1827364',2);
@@ -1142,8 +1108,42 @@ INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(12,'ABCU
 INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(12,'XGCU2123466',2);
 INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(13,'XGCU2123466',10);
 INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(13,'ABCU1113456',8);
-
 /
+
+/*TRUCKS*/
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(19,'ABDU1827364',1);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(20,'TVCU2124466',4);
+
+/*SHIPS FOR US407 */
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(21,'XGCU2123466',1);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(21,'ABCU1113456',2);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(21,'JORU1234569',3);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(21,'TVCU2124466',4);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(21,'LLCU2124766',5);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(21,'FFAU2124566',6);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(21,'JORU1234513',7);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(21,'JORU1234553',8);
+
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(22,'XGCU2123466',8);
+
+--load
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(27,'JORU1234553',9);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(24,'LLCU2124766',10);
+
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(27,'FFAU2124566',1);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(26,'JORU1234553',2);
+--load
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(28,'TVCU2124466',3);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(28,'XGCU2123466',4);
+
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(29,'TVCU2124466',5);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(29,'XGCU2123466',9);
+--load
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(31,'JORU1234569',10);
+INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(31,'FFAU2124566',5);
+
+
+
 create or replace trigger CargoShipAvailability 
 before insert or update on Trip for each row
 
@@ -1183,9 +1183,3 @@ raise_application_error (-20009, 'The ship is not available so it is not possibl
 
 end ;
 /
-/*ADICIONAR MAIS CONTENTORES DO QUE A CAPACIDADE DO NAVIO US308*/
-/*EXPECTED TRIGGER ERROR - "TENTOU INTRODUZIR MAIS CONTENTORES DO QUE A CAPACIDADE DO NAVIO"*/
-
-INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(13,'LLCU2124766',11);
-INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(13,'TVCU2124466',3);
-INSERT INTO CONTAINERMANIFEST(idmanifest,nrcontainer,idPosition) VALUES(13,'ABDU1827364',1);
