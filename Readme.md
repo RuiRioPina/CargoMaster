@@ -1903,6 +1903,134 @@ The system will receive the container number and the find its whereabouts
 ## Review
 
 # Sprint 4
+## US401
+
+### [US401] As a Traffic manager I wish to know which ports are more critical (have greater centrality) in this freight network.
+
+### Analysis
+### System Sequence Diagram
+
+![US401_SSD](/docs/Sprint4/US401/US401_SSD.svg)
+
+### Domain Model Diagram
+![US401_DM](/docs/Sprint4/US401/US401_DM.svg)
+
+### Design
+### Class Diagram
+![US401_CD](/docs/Sprint4/US401/US401_CD.svg)
+
+### System Diagram
+![US401_SD](/docs/Sprint4/US401/US401_SD.svg)
+
+## Implementation
+    
+    
+    public static List <Port> portsWithMoreCentrality(Graph<GraphLocation, Double> graph, int n) {
+        Map<GraphLocation, Double> network = new HashMap<>();
+        ArrayList<LinkedList<GraphLocation>> paths = new ArrayList<>();
+        ArrayList<Double> dists = new ArrayList<>();
+
+        for (GraphLocation port : graph.vertices()) {
+            double sum = 0;
+            Algorithms.shortestPaths(graph, port, paths, dists);
+            for (int i = 0; i < dists.size(); i++) {
+                if (dists.get(i) != Double.MAX_VALUE) {
+                    sum = sum + dists.get(i);
+                }
+            }
+                network.put(port, sum / graph.numVertices());
+        }
+
+
+        //sort network by descending value based on https://www.baeldung.com/java-hashmap-sort
+        LinkedHashMap<GraphLocation,Double> sortedNetwork =  network.entrySet().stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (entry1, entry2) -> entry2, LinkedHashMap::new));
+
+
+        LinkedHashMap<Port, Double> nPorts = new LinkedHashMap<>();
+        int cnt = 0;
+
+        for (Object key : sortedNetwork.keySet()) {
+            if (key.getClass().equals(Port.class)) {
+                if (cnt == n) {
+                    break;
+                }
+                nPorts.put((Port) key, sortedNetwork.get(key));
+                cnt++;
+            }
+        }
+
+        return new ArrayList<>(nPorts.keySet());
+    }
+  
+## Testing
+
+
+## US404
+
+### [US404] As Fleet Manager, I want to know the number of days each ship has been idle since the beginning of the current year.
+
+### Analysis
+### System Sequence Diagram
+
+![US404_SSD](/docs/Sprint4/US404/US404_SSD.svg)
+
+### Domain Model Diagram
+![US404_DM](/docs/Sprint4/US404/US404_DM.svg)
+
+### Design
+### Class Diagram
+![US404_CD](/docs/Sprint4/US404/US404_CD.svg)
+
+### System Diagram
+![US404_SD](/docs/Sprint4/US404/US404_SD.svg)
+
+## Implementation
+    
+    
+     public List<ShipIdleDays> getShipIdleDays (DatabaseConnection connection, int fleetId) throws SQLException {
+        ResultSet r1Set;
+
+        List<String> mmsis = new ArrayList<>();
+
+        try (CallableStatement c = connection.getConnection().prepareCall("{ ? = call fnc_getMmsi(?)}")) {
+            c.registerOutParameter(1, OracleTypes.CURSOR);
+            c.setInt(2, fleetId);
+            c.execute();
+            r1Set = (ResultSet) c.getObject(1);
+            while (r1Set.next()) {
+                mmsis.add(r1Set.getString(1));
+            }
+        } catch (SQLException ignored) {
+            ignored.printStackTrace();
+        }
+
+        List <Integer> idle = new ArrayList<>();
+
+        for (int i = 0; i < mmsis.size(); i++) {
+            try (CallableStatement c = connection.getConnection().prepareCall("{ ? = call fnc_shipIdleDays(?,?)}")) {
+                c.registerOutParameter(1, OracleTypes.INTEGER);
+                c.setInt(2, fleetId);
+                c.setString(3,mmsis.get(i));
+                c.execute();
+                idle.add((Integer) c.getObject(1));
+
+            } catch (SQLException ignored) {
+                ignored.printStackTrace();
+            }
+        }
+        List <ShipIdleDays> shipIdleDays = new ArrayList<>();
+        for (int i = 0; i < idle.size(); i++) {
+            shipIdleDays.add(new ShipIdleDays(mmsis.get(i),idle.get(i)));
+        }
+        return shipIdleDays;
+    }
+  
+## Testing
+
+# Sprint 4
 ## U403
 
 ### [US403] As a Traffic manager I wish to know the most efficient circuit that starts from a source location and visits the greatest number of other locations once, returning to the starting location and with the shortest total distance-
