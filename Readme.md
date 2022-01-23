@@ -102,6 +102,48 @@ This report is divided into the different User Stories developed across all Spri
 
 * US320 Rafael Leite
 
+### Sprint 4
+
+* US401 Jorge Ferreira
+
+* US402 Rafael Leite
+
+* US403 Rui Pina
+
+* US404 Jorge Ferreira
+
+* US405 Tiago Ribeiro
+
+* US406 Tiago Ribeiro
+
+* US407 Rafael Leite
+
+* US408 Rui Pina
+
+* US409 Rui Pina
+
+* US410 Jorge Ferreira
+
+* US411 Rafael Leite
+
+* US412 Rafael Leite
+
+* US413 Rui Pina
+
+* US414 Jorge Ferreira
+
+* US415 Rafael Leite
+
+* US416 Rui Pina
+
+* US417 Jorge Ferreira
+
+* US418 Rui Pina
+
+* US419 Rafael Leite
+
+* US420 Jorge Ferreira
+
 
 # Sprint 1
 
@@ -118,9 +160,11 @@ These are all the Use Cases to be developed during Sprint 1.
 Through the analysis of the requirements document we spotted these concepts, which can be useful for the development of 
 the solution to the functionalities pretended.
 
+# Sprint 4
+
 ## Relational Model
 
-![Relational Model](/BaseDados/US108/modelos/logico.jpg)
+![Relational Model](/BaseDados/Modelo Bootstrap/modelo.jpg)
 
 
 ## US101 
